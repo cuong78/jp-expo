@@ -17,6 +17,7 @@ import { InfiniteGallery } from "@/components/InfiniteGallery";
 import { Footer } from "@/layouts/footer";
 import ArtSlider from "@/components/ArtSlider";
 import GlobeGallery from "@/components/GlobeGallery";
+import CurvedSlider3D from "@/components/CurvedSlider3D";
 
 type NavItem = {
     label: string;
@@ -591,7 +592,7 @@ const HomePage = () => {
                                 />
                             </div>
 
-                            <div className="p-5 sm:p-6">
+                            <div className="p-2 sm:p-6">
                                 {/* Title */}
                                 <div className="mb-4">
                                     <h3 className="text-xl font-bold leading-tight sm:text-2xl" style={{ color: '#4DEDFF' }}>
@@ -599,21 +600,20 @@ const HomePage = () => {
                                     </h3>
                                 </div>
 
-                                {/* Image Carousel */}
-                                <div className="mb-4 flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#4DEDFF] scrollbar-track-white/10 hover:scrollbar-thumb-[#4DEDFF]/80">
-                                    {galleryImages.map((img, idx) => (
-                                        <img
-                                            key={idx}
-                                            src={img}
-                                            alt={`Van Gogh Gallery ${idx + 1}`}
-                                            className="h-20 w-28 flex-shrink-0 rounded-lg object-cover transition-transform hover:scale-105 cursor-pointer"
-                                            onClick={() => {
-                                                setSelectedImage(img);
-                                                setSelectedImageIndex(idx);
-                                                setCurrentGallery(galleryImages);
-                                            }}
-                                        />
-                                    ))}
+                                {/* 3D Curved Slider */}
+                                <div className="mb-4 -mx-2 sm:-mx-6">
+                                    <CurvedSlider3D
+                                        images={galleryImages}
+                                        onImageClick={(img, idx) => {
+                                            setSelectedImage(img);
+                                            setSelectedImageIndex(idx);
+                                            setCurrentGallery(galleryImages);
+                                        }}
+                                        speed={25}
+                                        gap={120}
+                                        curve={8}
+                                        height="220px"
+                                    />
                                 </div>
 
                                 {/* Description with Expand */}
@@ -662,7 +662,7 @@ const HomePage = () => {
                                 />
                             </div>
 
-                            <div className="p-5 sm:p-6">
+                            <div className="p-2 sm:p-6">
                                 {/* Title */}
                                 <div className="mb-4">
                                     <h3 className="text-xl font-bold leading-tight sm:text-2xl" style={{ color: '#4DEDFF' }}>
@@ -670,21 +670,20 @@ const HomePage = () => {
                                     </h3>
                                 </div>
 
-                                {/* Image Carousel */}
-                                <div className="mb-4 flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#4DEDFF] scrollbar-track-white/10 hover:scrollbar-thumb-[#4DEDFF]/80">
-                                    {lightCityImages.map((img, idx) => (
-                                        <img
-                                            key={idx}
-                                            src={img}
-                                            alt={`Light City Gallery ${idx + 1}`}
-                                            className="h-20 w-28 flex-shrink-0 rounded-lg object-cover transition-transform hover:scale-105 cursor-pointer"
-                                            onClick={() => {
-                                                setSelectedImage(img);
-                                                setSelectedImageIndex(idx);
-                                                setCurrentGallery(lightCityImages);
-                                            }}
-                                        />
-                                    ))}
+                                {/* 3D Curved Slider */}
+                                <div className="mb-4 -mx-2 sm:-mx-6">
+                                    <CurvedSlider3D
+                                        images={lightCityImages}
+                                        onImageClick={(img, idx) => {
+                                            setSelectedImage(img);
+                                            setSelectedImageIndex(idx);
+                                            setCurrentGallery(lightCityImages);
+                                        }}
+                                        speed={30}
+                                        gap={120}
+                                        curve={10}
+                                        height="220px"
+                                    />
                                 </div>
 
                                 {/* Description with Expand */}
@@ -731,7 +730,7 @@ const HomePage = () => {
                                 />
                             </div>
 
-                            <div className="p-5 sm:p-6">
+                            <div className="p-2 sm:p-6">
                                 {/* Title */}
                                 <div className="mb-4">
                                     <h3 className="text-xl font-bold leading-tight sm:text-2xl" style={{ color: '#4DEDFF' }}>
@@ -739,29 +738,29 @@ const HomePage = () => {
                                     </h3>
                                 </div>
 
-                                {/* Image Carousel */}
-                                <div className="mb-4 flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#4DEDFF] scrollbar-track-white/10 hover:scrollbar-thumb-[#4DEDFF]/80">
-                                    {[
-                                        'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819',
-                                        'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819',
-                                        'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819',
-                                    ].map((img, idx) => (
-                                        <img
-                                            key={idx}
-                                            src={img}
-                                            alt={`Fly Over Gallery ${idx + 1}`}
-                                            className="h-20 w-28 flex-shrink-0 rounded-lg object-cover transition-transform hover:scale-105 cursor-pointer"
-                                            onClick={() => {
-                                                setSelectedImage(img);
-                                                setSelectedImageIndex(idx);
-                                                setCurrentGallery([
-                                                    'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819',
-                                                    'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819',
-                                                    'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819',
-                                                ]);
-                                            }}
-                                        />
-                                    ))}
+                                {/* 3D Curved Slider */}
+                                <div className="mb-4 -mx-2 sm:-mx-6">
+                                    <CurvedSlider3D
+                                        images={[
+                                            'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819',
+                                            'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819',
+                                            'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819',
+                                        ]}
+                                        onImageClick={(img, idx) => {
+                                            setSelectedImage(img);
+                                            setSelectedImageIndex(idx);
+                                            setCurrentGallery([
+                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819',
+                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819',
+                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819',
+                                            ]);
+                                        }}
+                                        speed={20}
+                                        gap={120}
+                                        curve={12}
+                                        reverse={true}
+                                        height="220px"
+                                    />
                                 </div>
 
                                 {/* Description with Expand */}

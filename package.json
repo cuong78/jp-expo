@@ -12,6 +12,7 @@
   "dependencies": {
     "@fileforge/react-print": "^0.1.150",
     "@tailwindcss/vite": "^4.1.18",
+    "@types/three": "^0.182.0",
     "@uidotdev/usehooks": "^2.4.1",
     "axios": "^1.13.2",
     "clsx": "^2.1.1",
@@ -27,7 +28,8 @@
     "recharts": "^3.6.0",
     "swiper": "^12.0.3",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "three": "^0.182.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
