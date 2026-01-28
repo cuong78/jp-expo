@@ -64,6 +64,11 @@ const HomePage = () => {
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState<boolean>(false);
     const [isLightCityExpanded, setIsLightCityExpanded] = useState<boolean>(false);
     const [isFlyOverExpanded, setIsFlyOverExpanded] = useState<boolean>(false);
+    const [videoPopup, setVideoPopup] = useState<{ isOpen: boolean; videoId: string; title: string }>({ 
+        isOpen: false, 
+        videoId: '', 
+        title: '' 
+    });
 
     // Refs for sliders
     const reviewSliderRef = useRef<HTMLDivElement>(null);
@@ -227,10 +232,10 @@ const HomePage = () => {
                             alt="JP Art Expo Logo"
                             className="h-12 w-auto"
                         />
-                        <div className="hidden sm:block">
+                        {/* <div className="hidden sm:block">
                             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-300">Immersive</p>
                             <p className="text-lg font-bold">JP Art Expo</p>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Desktop navigation */}
@@ -497,7 +502,7 @@ const HomePage = () => {
                 <HeroSwiper />
             </section> */}
 
-            <main className="relative mx-auto max-w-6xl overflow-hidden px-4 pb-24 pt-3 lg:pt-5">
+            <main className="relative mx-auto max-w-6xl overflow-hidden px-0 pb-24 pt-3 lg:pt-5">
                 <div className="absolute left-1/2 top-10 -z-10 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-amber-400/10 blur-[120px]" />
                 <div className="absolute right-10 top-40 -z-10 h-40 w-40 rounded-full bg-indigo-500/20 blur-3xl" />
 
@@ -572,24 +577,54 @@ const HomePage = () => {
 
                 {/* Sự kiện nổi bật */}
                 <section className="mt-12 space-y-6 md:mt-16">
-                    <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">Sự kiện</p>
-                        <h2 className="text-2xl font-bold text-white sm:text-3xl">Trải nghiệm nghệ thuật đa chiều</h2>
+                    <div className="px-4 space-y-2">
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400 animate-fade-in-left">
+                            Sự kiện
+                        </p>
+                        <h2 className="text-2xl font-bold text-white sm:text-3xl animate-fade-in-up animation-delay-100">
+                            Trải nghiệm nghệ thuật đa chiều
+                        </h2>
                     </div>
                     
                     {/* Grid 2 cột */}
-                    <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+                    <div className="grid gap-4 sm:gap-6 md:grid-cols-2 -mx-4 md:mx-0 px-4 md:px-0">
                         {/* Card 1: Van Gogh & Monet - Enhanced */}
                         <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 hover:bg-slate-900/80">
                             {/* Video Section */}
-                            <div className="aspect-video overflow-hidden bg-black">
-                                <iframe
-                                    className="h-full w-full"
-                                    src="https://www.youtube.com/embed/wqzWu4UIVHg?autoplay=0&mute=1&controls=1&rel=0"
-                                    title="Vincent Van Gogh & Claude Monet – Limited Version"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
+                            <div 
+                                className="aspect-video overflow-hidden bg-black relative cursor-pointer group/video"
+                                onClick={() => setVideoPopup({ 
+                                    isOpen: true, 
+                                    videoId: 'wqzWu4UIVHg', 
+                                    title: 'Vincent Van Gogh & Claude Monet – Limited Version' 
+                                })}
+                            >
+                                <img
+                                    src="/Img/ingohartimg.png"
+                                    alt="Vincent Van Gogh & Claude Monet – Limited Version"
+                                    className="h-full w-full object-cover transition-transform duration-500 group-hover/video:scale-105"
                                 />
+                                {/* Play Button */}
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover/video:bg-black/20 transition-colors">
+                                    <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center transition-all group-hover/video:scale-110">
+                                        {/* Circle Border */}
+                                        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100">
+                                            <circle 
+                                                cx="50" 
+                                                cy="50" 
+                                                r="48" 
+                                                fill="none" 
+                                                stroke="white" 
+                                                strokeWidth="4.5"
+                                                className="opacity-90"
+                                            />
+                                        </svg>
+                                        {/* Play Icon - Transparent with white stroke */}
+                                        <svg className="h-14 w-14 sm:h-16 sm:w-16 translate-x-1 stroke-white fill-transparent drop-shadow-lg" viewBox="0 0 24 24" strokeWidth="1.5">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="p-2 sm:p-6">
@@ -652,14 +687,40 @@ const HomePage = () => {
                         {/* Card 2: Light City */}
                         <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 hover:bg-slate-900/80">
                             {/* Video Section */}
-                            <div className="aspect-video overflow-hidden bg-black">
-                                <iframe
-                                    className="h-full w-full"
-                                    src="https://www.youtube.com/embed/fCfoU2s5kjM?autoplay=0&mute=1&controls=1&rel=0"
-                                    title="Light City Tầng 6"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
+                            <div 
+                                className="aspect-video overflow-hidden bg-black relative cursor-pointer group/video"
+                                onClick={() => setVideoPopup({ 
+                                    isOpen: true, 
+                                    videoId: 'fCfoU2s5kjM', 
+                                    title: 'Light City Tầng 6' 
+                                })}
+                            >
+                                <img
+                                    src="/Img/ingohartimg2.png"
+                                    alt="Light City Tầng 6"
+                                    className="h-full w-full object-cover transition-transform duration-500 group-hover/video:scale-105"
                                 />
+                                {/* Play Button */}
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover/video:bg-black/20 transition-colors">
+                                    <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center transition-all group-hover/video:scale-110">
+                                        {/* Circle Border */}
+                                        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100">
+                                            <circle 
+                                                cx="50" 
+                                                cy="50" 
+                                                r="48" 
+                                                fill="none" 
+                                                stroke="white" 
+                                                strokeWidth="4.5"
+                                                className="opacity-90"
+                                            />
+                                        </svg>
+                                        {/* Play Icon - Transparent with white stroke */}
+                                        <svg className="h-14 w-14 sm:h-16 sm:w-16 translate-x-1 stroke-white fill-transparent drop-shadow-lg" viewBox="0 0 24 24" strokeWidth="1.5">
+                                            <path d="M8 5v14l11-7z"/>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="p-2 sm:p-6">
@@ -806,10 +867,10 @@ const HomePage = () => {
             {/* 3D Globe Gallery */}
             <section className="mt-20 py-16 bg-gradient-to-b from-slate-950 to-slate-900">
                 <div className="mx-auto max-w-6xl px-4">
-                    <div className="mb-8">
+                    {/* <div className="mb-8">
                         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">Thư viện 3D</p>
                         <h2 className="text-3xl font-bold text-white">Khám phá không gian 360°</h2>
-                    </div>
+                    </div> */}
                     <GlobeGallery
                         images={[
                             '/Img/Ingohartimage1/ingohartimage1.png',
@@ -1161,6 +1222,39 @@ const HomePage = () => {
                     {/* Image Counter */}
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm">
                         {selectedImageIndex + 1} / {currentGallery.length}
+                    </div>
+                </div>
+            )}
+
+            {/* Video Popup */}
+            {videoPopup.isOpen && (
+                <div 
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+                    onClick={() => setVideoPopup({ isOpen: false, videoId: '', title: '' })}
+                >
+                    <div className="relative w-full max-w-5xl">
+                        {/* Close Button */}
+                        <button
+                            className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 hover:scale-110"
+                            onClick={() => setVideoPopup({ isOpen: false, videoId: '', title: '' })}
+                            aria-label="Đóng"
+                        >
+                            <X size={24} />
+                        </button>
+
+                        {/* Video Container */}
+                        <div 
+                            className="relative aspect-video w-full overflow-hidden rounded-xl bg-black shadow-2xl"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <iframe
+                                className="h-full w-full"
+                                src={`https://www.youtube.com/embed/${videoPopup.videoId}?autoplay=1&rel=0`}
+                                title={videoPopup.title}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            />
+                        </div>
                     </div>
                 </div>
             )}
