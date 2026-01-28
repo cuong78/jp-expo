@@ -16,6 +16,7 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import { InfiniteGallery } from "@/components/InfiniteGallery";
 import { Footer } from "@/layouts/footer";
 import ArtSlider from "@/components/ArtSlider";
+import GlobeGallery from "@/components/GlobeGallery";
 
 type NavItem = {
     label: string;
@@ -802,6 +803,44 @@ const HomePage = () => {
 
             {/* Infinite Gallery - Full Width */}
             <InfiniteGallery />
+
+            {/* 3D Globe Gallery */}
+            <section className="mt-20 py-16 bg-gradient-to-b from-slate-950 to-slate-900">
+                <div className="mx-auto max-w-6xl px-4">
+                    <div className="mb-8">
+                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">Thư viện 3D</p>
+                        <h2 className="text-3xl font-bold text-white">Khám phá không gian 360°</h2>
+                    </div>
+                    <GlobeGallery
+                        images={[
+                            '/Img/Ingohartimage1/ingohartimage1.png',
+                            '/Img/Ingohartimage1/ingohartimage2.png',
+                            '/Img/Ingohartimage1/ingohartimage3.png',
+                            '/Img/Ingohartimage1/ingohartimage4.png',
+                            '/Img/Ingohartimage1/ingohartimage5.png',
+                            '/Img/Ingohartimage1/ingohartimage6.png',
+                            '/Img/Ingohartimage1/ingohartimage7.png',
+                            '/Img/Ingohartimage1/ingohartimage8.png',
+                            '/Img/Ingohartimage1/ingohartimage9.png',
+                            '/Img/Ingohartimage1/ingohartimage10.png',
+                            '/Img/Ingohartimage1/ingohartimage11.png',
+                            '/Img/Ingohartimage1/ingohartimage12.png',
+                            '/Img/Ingohartimage1/ingohartimage13.png',
+                            '/Img/Ingohartimage2/ingohartimage1_2.png',
+                            '/Img/Ingohartimage2/ingohartimage2_2.png',
+                            '/Img/Ingohartimage2/ingohartimage3_2.png',
+                            '/Img/Ingohartimage2/ingohartimage5_2.png',
+                            '/Img/Ingohartimage2/ingohartimage6_2.png',
+                        ]}
+                        imageWidth={10}
+                        imageHeight={10}
+                        imageRepeat={2}
+                        autoRotate={true}
+                        autoRotateSpeed={10}
+                        minHeight={550}
+                    />
+                </div>
+            </section>
 
             <main className="relative mx-auto max-w-6xl overflow-hidden px-4 pb-24">
                 {/* Review */}
