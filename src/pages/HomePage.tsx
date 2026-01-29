@@ -570,14 +570,207 @@ const HomePage = () => {
 
                 {/* Sự kiện nổi bật - KlingAI Style */}
                 <section id="gioi-thieu" className="mt-12 space-y-6 md:mt-16">
-                    <div className="mb-8">
+                    <div className="mb-3.5">
                         <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Sự kiện</h2>
                     </div>
 
-                    
+                    {/* Mobile Swiper Layout - Only on Mobile */}
+                    <div className="lg:hidden">
+                        <div className="relative">
+                            {/* Swipeable Container */}
+                            <div 
+                                ref={(el) => {
+                                    if (el) {
+                                        const handleScroll = () => {
+                                            const scrollLeft = el.scrollLeft;
+                                            const cardWidth = el.offsetWidth;
+                                            const newIndex = Math.round(scrollLeft / cardWidth);
+                                            const events = ['vangogh', 'lightcity', 'flyover'];
+                                            if (events[newIndex]) {
+                                                setActiveNav(events[newIndex]);
+                                            }
+                                        };
+                                        el.addEventListener('scroll', handleScroll);
+                                    }
+                                }}
+                                className="flex snap-x snap-mandatory overflow-x-auto scrollbar-none scroll-smooth gap-4 pb-2"
+                            >
+                                {[
+                                    {
+                                        id: 'vangogh',
+                                        title: 'Vincent Van Gogh & Claude Monet',
+                                        subtitle: 'Limited Version',
+                                        tag: 'Immersive Art',
+                                        description: 'Bắt đầu một cuộc phiêu lưu đa giác quan độc đáo tại Van Gogh & Monet Art Lighting Experience, nơi nghệ thuật và công nghệ hoà quyện.',
+                                        video: 'https://www.youtube.com/embed/wqzWu4UIVHg?autoplay=0&mute=1&controls=1&rel=0',
+                                        color: 'from-purple-500/10 to-pink-500/10',
+                                        borderColor: 'border-purple-500/30'
+                                    },
+                                    {
+                                        id: 'lightcity',
+                                        title: 'LIGHT CITY',
+                                        subtitle: 'Khu giáo dục giải trí công nghệ cao',
+                                        tag: 'New Update',
+                                        description: 'Khu giáo dục giải trí công nghệ cao mang đến trải nghiệm tương tác đa giác quan, kết hợp STEM với các hoạt động giáo dục sáng tạo.',
+                                        video: 'https://www.youtube.com/embed/fCfoU2s5kjM?autoplay=0&mute=1&controls=1&rel=0',
+                                        color: 'from-cyan-500/10 to-blue-500/10',
+                                        borderColor: 'border-cyan-500/30'
+                                    },
+                                    {
+                                        id: 'flyover',
+                                        title: 'Fly Over The World & Infinity World',
+                                        subtitle: '12D Experience',
+                                        tag: 'Signature Ride',
+                                        description: 'Hãy sẵn sàng cất cánh với chuyến bay 12D đầy kỳ thú, tham gia cùng các lễ hội văn hóa, chiêm ngưỡng thiên nhiên hùng vĩ.',
+                                        video: '/Img/ingohartimg3.png',
+                                        color: 'from-orange-500/10 to-red-500/10',
+                                        borderColor: 'border-orange-500/30'
+                                    }
+                                ].map((event) => (
+                                    <div key={event.id} className="snap-center flex-shrink-0 w-full px-2">
+                                        <div className={cn(
+                                            "relative overflow-hidden rounded-2xl border p-6 backdrop-blur-sm h-[600px] flex flex-col",
+                                            event.borderColor,
+                                            "bg-gradient-to-br",
+                                            event.color
+                                        )}>
+                                            {/* Header */}
+                                            <div className="mb-4 flex items-center justify-between flex-shrink-0">
+                                                <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
+                                                    {event.tag}
+                                                </span>
+                                                <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-lg shadow-cyan-400/50" />
+                                            </div>
 
-                    {/* Layout: Sidebar Left + Content Right */}
-                    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+                                            {/* Title */}
+                                            <div className="mb-4 flex-shrink-0">
+                                                <h3 className="text-xl font-bold leading-tight text-white">
+                                                    {event.title}
+                                                </h3>
+                                                <p className="mt-2 text-sm text-white/70">
+                                                    {event.subtitle}
+                                                </p>
+                                            </div>
+
+                                            {/* Video */}
+                                            <div className="relative aspect-video overflow-hidden rounded-xl border border-white/10 bg-black/20 mb-4 flex-shrink-0">
+                                                {event.video.includes('youtube.com') ? (
+                                                    <iframe
+                                                        src={event.video}
+                                                        title={event.title}
+                                                        className="h-full w-full"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                        allowFullScreen
+                                                    />
+                                                ) : (
+                                                    <img
+                                                        src={event.video}
+                                                        alt={event.title}
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                )}
+                                            </div>
+
+                                            {/* Image Gallery with Infinite Scroll */}
+                                            <div className="relative overflow-hidden mb-4 flex-shrink-0">
+                                                <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-12 bg-gradient-to-r from-slate-950 to-transparent" />
+                                                <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-12 bg-gradient-to-l from-slate-950 to-transparent" />
+                                                
+                                                <div className="flex gap-2 animate-scroll-infinite">
+                                                    {(() => {
+                                                        let images: string[] = [];
+                                                        if (event.id === 'vangogh') {
+                                                            images = galleryImages;
+                                                        } else if (event.id === 'lightcity') {
+                                                            images = lightCityImages;
+                                                        } else if (event.id === 'flyover') {
+                                                            images = [
+                                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819',
+                                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819',
+                                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819',
+                                                            ];
+                                                        }
+                                                        return [...images, ...images].map((img, idx) => (
+                                                            <div
+                                                                key={idx}
+                                                                className="h-16 w-24 flex-shrink-0 overflow-hidden rounded-lg border border-white/10"
+                                                            >
+                                                                <img
+                                                                    src={img}
+                                                                    alt={`Gallery ${(idx % images.length) + 1}`}
+                                                                    className="h-full w-full object-cover"
+                                                                />
+                                                            </div>
+                                                        ));
+                                                    })()}
+                                                </div>
+                                            </div>
+
+                                            {/* Description */}
+                                            <div className="flex-shrink-0 mb-4 max-h-24 overflow-y-auto">
+                                                <p className="text-sm leading-relaxed text-white/80">
+                                                    {event.description}
+                                                </p>
+                                            </div>
+
+                                            {/* Action Buttons */}
+                                            <div className="flex gap-3 flex-shrink-0 mt-auto pt-2">
+                                                <button
+                                                    onClick={() => scrollTo("#mua-ve")}
+                                                    className={cn(
+                                                        "group relative flex-1 overflow-hidden rounded-full px-5 py-3 text-sm font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-105",
+                                                        event.id === 'vangogh' && "bg-gradient-to-r from-purple-500 to-pink-500 shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40",
+                                                        event.id === 'lightcity' && "bg-gradient-to-r from-cyan-500 to-blue-500 shadow-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/40",
+                                                        event.id === 'flyover' && "bg-gradient-to-r from-orange-500 to-red-500 shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40"
+                                                    )}
+                                                >
+                                                    <span className="relative whitespace-nowrap">Đặt vé ngay</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => scrollTo(event.id === 'vangogh' ? '#van-gogh' : event.id === 'lightcity' ? '#light-city' : '#fly-over')}
+                                                    className={cn(
+                                                        "flex-1 rounded-full border bg-white/5 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/10",
+                                                        event.id === 'vangogh' && "border-purple-500/30 hover:border-purple-500/50",
+                                                        event.id === 'lightcity' && "border-cyan-500/30 hover:border-cyan-500/50",
+                                                        event.id === 'flyover' && "border-orange-500/30 hover:border-orange-500/50"
+                                                    )}
+                                                >
+                                                    Xem thêm
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Scroll Indicator Dots */}
+                            <div className="flex justify-center gap-2 mt-4">
+                                {['vangogh', 'lightcity', 'flyover'].map((id, idx) => (
+                                    <button
+                                        key={id}
+                                        onClick={() => {
+                                            const container = document.querySelector('.snap-x') as HTMLElement;
+                                            if (container) {
+                                                container.scrollTo({
+                                                    left: idx * container.offsetWidth,
+                                                    behavior: 'smooth'
+                                                });
+                                            }
+                                        }}
+                                        className={cn(
+                                            "h-2 rounded-full transition-all duration-300",
+                                            activeNav === id
+                                                ? "w-8 bg-white"
+                                                : "w-2 bg-white/30"
+                                        )}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Desktop Layout: Sidebar Left + Content Right - Hidden on Mobile */}
+                    <div className="hidden lg:flex flex-col lg:flex-row gap-6 lg:gap-8">
                         {/* Progress Indicator Bar */}
                         <div className="hidden lg:block relative w-1 flex-shrink-0">
                             <div className="sticky top-24 h-[400px]">
