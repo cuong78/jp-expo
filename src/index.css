@@ -118,6 +118,26 @@
     }
 }
 
+/* ---- Starry Background Animation ---- */
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--duration) infinite;
+    animation-delay: var(--delay);
+}
+
 /* ---- Infinite Gallery Animations ---- */
 @keyframes scroll-left {
     0% {

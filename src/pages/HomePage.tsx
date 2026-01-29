@@ -1148,8 +1148,26 @@ const HomePage = () => {
             {/* <InfiniteGallery /> */}
 
             {/* 3D Globe Gallery */}
-            <section className="mt-20 py-16 bg-gradient-to-b from-slate-950 to-slate-900">
-                <div className="mx-auto max-w-6xl px-4">
+            <section className="mt-20 py-16 bg-gradient-to-b from-slate-950 to-slate-900 relative overflow-hidden">
+                {/* Starry Background */}
+                <div className="absolute inset-0 pointer-events-none">
+                    {[...Array(50)].map((_, i) => (
+                        <div
+                            key={i}
+                            className="star"
+                            style={{
+                                width: `${Math.random() * 3 + 1}px`,
+                                height: `${Math.random() * 3 + 1}px`,
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
+                                '--duration': `${Math.random() * 3 + 2}s`,
+                                '--delay': `${Math.random() * 3}s`,
+                            } as React.CSSProperties}
+                        />
+                    ))}
+                </div>
+
+                <div className="mx-auto max-w-6xl px-4 relative z-10">
                     <div className="mb-8">
                         <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Thư viện 3D</h2>
                     </div>
