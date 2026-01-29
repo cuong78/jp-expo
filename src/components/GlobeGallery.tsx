@@ -40,12 +40,7 @@ const GlobeGallery = ({
 
         // Check if mobile
         const isMobile = window.innerWidth < 768;
-        const scaleFactor = isMobile ? 0.7 : 1.5; // 20% larger on desktop
-
-        // Configuration
-        const planeWidth = (imageWidth / (100 / 9)) * scaleFactor;
-        const planeHeight = (imageHeight / (100 / 9)) * scaleFactor;
-        const planeRatio = planeWidth / planeHeight;
+        const imageAspect = imageWidth / imageHeight;
         const totalItems = Math.floor(images.length * imageRepeat);
 
         // Scene setup
@@ -58,7 +53,29 @@ const GlobeGallery = ({
             0.1,
             1000
         );
-        camera.position.z = isMobile ? 10 : 7.5; // Closer on desktop for better view
+        camera.position.z = isMobile ? 9.5 : 7.5;
+
+        const computeLayout = () => {
+            const containerWidth = Math.max(1, container.offsetWidth);
+            const containerHeight = Math.max(1, container.offsetHeight);
+
+            // Compute how much world-space is visible at the camera distance.
+            const fovRad = (camera.fov * Math.PI) / 180;
+            const visibleHeight = 2 * Math.tan(fovRad / 2) * camera.position.z;
+            const visibleWidth = visibleHeight * (containerWidth / containerHeight);
+
+            // Target: on mobile, globe diameter ~ container width (in screen-space).
+            const diameterScale = isMobile ? 0.92 : 0.72;
+            const sphereDiameter = visibleWidth * diameterScale;
+            const sphereRadius = sphereDiameter / 2;
+
+            // Auto-size planes from sphere size (keeps density readable on small screens).
+            const planeHeight = sphereRadius * (isMobile ? 0.28 : 0.22);
+            const planeWidth = planeHeight * imageAspect;
+            const planeRatio = planeWidth / planeHeight;
+
+            return { sphereRadius, planeWidth, planeHeight, planeRatio };
+        };
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         rendererRef.current = renderer;
@@ -89,6 +106,7 @@ const GlobeGallery = ({
 
         // Create sphere with images
         function createSphere() {
+            const { sphereRadius, planeWidth, planeHeight, planeRatio } = computeLayout();
             const fullRepeat = Math.floor(imageRepeat);
             const partialLength = Math.floor((imageRepeat % 1) * images.length);
             const allImageLinks = [
@@ -97,7 +115,6 @@ const GlobeGallery = ({
             ];
 
             let loadedCount = 0;
-            const sphereRadius = 4.5; // Thu nhỏ 10%
             const textureLoader = new THREE.TextureLoader();
 
             for (let i = 0; i < totalItems; i++) {
@@ -153,6 +170,23 @@ const GlobeGallery = ({
             renderer.setSize(container.offsetWidth, container.offsetHeight);
             camera.aspect = container.offsetWidth / container.offsetHeight;
             camera.updateProjectionMatrix();
+
+            // Rebuild sphere so radius + plane sizes adapt to new container size.
+            if (sceneRef.current) {
+                const toRemove: any[] = [];
+                sceneRef.current.traverse((obj: any) => {
+                    if (obj?.isMesh) toRemove.push(obj);
+                });
+                toRemove.forEach((mesh: any) => {
+                    if (mesh.geometry) mesh.geometry.dispose();
+                    if (mesh.material) {
+                        if (mesh.material.map) mesh.material.map.dispose();
+                        mesh.material.dispose();
+                    }
+                    sceneRef.current.remove(mesh);
+                });
+            }
+            createSphere();
         };
 
         window.addEventListener('resize', handleResize);
@@ -186,8 +220,8 @@ const GlobeGallery = ({
             ref={containerRef}
             className="mdw-3d-globe-gallery w-full"
             style={{ 
-                minHeight: window.innerWidth < 768 ? `${minHeight * 0.6}px` : `${minHeight * 1.2}px`,
-                height: window.innerWidth < 768 ? `${minHeight * 0.6}px` : `${minHeight * 1.2}px`
+                minHeight: window.innerWidth < 768 ? `${Math.min(minHeight, window.innerWidth)}px` : `${minHeight * 1.2}px`,
+                height: window.innerWidth < 768 ? `${Math.min(minHeight, window.innerWidth)}px` : `${minHeight * 1.2}px`
             }}
         />
     );
