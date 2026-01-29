@@ -1,12 +1,9 @@
-﻿import { useEffect, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Ticket } from "lucide-react";
 
 interface HeroSlide {
     id: number;
-    title: string;
-    description: string;
     ctaText: string;
-    ctaSecondaryText: string;
     image: string;
     imageMobile?: string;
 }
@@ -14,31 +11,19 @@ interface HeroSlide {
 const slides: HeroSlide[] = [
     {
         id: 1,
-        title: "LIGHT CITY",
-        description: "Thành phố ánh sáng kết hợp giáo dục STEM, tương tác cảm biến và trải nghiệm AR.",
         ctaText: "Đặt Vé Nhanh",
-        ctaSecondaryText: "Xem Chi Tiết",
-
         image: "/Img/Slide/slide_1_img_master.jpg",
         imageMobile: "/Img/Slide/slide_1_mb_master.jpg",
     },
     {
         id: 2,
-        title: "VAN GOGH & MONET",
-        description: "Triển lãm đa giác quan, tái hiện bức tranh kinh điển với mapping 360°.",
         ctaText: "Đặt Vé Nhanh",
-        ctaSecondaryText: "Tìm Hiểu Thêm",
-
         image: "/Img/Slide/slide_2_img_master.jpg",
         imageMobile: "/Img/Slide/slide_2_mb_master.jpg",
     },
     {
         id: 3,
-        title: "FLY OVER THE WORD",
-        description: "Hòa trộn mapping 360° và âm thanh 3D để đắm chìm trong từng nét cọ.",
         ctaText: "Đặt Vé Nhanh",
-        ctaSecondaryText: "Lịch Trình & Giá",
-
         image: "/Img/Slide/slide_3_img_master.jpg",
         imageMobile: "/Img/Slide/slide_3_mb_master.png",
     },
@@ -48,6 +33,7 @@ const HeroSection = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
+    const touchStartRef = useRef<{ x: number; y: number; t: number } | null>(null);
 
     const totalSlides = slides.length;
     const slide = slides[activeIndex];
@@ -85,6 +71,33 @@ const HeroSection = () => {
             )}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            onTouchStart={(e) => {
+                const t = e.touches[0];
+                if (!t) return;
+                touchStartRef.current = { x: t.clientX, y: t.clientY, t: Date.now() };
+            }}
+            onTouchEnd={(e) => {
+                const start = touchStartRef.current;
+                if (!start) return;
+                const t = e.changedTouches[0];
+                if (!t) return;
+
+                const dx = t.clientX - start.x;
+                const dy = t.clientY - start.y;
+                const dt = Date.now() - start.t;
+                touchStartRef.current = null;
+
+                // Horizontal swipe only (avoid hijacking vertical scroll).
+                const absX = Math.abs(dx);
+                const absY = Math.abs(dy);
+                const minSwipe = 36;
+                if (absX < minSwipe) return;
+                if (absX < absY * 1.2) return;
+                if (dt > 900) return;
+
+                if (dx < 0) handleNext();
+                else handlePrev();
+            }}
         >
             <div className="absolute inset-0">
                 {slides.map((s, index) => (
@@ -97,13 +110,13 @@ const HeroSection = () => {
                     >
                         <img
                             src={s.image}
-                            alt={s.title}
+                            alt="Hero banner"
                             className="absolute inset-0 hidden h-full w-full transition-transform duration-700 sm:block"
                             loading={index === activeIndex ? "eager" : "lazy"}
                         />
                         <img
                             src={s.imageMobile ?? s.image}
-                            alt={s.title}
+                            alt="Hero banner"
                             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 sm:hidden"
                             loading={index === activeIndex ? "eager" : "lazy"}
                         />
@@ -118,49 +131,37 @@ const HeroSection = () => {
                 )}
             />
 
-            <div className="relative z-20 w-full px-4 sm:px-6 md:px-10">
+            {/* Mobile CTA: bottom-left, compact + polished */}
+            <div className="absolute bottom-16 left-4 z-30 sm:hidden">
+                <button
+                    type="button"
+                    className={[
+                        "hero-cta-shine relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl px-4 py-2.5 text-sm font-semibold",
+                        "border border-white/25 bg-black/35 text-white shadow-lg shadow-black/25 backdrop-blur-md",
+                        "transition-all duration-300",
+                        "active:scale-[0.98]",
+                    ].join(" ")}
+                >
+                    <Ticket className="h-5 w-5" />
+                    {slide.ctaText}
+                </button>
+            </div>
+
+            {/* Desktop CTA (optional): keep subtle on larger screens */}
+            <div className="relative z-20 hidden w-full px-4 sm:block sm:px-6 md:px-10">
                 <div className="max-w-xl space-y-3 pl-2 sm:pl-3 md:pl-12">
-                    <h1
-                        key={`title-${slide.id}`}
-                        className="text-3xl leading-tight font-black text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.6)] sm:text-4xl md:text-5xl"
+                    <button
+                        type="button"
+                        className={[
+                            "hero-cta-shine relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-300",
+                            "border border-amber-200/60 bg-white/10 text-white shadow-lg shadow-black/15 backdrop-blur-sm",
+                            "hover:-translate-y-0.5 hover:border-amber-200/85 hover:bg-white/15 hover:shadow-amber-500/20",
+                            "active:scale-[0.98]",
+                        ].join(" ")}
                     >
-                        {slide.title}
-                    </h1>
-
-                    <p
-                        key={`desc-${slide.id}`}
-                        className="text-sm font-medium text-white/90 drop-shadow-md sm:text-base md:text-lg"
-                    >
-                        {slide.description}
-                    </p>
-
-                    <div
-                        key={`cta-${slide.id}`}
-                        className="flex flex-wrap gap-2.5 pt-1.5"
-                    >
-                        <button
-                            type="button"
-                            className={[
-                                "inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200",
-                                "bg-amber-400 text-slate-900 shadow-lg shadow-amber-500/35",
-                                "hover:translate-y-[-1px] hover:bg-amber-200 active:scale-[0.98]",
-                            ].join(" ")}
-                        >
-                            <Ticket className="h-5 w-5" />
-                            {slide.ctaText}
-                        </button>
-
-                        <button
-                            type="button"
-                            className={[
-                                "inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200",
-                                "border border-gray-200/70 bg-amber-300/15 text-white backdrop-blur-sm",
-                                "hover:translate-y-[-1px] hover:bg-amber-300/25 active:scale-[0.98]",
-                            ].join(" ")}
-                        >
-                            {slide.ctaSecondaryText}
-                        </button>
-                    </div>
+                        <Ticket className="h-5 w-5" />
+                        {slide.ctaText}
+                    </button>
                 </div>
             </div>
 

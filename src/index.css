@@ -149,6 +149,49 @@
     animation: progress 7s linear forwards;
 }
 
+/* ---- Hero CTA Shine Effect ---- */
+@keyframes hero-cta-shine {
+    0% {
+        transform: translateX(-140%) skewX(-18deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.9;
+    }
+    45% {
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(240%) skewX(-18deg);
+        opacity: 0;
+    }
+}
+
+.hero-cta-shine::before {
+    content: "";
+    position: absolute;
+    top: -40%;
+    left: -60%;
+    width: 45%;
+    height: 180%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.22) 45%,
+        rgba(255, 255, 255, 0.55) 50%,
+        rgba(255, 255, 255, 0.22) 55%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    filter: blur(0.5px);
+    transform: translateX(-140%) skewX(-18deg);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.hero-cta-shine:hover::before {
+    animation: hero-cta-shine 1.35s ease-in-out;
+}
+
 /* ---- Custom Scrollbar Styles ---- */
 /* For Webkit browsers (Chrome, Safari, Edge) */
 .scrollbar-thin::-webkit-scrollbar {
