@@ -13,7 +13,6 @@ import {
     X,
 } from "lucide-react";
 import { useEffect, useMemo, useState, useRef } from "react";
-import { InfiniteGallery } from "@/components/InfiniteGallery";
 import { Footer } from "@/layouts/footer";
 import ArtSlider from "@/components/ArtSlider";
 import GlobeGallery from "@/components/GlobeGallery";
@@ -631,7 +630,7 @@ const HomePage = () => {
                                     // Get description text based on event
                                     let descriptionText = '';
                                     let isExpanded = false;
-                                    let setExpanded = () => {};
+                                    let setExpanded = (_value: boolean) => {};
                                     
                                     if (event.id === 'vangogh') {
                                         descriptionText = 'Bắt đầu một cuộc phiêu lưu đa giác quan độc đáo tại Van Gogh & Monet Art Lighting Experience, nơi nghệ thuật và công nghệ hoà quyện. Sự kết hợp hoàn hảo giữa các tác phẩm cổ điển và công nghệ hiện đại như màn chiếu kỹ thuật số, công nghệ thực tế ảo, 3D mapping…mang đến một trải nghiệm đầy thú vị và sáng tạo.';
