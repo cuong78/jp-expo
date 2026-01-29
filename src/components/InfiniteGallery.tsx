@@ -25,12 +25,10 @@ export const InfiniteGallery = () => {
     return (
         <section className="relative flex w-full flex-col justify-center overflow-hidden bg-gradient-to-b from-slate-950 to-slate-900" style={{ height: 'calc(100vh - 80px)', minHeight: '550px' }}>
             <div className="relative z-20 px-4 text-center" style={{ marginBottom: 'calc(4vh + 1rem)' }}>
-                <p className="font-bold uppercase tracking-[0.3em] text-amber-400" style={{ fontSize: 'clamp(0.65rem, 1.2vw, 0.875rem)' }}>
-                    Gallery
-                </p>
-                <h2 className="mt-3 font-black text-white" style={{ fontSize: 'clamp(1.5rem, 4.5vw, 3.75rem)' }}>
-                    Những khoảnh khắc đáng nhớ
-                </h2>
+                <div className="mb-8">
+                        <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Gallery</h2>
+                    </div>
+                
             </div>
 
             {/* Infinite Scroll Container */}

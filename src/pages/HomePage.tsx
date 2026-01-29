@@ -1,12 +1,22 @@
 import { cn } from "@/utils/cn";
-import { ChevronDown, ChevronLeft, ChevronRight, Globe2, Mail, Menu, MessageCircle, Phone, ShoppingCart, UserRound, X } from "lucide-react";
+import {
+    ChevronDown,
+    ChevronLeft,
+    ChevronRight,
+    Globe2,
+    Mail,
+    Menu,
+    MessageCircle,
+    Phone,
+    ShoppingCart,
+    UserRound,
+    X,
+} from "lucide-react";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { InfiniteGallery } from "@/components/InfiniteGallery";
 import { Footer } from "@/layouts/footer";
-
+import ArtSlider from "@/components/ArtSlider";
 import GlobeGallery from "@/components/GlobeGallery";
-import CurvedSlider3D from "@/components/CurvedSlider3D";
-import HeroSection from "@/components/HeroSection";
 
 type NavItem = {
     label: string;
@@ -39,7 +49,7 @@ const navItems: NavItem[] = [
 ];
 
 const HomePage = () => {
-    const [activeNav, setActiveNav] = useState<string>(navItems[0]?.href ?? "#home");
+    const [activeNav, setActiveNav] = useState<string>('vangogh'); // Set default to vangogh
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
     const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
     const [expandedMenus, setExpandedMenus] = useState<Set<string>>(new Set());
@@ -50,14 +60,9 @@ const HomePage = () => {
     const [currentGallery, setCurrentGallery] = useState<string[]>([]);
     const [touchStart, setTouchStart] = useState<number>(0);
     const [touchEnd, setTouchEnd] = useState<number>(0);
-    const [isDescriptionExpanded, setIsDescriptionExpanded] = useState<boolean>(false);
+    const [isDescriptionExpanded, setIsDescriptionExpanded] = useState<boolean>(true); // Start expanded
     const [isLightCityExpanded, setIsLightCityExpanded] = useState<boolean>(false);
     const [isFlyOverExpanded, setIsFlyOverExpanded] = useState<boolean>(false);
-    const [videoPopup, setVideoPopup] = useState<{ isOpen: boolean; videoId: string; title: string }>({
-        isOpen: false,
-        videoId: "",
-        title: "",
-    });
 
     // Refs for sliders
     const reviewSliderRef = useRef<HTMLDivElement>(null);
@@ -65,36 +70,39 @@ const HomePage = () => {
     const promoSliderRef = useRef<HTMLDivElement>(null);
 
     const galleryImages = [
-        "/Img/Ingohartimage1/ingohartimage1.png",
-        "/Img/Ingohartimage1/ingohartimage2.png",
-        "/Img/Ingohartimage1/ingohartimage3.png",
-        "/Img/Ingohartimage1/ingohartimage4.png",
-        "/Img/Ingohartimage1/ingohartimage5.png",
-        "/Img/Ingohartimage1/ingohartimage6.png",
-        "/Img/Ingohartimage1/ingohartimage7.png",
-        "/Img/Ingohartimage1/ingohartimage8.png",
-        "/Img/Ingohartimage1/ingohartimage9.png",
-        "/Img/Ingohartimage1/ingohartimage10.png",
-        "/Img/Ingohartimage1/ingohartimage11.png",
-        "/Img/Ingohartimage1/ingohartimage12.png",
-        "/Img/Ingohartimage1/ingohartimage13.png",
+        '/Img/Ingohartimage1/ingohartimage1.png',
+        '/Img/Ingohartimage1/ingohartimage2.png',
+        '/Img/Ingohartimage1/ingohartimage3.png',
+        '/Img/Ingohartimage1/ingohartimage4.png',
+        '/Img/Ingohartimage1/ingohartimage5.png',
+        '/Img/Ingohartimage1/ingohartimage6.png',
+        '/Img/Ingohartimage1/ingohartimage7.png',
+        '/Img/Ingohartimage1/ingohartimage8.png',
+        '/Img/Ingohartimage1/ingohartimage9.png',
+        '/Img/Ingohartimage1/ingohartimage10.png',
+        '/Img/Ingohartimage1/ingohartimage11.png',
+        '/Img/Ingohartimage1/ingohartimage12.png',
+        '/Img/Ingohartimage1/ingohartimage13.png',
     ];
 
     const lightCityImages = [
-        "/Img/Ingohartimage2/ingohartimage1_2.png",
-        "/Img/Ingohartimage2/ingohartimage2_2.png",
-        "/Img/Ingohartimage2/ingohartimage3_2.png",
-        "/Img/Ingohartimage2/ingohartimage5_2.png",
-        "/Img/Ingohartimage2/ingohartimage6_2.png",
-        "/Img/Ingohartimage2/ingohartimage7_2.png",
-        "/Img/Ingohartimage2/ingohartimage8_2.png",
-        "/Img/Ingohartimage2/ingohartimage9_2.png",
-        "/Img/Ingohartimage2/ingohartimage10_2.png",
-        "/Img/Ingohartimage2/ingohartimage11_2.png",
-        "/Img/Ingohartimage2/ingohartimage12_2.png",
+        '/Img/Ingohartimage2/ingohartimage1_2.png',
+        '/Img/Ingohartimage2/ingohartimage2_2.png',
+        '/Img/Ingohartimage2/ingohartimage3_2.png',
+        '/Img/Ingohartimage2/ingohartimage5_2.png',
+        '/Img/Ingohartimage2/ingohartimage6_2.png',
+        '/Img/Ingohartimage2/ingohartimage7_2.png',
+        '/Img/Ingohartimage2/ingohartimage8_2.png',
+        '/Img/Ingohartimage2/ingohartimage9_2.png',
+        '/Img/Ingohartimage2/ingohartimage10_2.png',
+        '/Img/Ingohartimage2/ingohartimage11_2.png',
+        '/Img/Ingohartimage2/ingohartimage12_2.png',
     ];
 
-    const isNavActive = useMemo(() => (item: NavItem) => item.href === activeNav || item.children?.some((c) => c.href === activeNav), [activeNav]);
+    const isNavActive = useMemo(
+        () => (item: NavItem) => item.href === activeNav || item.children?.some((c) => c.href === activeNav),
+        [activeNav]
+    );
 
     const scrollTo = (href: string) => {
         const id = href.replace("#", "");
@@ -106,14 +114,16 @@ const HomePage = () => {
         setIsMobileMenuOpen(false);
     };
 
-    const scrollSlider = (ref: React.RefObject<HTMLDivElement | null>, direction: "left" | "right") => {
+    const scrollSlider = (ref: React.RefObject<HTMLDivElement | null>, direction: 'left' | 'right') => {
         if (ref.current) {
             const scrollAmount = 350; // width of card + gap
-            const newScrollLeft = direction === "left" ? ref.current.scrollLeft - scrollAmount : ref.current.scrollLeft + scrollAmount;
+            const newScrollLeft = direction === 'left'
+                ? ref.current.scrollLeft - scrollAmount
+                : ref.current.scrollLeft + scrollAmount;
 
             ref.current.scrollTo({
                 left: newScrollLeft,
-                behavior: "smooth",
+                behavior: 'smooth'
             });
         }
     };
@@ -166,14 +176,14 @@ const HomePage = () => {
     // Disable body scroll khi modal mở
     useEffect(() => {
         if (isCartOpen || isMobileMenuOpen) {
-            document.body.style.overflow = "hidden";
+            document.body.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = "";
+            document.body.style.overflow = '';
         }
 
         // Cleanup khi component unmount
         return () => {
-            document.body.style.overflow = "";
+            document.body.style.overflow = '';
         };
     }, [isCartOpen, isMobileMenuOpen]);
 
@@ -196,21 +206,19 @@ const HomePage = () => {
             setLastScrollY(currentScrollY);
         };
 
-        window.addEventListener("scroll", handleScroll, { passive: true });
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
-            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener('scroll', handleScroll);
         };
     }, [lastScrollY]);
 
     return (
         <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
-            <header
-                className={cn(
-                    "fixed top-0 right-0 left-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl transition-transform duration-300",
-                    showHeader ? "translate-y-0" : "-translate-y-full",
-                )}
-            >
+            <header className={cn(
+                "fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl transition-transform duration-300",
+                showHeader ? "translate-y-0" : "-translate-y-full"
+            )}>
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 lg:py-5">
                     <div className="flex items-center gap-3">
                         <img
@@ -218,10 +226,10 @@ const HomePage = () => {
                             alt="JP Art Expo Logo"
                             className="h-12 w-auto"
                         />
-                        {/* <div className="hidden sm:block">
+                        <div className="hidden sm:block">
                             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-300">Immersive</p>
                             <p className="text-lg font-bold">JP Art Expo</p>
-                        </div> */}
+                        </div>
                     </div>
 
                     {/* Desktop navigation */}
@@ -241,10 +249,10 @@ const HomePage = () => {
                                             }
                                         }}
                                         className={cn(
-                                            "flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold tracking-wide uppercase transition",
+                                            "flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold uppercase tracking-wide transition",
                                             active
                                                 ? "bg-amber-400 text-slate-900 shadow-lg shadow-amber-500/40"
-                                                : "text-white/80 hover:bg-white/10 hover:text-white",
+                                                : "text-white/80 hover:bg-white/10 hover:text-white"
                                         )}
                                     >
                                         {item.label}
@@ -253,8 +261,8 @@ const HomePage = () => {
                                     {item.children && (
                                         <>
                                             {/* Invisible bridge to prevent dropdown from closing */}
-                                            <div className="invisible absolute top-full left-0 h-3 w-64 group-hover:visible" />
-                                            <div className="invisible absolute top-[calc(100%+0.75rem)] left-0 w-64 rounded-2xl border border-white/10 bg-slate-900/95 p-3 opacity-0 shadow-2xl transition duration-200 group-hover:visible group-hover:opacity-100">
+                                            <div className="invisible absolute left-0 top-full h-3 w-64 group-hover:visible" />
+                                            <div className="invisible absolute left-0 top-[calc(100%+0.75rem)] w-64 rounded-2xl border border-white/10 bg-slate-900/95 p-3 shadow-2xl opacity-0 transition duration-200 group-hover:visible group-hover:opacity-100">
                                                 <div className="flex flex-col gap-2">
                                                     {item.children.map((child) => (
                                                         <button
@@ -278,7 +286,7 @@ const HomePage = () => {
                     </nav>
 
                     <div className="flex items-center gap-2">
-                        <button className="hidden items-center gap-1 rounded-full border border-white/10 px-3 py-2 text-xs font-semibold tracking-wide text-white/80 uppercase transition hover:border-amber-400 hover:text-amber-300 md:flex">
+                        <button className="hidden items-center gap-1 rounded-full border border-white/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white/80 transition hover:border-amber-400 hover:text-amber-300 md:flex">
                             <Globe2 size={16} />
                             VN / EN
                         </button>
@@ -315,19 +323,19 @@ const HomePage = () => {
             <div
                 className={cn(
                     "fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm transition",
-                    isMobileMenuOpen ? "visible opacity-100" : "invisible opacity-0",
+                    isMobileMenuOpen ? "visible opacity-100" : "invisible opacity-0"
                 )}
                 onClick={() => setIsMobileMenuOpen(false)}
             />
             <aside
                 className={cn(
-                    "fixed top-0 left-0 z-50 flex h-full w-80 max-w-[80vw] flex-col bg-white text-slate-900 shadow-2xl transition-transform duration-200",
-                    isMobileMenuOpen ? "translate-x-0" : "-translate-x-full",
+                    "fixed left-0 top-0 z-50 flex h-full w-80 max-w-[80vw] flex-col bg-white text-slate-900 shadow-2xl transition-transform duration-200",
+                    isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
                 )}
             >
                 <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
                     <div>
-                        <p className="text-xs font-semibold tracking-[0.25em] text-amber-500 uppercase">Danh mục</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-500">Danh mục</p>
                         <p className="text-xl font-extrabold text-slate-900">JP Art Expo</p>
                     </div>
                     <button
@@ -364,13 +372,16 @@ const HomePage = () => {
                                             >
                                                 <ChevronDown
                                                     size={18}
-                                                    className={cn("text-slate-600 transition-transform duration-200", isExpanded && "rotate-180")}
+                                                    className={cn(
+                                                        "text-slate-600 transition-transform duration-200",
+                                                        isExpanded && "rotate-180"
+                                                    )}
                                                 />
                                             </button>
                                         )}
                                     </div>
                                     {item.children && isExpanded && (
-                                        <ul className="animate-in slide-in-from-top-2 mt-2 space-y-2 border-l border-slate-200 pl-3 text-sm font-medium text-slate-700">
+                                        <ul className="mt-2 space-y-2 border-l border-slate-200 pl-3 text-sm font-medium text-slate-700 animate-in slide-in-from-top-2">
                                             {item.children.map((child) => (
                                                 <li key={child.label}>
                                                     <button
@@ -392,7 +403,7 @@ const HomePage = () => {
                     </ul>
                 </div>
                 <div className="space-y-3 border-t border-slate-200 px-5 py-4 text-sm font-medium text-slate-700">
-                    <p className="text-xs font-semibold tracking-[0.2em] text-amber-500 uppercase">Bạn cần hỗ trợ?</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-500">Bạn cần hỗ trợ?</p>
                     <a
                         href="tel:0939733991"
                         className="flex items-center gap-3 rounded-lg border border-slate-200 px-3 py-2 transition hover:border-amber-400 hover:text-amber-600"
@@ -415,19 +426,19 @@ const HomePage = () => {
             <div
                 className={cn(
                     "fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm transition",
-                    isCartOpen ? "visible opacity-100" : "invisible opacity-0",
+                    isCartOpen ? "visible opacity-100" : "invisible opacity-0"
                 )}
                 onClick={() => setIsCartOpen(false)}
             />
             <aside
                 className={cn(
-                    "fixed top-0 right-0 z-50 flex h-full w-96 max-w-[90vw] flex-col bg-white text-slate-900 shadow-2xl transition-transform duration-300",
-                    isCartOpen ? "translate-x-0" : "translate-x-full",
+                    "fixed right-0 top-0 z-50 flex h-full w-96 max-w-[90vw] flex-col bg-white text-slate-900 shadow-2xl transition-transform duration-300",
+                    isCartOpen ? "translate-x-0" : "translate-x-full"
                 )}
             >
                 <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
                     <div>
-                        <p className="text-xs font-semibold tracking-[0.25em] text-amber-500 uppercase">Giỏ hàng</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-500">Giỏ hàng</p>
                         <p className="text-xl font-extrabold text-slate-900">0 sản phẩm</p>
                     </div>
                     <button
@@ -443,10 +454,7 @@ const HomePage = () => {
                 <div className="flex-1 overflow-y-auto px-5 py-6">
                     <div className="flex flex-col items-center justify-center py-12 text-center">
                         <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-slate-100">
-                            <ShoppingCart
-                                size={48}
-                                className="text-slate-400"
-                            />
+                            <ShoppingCart size={48} className="text-slate-400" />
                         </div>
                         <h3 className="mb-2 text-lg font-bold text-slate-900">Giỏ hàng trống</h3>
                         <p className="text-sm text-slate-600">Hãy thêm sản phẩm vào giỏ hàng của bạn</p>
@@ -471,10 +479,7 @@ const HomePage = () => {
                             </div>
                         </div>
                     </div>
-                    <button
-                        className="w-full rounded-full bg-amber-400 px-6 py-3 text-sm font-bold tracking-wide text-slate-900 uppercase shadow-lg transition hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-50"
-                        disabled
-                    >
+                    <button className="w-full rounded-full bg-amber-400 px-6 py-3 text-sm font-bold uppercase tracking-wide text-slate-900 shadow-lg transition hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-50" disabled>
                         Thanh toán
                     </button>
                     <button
@@ -490,13 +495,10 @@ const HomePage = () => {
             {/* <section id="home" className="pt-20">
                 <HeroSwiper />
             </section> */}
-            <section className="mt-20">
-                <HeroSection />
-            </section>
 
-            <main className="relative mx-auto max-w-6xl overflow-hidden px-0 pt-3 pb-24 lg:pt-5">
-                <div className="absolute top-10 left-1/2 -z-10 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-amber-400/10 blur-[120px]" />
-                <div className="absolute top-40 right-10 -z-10 h-40 w-40 rounded-full bg-indigo-500/20 blur-3xl" />
+            <main className="relative mx-auto max-w-6xl overflow-hidden px-4 pb-24 pt-3 lg:pt-5">
+                <div className="absolute left-1/2 top-10 -z-10 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-amber-400/10 blur-[120px]" />
+                <div className="absolute right-10 top-40 -z-10 h-40 w-40 rounded-full bg-indigo-500/20 blur-3xl" />
 
                 {/* Giới thiệu */}
                 {/* <section
@@ -562,354 +564,424 @@ const HomePage = () => {
                     </div>
                 </section> */}
 
-                {/* Sự kiện nổi bật */}
-                <section className="mt-12 space-y-6 md:mt-16">
-                    <div className="space-y-2 px-4">
-                        <p className="animate-fade-in-left text-xs font-semibold tracking-[0.3em] text-amber-400 uppercase">Sự kiện</p>
-                        <h2 className="animate-fade-in-up animation-delay-100 text-2xl font-bold text-white sm:text-3xl">
-                            Trải nghiệm nghệ thuật đa chiều
-                        </h2>
+                {/* Art Slider */}
+                <section className="mt-20">
+                    <ArtSlider />
+                </section>
+
+                {/* Sự kiện nổi bật - KlingAI Style */}
+                <section id="gioi-thieu" className="mt-12 space-y-6 md:mt-16">
+                    <div className="mb-8">
+                        <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Sự kiện</h2>
                     </div>
 
-                    {/* Grid 2 cột */}
-                    <div className="-mx-4 grid gap-4 px-4 sm:gap-6 md:mx-0 md:grid-cols-2 md:px-0">
-                        {/* Card 1: Van Gogh & Monet - Enhanced */}
-                        <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 hover:bg-slate-900/80">
-                            {/* Video Section */}
-                            <div
-                                className="group/video relative aspect-video cursor-pointer overflow-hidden bg-black"
-                                onClick={() =>
-                                    setVideoPopup({
-                                        isOpen: true,
-                                        videoId: "wqzWu4UIVHg",
-                                        title: "Vincent Van Gogh & Claude Monet – Limited Version",
-                                    })
-                                }
-                            >
-                                <img
-                                    src="/Img/ingohartimg.png"
-                                    alt="Vincent Van Gogh & Claude Monet – Limited Version"
-                                    className="h-full w-full object-cover transition-transform duration-500 group-hover/video:scale-105"
+                    
+
+                    {/* Layout: Sidebar Left + Content Right */}
+                    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+                        {/* Progress Indicator Bar */}
+                        <div className="hidden lg:block relative w-1 flex-shrink-0">
+                            <div className="sticky top-24 h-[400px]">
+                                {/* Background track */}
+                                <div className="absolute inset-0 w-1 bg-white/10 rounded-full" />
+                                
+                                {/* Active indicator */}
+                                <div 
+                                    className={cn(
+                                        "absolute w-1 rounded-full transition-all duration-500 ease-out",
+                                        activeNav === 'vangogh' && "top-0 h-[33%] bg-gradient-to-b from-purple-500 to-pink-500 shadow-lg shadow-purple-500/50",
+                                        activeNav === 'lightcity' && "top-[33%] h-[33%] bg-gradient-to-b from-cyan-500 to-blue-500 shadow-lg shadow-cyan-500/50",
+                                        activeNav === 'flyover' && "top-[66%] h-[34%] bg-gradient-to-b from-orange-500 to-red-500 shadow-lg shadow-orange-500/50"
+                                    )}
                                 />
-                                {/* Play Button */}
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/10 transition-colors group-hover/video:bg-black/20">
-                                    <div className="relative flex h-16 w-16 items-center justify-center transition-all group-hover/video:scale-110 sm:h-20 sm:w-20">
-                                        {/* Circle Border */}
-                                        <svg
-                                            className="absolute inset-0 h-full w-full"
-                                            viewBox="0 0 100 100"
-                                        >
-                                            <circle
-                                                cx="50"
-                                                cy="50"
-                                                r="48"
-                                                fill="none"
-                                                stroke="white"
-                                                strokeWidth="4.5"
-                                                className="opacity-90"
-                                            />
-                                        </svg>
-                                        {/* Play Icon - Transparent with white stroke */}
-                                        <svg
-                                            className="h-14 w-14 translate-x-1 fill-transparent stroke-white drop-shadow-lg sm:h-16 sm:w-16"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="1.5"
-                                        >
-                                            <path d="M8 5v14l11-7z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="p-2 sm:p-6">
-                                {/* Title */}
-                                <div className="mb-4">
-                                    <h3
-                                        className="text-xl leading-tight font-bold sm:text-2xl"
-                                        style={{ color: "#4DEDFF" }}
-                                    >
-                                        Vincent Van Gogh & Claude Monet – Limited Version
-                                    </h3>
-                                </div>
-
-                                {/* 3D Curved Slider */}
-                                <div className="-mx-2 mb-4 sm:-mx-6">
-                                    <CurvedSlider3D
-                                        images={galleryImages}
-                                        onImageClick={(img, idx) => {
-                                            setSelectedImage(img);
-                                            setSelectedImageIndex(idx);
-                                            setCurrentGallery(galleryImages);
-                                        }}
-                                        speed={25}
-                                        gap={120}
-                                        curve={8}
-                                        height="220px"
-                                    />
-                                </div>
-
-                                {/* Description with Expand */}
-                                <div className="mb-4">
-                                    <p
-                                        className={`text-sm leading-relaxed text-white/75 sm:text-base ${!isDescriptionExpanded ? "line-clamp-3" : ""}`}
-                                    >
-                                        Bắt đầu một cuộc phiêu lưu đa giác quan độc đáo tại Van Gogh & Monet Art Lighting Experience, nơi nghệ thuật
-                                        và công nghệ hoà quyện. Sự kết hợp hoàn hảo giữa các tác phẩm cổ điển và công nghệ hiện đại như màn chiếu kỹ
-                                        thuật số, công nghệ thực tế ảo, 3D mapping…mang đến một trải nghiệm đầy thú vị và sáng tạo.
-                                    </p>
-                                    <button
-                                        onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                                        className="mt-2 text-sm font-semibold transition"
-                                        style={{ color: "#4DEDFF" }}
-                                    >
-                                        {isDescriptionExpanded ? "Thu gọn" : "Xem thêm"}
-                                    </button>
-                                </div>
-
-                                {/* Action Buttons */}
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={() => scrollTo("#mua-ve")}
-                                        className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold tracking-wide text-slate-900 uppercase shadow-lg transition hover:opacity-90 sm:px-6 sm:text-base"
-                                        style={{ backgroundColor: "#4DEDFF" }}
-                                    >
-                                        ĐẶT VÉ NGAY
-                                    </button>
-                                    <button
-                                        onClick={() => scrollTo("#van-gogh")}
-                                        className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:border-amber-400 hover:bg-white/10 sm:px-6 sm:text-base"
-                                    >
-                                        XEM THÊM
-                                    </button>
-                                </div>
                             </div>
                         </div>
 
-                        {/* Card 2: Light City */}
-                        <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 hover:bg-slate-900/80">
-                            {/* Video Section */}
-                            <div
-                                className="group/video relative aspect-video cursor-pointer overflow-hidden bg-black"
-                                onClick={() =>
-                                    setVideoPopup({
-                                        isOpen: true,
-                                        videoId: "fCfoU2s5kjM",
-                                        title: "Light City Tầng 6",
-                                    })
-                                }
-                            >
-                                <img
-                                    src="/Img/ingohartimg2.png"
-                                    alt="Light City Tầng 6"
-                                    className="h-full w-full object-cover transition-transform duration-500 group-hover/video:scale-105"
-                                />
-                                {/* Play Button */}
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/10 transition-colors group-hover/video:bg-black/20">
-                                    <div className="relative flex h-16 w-16 items-center justify-center transition-all group-hover/video:scale-110 sm:h-20 sm:w-20">
-                                        {/* Circle Border */}
-                                        <svg
-                                            className="absolute inset-0 h-full w-full"
-                                            viewBox="0 0 100 100"
-                                        >
-                                            <circle
-                                                cx="50"
-                                                cy="50"
-                                                r="48"
-                                                fill="none"
-                                                stroke="white"
-                                                strokeWidth="4.5"
-                                                className="opacity-90"
-                                            />
-                                        </svg>
-                                        {/* Play Icon - Transparent with white stroke */}
-                                        <svg
-                                            className="h-14 w-14 translate-x-1 fill-transparent stroke-white drop-shadow-lg sm:h-16 sm:w-16"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth="1.5"
-                                        >
-                                            <path d="M8 5v14l11-7z" />
-                                        </svg>
+                        {/* Left Sidebar - Event List */}
+                        <div className="lg:w-[380px] flex-shrink-0">
+                            <div className="sticky top-24 space-y-3">
+                                {[
+                                    {
+                                        id: 'vangogh',
+                                        title: 'Vincent Van Gogh & Claude Monet',
+                                        subtitle: 'Limited Version',
+                                        tag: 'Immersive Art',
+                                        color: 'from-purple-500/20 to-pink-500/20',
+                                        borderColor: 'border-purple-500/30'
+                                    },
+                                    {
+                                        id: 'lightcity',
+                                        title: 'LIGHT CITY',
+                                        subtitle: 'Khu giáo dục giải trí công nghệ cao',
+                                        tag: 'New Update',
+                                        color: 'from-cyan-500/20 to-blue-500/20',
+                                        borderColor: 'border-cyan-500/30'
+                                    },
+                                    {
+                                        id: 'flyover',
+                                        title: 'Fly Over The World & Infinity World',
+                                        subtitle: '12D Experience',
+                                        tag: 'Signature Ride',
+                                        color: 'from-orange-500/20 to-red-500/20',
+                                        borderColor: 'border-orange-500/30'
+                                    }
+                                ].map((event) => {
+                                    const isActive = activeNav === event.id;
+                                    
+                                    // Get description text based on event
+                                    let descriptionText = '';
+                                    let isExpanded = false;
+                                    let setExpanded = () => {};
+                                    
+                                    if (event.id === 'vangogh') {
+                                        descriptionText = 'Bắt đầu một cuộc phiêu lưu đa giác quan độc đáo tại Van Gogh & Monet Art Lighting Experience, nơi nghệ thuật và công nghệ hoà quyện. Sự kết hợp hoàn hảo giữa các tác phẩm cổ điển và công nghệ hiện đại như màn chiếu kỹ thuật số, công nghệ thực tế ảo, 3D mapping…mang đến một trải nghiệm đầy thú vị và sáng tạo.';
+                                        isExpanded = isDescriptionExpanded;
+                                        setExpanded = setIsDescriptionExpanded;
+                                    } else if (event.id === 'lightcity') {
+                                        descriptionText = 'Khu giáo dục giải trí công nghệ cao mang đến trải nghiệm tương tác đa giác quan, kết hợp STEM với các hoạt động giáo dục sáng tạo. Không cần đến Singapore & Thái Lan, lần đầu tiên có mặt tại Việt Nam, chính thức đón khách tháng 04/2025.';
+                                        isExpanded = isLightCityExpanded;
+                                        setExpanded = setIsLightCityExpanded;
+                                    } else if (event.id === 'flyover') {
+                                        descriptionText = 'Hành trình 360 độ bay vòng quanh thế giới với công nghệ 12D và hiệu ứng chuyển động mượt mà. Kết hợp cùng không gian thị giác vô cực Infinity World với LED và gương phản chiếu vô tận, mang đến trải nghiệm đa chiều độc đáo.';
+                                        isExpanded = isFlyOverExpanded;
+                                        setExpanded = setIsFlyOverExpanded;
+                                    }
+                                    
+                                    return (
+                                    <div key={event.id}>
+                                        {/* Combined Card: Title + Description */}
+                                        {isActive && (
+                                            <div 
+                                                className={cn(
+                                                    "group relative w-full overflow-hidden rounded-2xl border p-5 text-left transition-all duration-300 animate-in fade-in slide-in-from-top-2",
+                                                    event.borderColor,
+                                                    "bg-gradient-to-br from-slate-900/30 to-slate-900/10 backdrop-blur-sm"
+                                                )}
+                                            >
+                                                {/* Background gradient effect - lighter */}
+                                                <div className={cn(
+                                                    "absolute inset-0 bg-gradient-to-br opacity-30",
+                                                    event.color
+                                                )} />
+
+                                                <div className="relative z-10 space-y-4">
+                                                    {/* Header */}
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
+                                                            {event.tag}
+                                                        </span>
+                                                        <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-lg shadow-cyan-400/50" />
+                                                    </div>
+
+                                                    {/* Title */}
+                                                    <div>
+                                                        <h3 className="text-lg font-bold leading-tight text-white">
+                                                            {event.title}
+                                                        </h3>
+                                                        <p className="mt-1 text-sm text-white/70">
+                                                            {event.subtitle}
+                                                        </p>
+                                                    </div>
+
+                                                    {/* Description */}
+                                                    <div className="border-t border-white/10 pt-4">
+                                                        <p className={cn(
+                                                            "text-sm leading-relaxed text-white/80 transition-all duration-300",
+                                                            !isExpanded && "line-clamp-3"
+                                                        )}>
+                                                            {descriptionText}
+                                                        </p>
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setExpanded(!isExpanded);
+                                                            }}
+                                                            className="mt-2 text-xs font-semibold text-white/70 transition-colors hover:text-white"
+                                                        >
+                                                            {isExpanded ? '← Thu gọn' : 'Xem thêm →'}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                        
+                                        {/* Collapsed Button - Show when not active */}
+                                        {!isActive && (
+                                            <button
+                                                onClick={() => {
+                                                    setActiveNav(event.id);
+                                                    if (event.id === 'vangogh') setIsDescriptionExpanded(true);
+                                                    if (event.id === 'lightcity') setIsLightCityExpanded(true);
+                                                    if (event.id === 'flyover') setIsFlyOverExpanded(true);
+                                                }}
+                                                className="group relative w-full overflow-hidden rounded-2xl border border-white/10 bg-slate-900/30 p-5 text-left transition-all duration-300 hover:border-white/20 hover:bg-slate-900/50"
+                                            >
+                                                <div className="flex items-center justify-between">
+                                                    <div>
+                                                        <h3 className="text-lg font-bold leading-tight text-white/70 transition-colors group-hover:text-white/90">
+                                                            {event.title}
+                                                        </h3>
+                                                        <p className="mt-1 text-sm text-white/40 transition-colors group-hover:text-white/60">
+                                                            {event.subtitle}
+                                                        </p>
+                                                    </div>
+                                                    <div className="h-2 w-2 rounded-full bg-white/20" />
+                                                </div>
+                                            </button>
+                                        )}
                                     </div>
-                                </div>
-                            </div>
-
-                            <div className="p-2 sm:p-6">
-                                {/* Title */}
-                                <div className="mb-4">
-                                    <h3
-                                        className="text-xl leading-tight font-bold sm:text-2xl"
-                                        style={{ color: "#4DEDFF" }}
-                                    >
-                                        LIGHT CITY - KHU GIÁO DỤC GIẢI TRÍ CÔNG NGHỆ CAO
-                                    </h3>
-                                </div>
-
-                                {/* 3D Curved Slider */}
-                                <div className="-mx-2 mb-4 sm:-mx-6">
-                                    <CurvedSlider3D
-                                        images={lightCityImages}
-                                        onImageClick={(img, idx) => {
-                                            setSelectedImage(img);
-                                            setSelectedImageIndex(idx);
-                                            setCurrentGallery(lightCityImages);
-                                        }}
-                                        speed={30}
-                                        gap={120}
-                                        curve={10}
-                                        height="220px"
-                                    />
-                                </div>
-
-                                {/* Description with Expand */}
-                                <div className="mb-4">
-                                    <p className={`text-sm leading-relaxed text-white/75 sm:text-base ${!isLightCityExpanded ? "line-clamp-3" : ""}`}>
-                                        Khu giáo dục giải trí công nghệ cao mang đến trải nghiệm tương tác đa giác quan, kết hợp STEM với các hoạt
-                                        động giáo dục sáng tạo. Không cần đến Singapore & Thái Lan, lần đầu tiên có mặt tại Việt Nam, chính thức đón
-                                        khách tháng 04/2025.
-                                    </p>
-                                    <button
-                                        onClick={() => setIsLightCityExpanded(!isLightCityExpanded)}
-                                        className="mt-2 text-sm font-semibold transition"
-                                        style={{ color: "#4DEDFF" }}
-                                    >
-                                        {isLightCityExpanded ? "Thu gọn" : "Xem thêm"}
-                                    </button>
-                                </div>
-
-                                {/* Action Buttons */}
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={() => scrollTo("#mua-ve")}
-                                        className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold tracking-wide text-slate-900 uppercase shadow-lg transition hover:opacity-90 sm:px-6 sm:text-base"
-                                        style={{ backgroundColor: "#4DEDFF" }}
-                                    >
-                                        ĐẶT VÉ NGAY
-                                    </button>
-                                    <button
-                                        onClick={() => scrollTo("#light-city")}
-                                        className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:border-amber-400 hover:bg-white/10 sm:px-6 sm:text-base"
-                                    >
-                                        XEM THÊM
-                                    </button>
-                                </div>
+                                )})}
                             </div>
                         </div>
 
-                        {/* Card 3: Fly Over The World */}
-                        <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 hover:bg-slate-900/80">
-                            {/* Main Image */}
-                            <div className="aspect-video overflow-hidden bg-black">
-                                <img
-                                    src="/Img/ingohartimg3.png"
-                                    alt="Fly Over The World & Infinity World 12D"
-                                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                />
-                            </div>
+                        {/* Right Content - Video & Details */}
+                        <div className="flex-1 min-w-0">
+                            {/* Van Gogh */}
+                            {activeNav === 'vangogh' && (
+                                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                    {/* Video with gradient border */}
+                                    <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-500/20 via-transparent to-pink-500/20 p-[2px]">
+                                        <div className="overflow-hidden rounded-3xl bg-black">
+                                            <div className="aspect-video">
+                                                <iframe
+                                                    className="h-full w-full"
+                                                    src="https://www.youtube.com/embed/wqzWu4UIVHg?autoplay=0&mute=1&controls=1&rel=0"
+                                                    title="Vincent Van Gogh & Claude Monet – Limited Version"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                            <div className="p-2 sm:p-6">
-                                {/* Title */}
-                                <div className="mb-4">
-                                    <h3
-                                        className="text-xl leading-tight font-bold sm:text-2xl"
-                                        style={{ color: "#4DEDFF" }}
-                                    >
-                                        Fly Over The World & Infinity World 12D
-                                    </h3>
-                                </div>
+                                    {/* Image Gallery */}
+                                    {/* Image Gallery with Infinite Scroll */}
+                                    <div className="relative overflow-hidden">
+                                        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-slate-950 to-transparent" />
+                                        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-slate-950 to-transparent" />
+                                        
+                                        <div className="flex gap-3 pb-2 animate-scroll-infinite">
+                                            
+                                            {[...galleryImages, ...galleryImages].map((img, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    onClick={() => {
+                                                        const realIdx = idx % galleryImages.length;
+                                                        setSelectedImage(galleryImages[realIdx]);
+                                                        setSelectedImageIndex(realIdx);
+                                                        setCurrentGallery(galleryImages);
+                                                    }}
+                                                    className="group relative h-24 w-36 flex-shrink-0 cursor-pointer overflow-hidden rounded-xl border border-white/10 transition-all hover:border-purple-500/50 hover:scale-105"
+                                                >
+                                                    <img
+                                                        src={img}
+                                                        alt={`Gallery ${(idx % galleryImages.length) + 1}`}
+                                                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                                    />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
 
-                                {/* 3D Curved Slider */}
-                                <div className="-mx-2 mb-4 sm:-mx-6">
-                                    <CurvedSlider3D
-                                        images={[
-                                            "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819",
-                                            "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819",
-                                            "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819",
-                                        ]}
-                                        onImageClick={(img, idx) => {
-                                            setSelectedImage(img);
-                                            setSelectedImageIndex(idx);
-                                            setCurrentGallery([
-                                                "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819",
-                                                "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819",
-                                                "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819",
-                                            ]);
-                                        }}
-                                        speed={20}
-                                        gap={120}
-                                        curve={12}
-                                        reverse={true}
-                                        height="220px"
-                                    />
+                                    {/* Action Buttons */}
+                                    <div className="flex gap-3">
+                                        <button
+                                            onClick={() => scrollTo("#mua-ve")}
+                                            className="group relative flex-1 overflow-hidden rounded-full bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-purple-500/30 transition-all hover:shadow-xl hover:shadow-purple-500/40 hover:scale-105"
+                                        >
+                                            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 transition-opacity group-hover:opacity-100" />
+                                            <span className="relative">Đặt vé ngay</span>
+                                        </button>
+                                        <button
+                                            onClick={() => scrollTo("#van-gogh")}
+                                            className="flex-1 rounded-full border border-purple-500/30 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-purple-500/50 hover:bg-white/10"
+                                        >
+                                            Xem thêm
+                                        </button>
+                                    </div>
                                 </div>
+                            )}
 
-                                {/* Description with Expand */}
-                                <div className="mb-4">
-                                    <p className={`text-sm leading-relaxed text-white/75 sm:text-base ${!isFlyOverExpanded ? "line-clamp-3" : ""}`}>
-                                        Hành trình 360 độ bay vòng quanh thế giới với công nghệ 12D và hiệu ứng chuyển động mượt mà. Kết hợp cùng
-                                        không gian thị giác vô cực Infinity World với LED và gương phản chiếu vô tận, mang đến trải nghiệm đa chiều
-                                        độc đáo.
-                                    </p>
-                                    <button
-                                        onClick={() => setIsFlyOverExpanded(!isFlyOverExpanded)}
-                                        className="mt-2 text-sm font-semibold transition"
-                                        style={{ color: "#4DEDFF" }}
-                                    >
-                                        {isFlyOverExpanded ? "Thu gọn" : "Xem thêm"}
-                                    </button>
-                                </div>
+                            {/* Light City */}
+                            {activeNav === 'lightcity' && (
+                                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                    <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-500/20 via-transparent to-blue-500/20 p-[2px]">
+                                        <div className="overflow-hidden rounded-3xl bg-black">
+                                            <div className="aspect-video">
+                                                <iframe
+                                                    className="h-full w-full"
+                                                    src="https://www.youtube.com/embed/fCfoU2s5kjM?autoplay=0&mute=1&controls=1&rel=0"
+                                                    title="Light City"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                {/* Action Buttons */}
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={() => scrollTo("#mua-ve")}
-                                        className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold tracking-wide text-slate-900 uppercase shadow-lg transition hover:opacity-90 sm:px-6 sm:text-base"
-                                        style={{ backgroundColor: "#4DEDFF" }}
-                                    >
-                                        ĐẶT VÉ NGAY
-                                    </button>
-                                    <button
-                                        onClick={() => scrollTo("#infinity")}
-                                        className="flex flex-1 items-center justify-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:border-amber-400 hover:bg-white/10 sm:px-6 sm:text-base"
-                                    >
-                                        XEM THÊM
-                                    </button>
+                                    {/* Image Gallery with Infinite Scroll */}
+                                    <div className="relative overflow-hidden">
+                                        {/* Fade Effect - Left */}
+                                        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-slate-950 to-transparent" />
+                                        {/* Fade Effect - Right */}
+                                        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-slate-950 to-transparent" />
+                                        
+                                        <div className="flex gap-3 pb-2 animate-scroll-infinite">
+                                            {/* Triple images for seamless infinite effect */}
+                                            {[...lightCityImages, ...lightCityImages].map((img, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    onClick={() => {
+                                                        const realIdx = idx % lightCityImages.length;
+                                                        setSelectedImage(lightCityImages[realIdx]);
+                                                        setSelectedImageIndex(realIdx);
+                                                        setCurrentGallery(lightCityImages);
+                                                    }}
+                                                    className="group relative h-24 w-36 flex-shrink-0 cursor-pointer overflow-hidden rounded-xl border border-white/10 transition-all hover:border-cyan-500/50 hover:scale-105"
+                                                >
+                                                    <img
+                                                        src={img}
+                                                        alt={`Gallery ${(idx % lightCityImages.length) + 1}`}
+                                                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                                    />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-3">
+                                        <button
+                                            onClick={() => scrollTo("#mua-ve")}
+                                            className="group relative flex-1 overflow-hidden rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-cyan-500/30 transition-all hover:shadow-xl hover:shadow-cyan-500/40 hover:scale-105"
+                                        >
+                                            <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-600 opacity-0 transition-opacity group-hover:opacity-100" />
+                                            <span className="relative">Đặt vé ngay</span>
+                                        </button>
+                                        <button
+                                            onClick={() => scrollTo("#light-city")}
+                                            className="flex-1 rounded-full border border-cyan-500/30 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-cyan-500/50 hover:bg-white/10"
+                                        >
+                                            Xem thêm
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+
+                            {/* Fly Over */}
+                            {activeNav === 'flyover' && (
+                                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                    <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500/20 via-transparent to-red-500/20 p-[2px]">
+                                        <div className="overflow-hidden rounded-3xl bg-black">
+                                            <div className="aspect-video">
+                                                <img
+                                                    src="/Img/ingohartimg3.png"
+                                                    alt="Fly Over The World & Infinity World 12D"
+                                                    className="h-full w-full object-cover"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Image Gallery with Infinite Scroll */}
+                                    <div className="relative overflow-hidden">
+                                        {/* Fade Effect - Left */}
+                                        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-slate-950 to-transparent" />
+                                        {/* Fade Effect - Right */}
+                                        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-slate-950 to-transparent" />
+                                        
+                                        <div className="flex gap-3 pb-2 animate-scroll-infinite">
+                                            {/* Triple images for seamless infinite effect */}
+                                            {[
+                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819',
+                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819',
+                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819',
+                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819',
+                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819',
+                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819',
+                                            ].map((img, idx) => {
+                                                const flyOverImages = [
+                                                    'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819',
+                                                    'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819',
+                                                    'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819',
+                                                ];
+                                                const realIdx = idx % 3;
+                                                return (
+                                                    <div
+                                                        key={idx}
+                                                        onClick={() => {
+                                                            setSelectedImage(flyOverImages[realIdx]);
+                                                            setSelectedImageIndex(realIdx);
+                                                            setCurrentGallery(flyOverImages);
+                                                        }}
+                                                        className="group relative h-24 w-36 flex-shrink-0 cursor-pointer overflow-hidden rounded-xl border border-white/10 transition-all hover:border-orange-500/50 hover:scale-105"
+                                                    >
+                                                        <img
+                                                            src={img}
+                                                            alt={`Gallery ${realIdx + 1}`}
+                                                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                                        />
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-3">
+                                        <button
+                                            onClick={() => scrollTo("#mua-ve")}
+                                            className="group relative flex-1 overflow-hidden rounded-full bg-gradient-to-r from-orange-500 to-red-500 px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-orange-500/30 transition-all hover:shadow-xl hover:shadow-orange-500/40 hover:scale-105"
+                                        >
+                                            <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 opacity-0 transition-opacity group-hover:opacity-100" />
+                                            <span className="relative">Đặt vé ngay</span>
+                                        </button>
+                                        <button
+                                            onClick={() => scrollTo("#infinity")}
+                                            className="flex-1 rounded-full border border-orange-500/30 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-orange-500/50 hover:bg-white/10"
+                                        >
+                                            Xem thêm
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </section>
+
             </main>
 
             {/* Infinite Gallery - Full Width */}
-            <InfiniteGallery />
+            {/* <InfiniteGallery /> */}
 
             {/* 3D Globe Gallery */}
-            <section className="mt-20 bg-gradient-to-b from-slate-950 to-slate-900 py-16">
+            <section className="mt-20 py-16 bg-gradient-to-b from-slate-950 to-slate-900">
                 <div className="mx-auto max-w-6xl px-4">
-                    {/* <div className="mb-8">
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">Thư viện 3D</p>
-                        <h2 className="text-3xl font-bold text-white">Khám phá không gian 360°</h2>
-                    </div> */}
+                    <div className="mb-8">
+                        <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Thư viện 3D</h2>
+                    </div>
+
                     <GlobeGallery
                         images={[
-                            "/Img/Ingohartimage1/ingohartimage1.png",
-                            "/Img/Ingohartimage1/ingohartimage2.png",
-                            "/Img/Ingohartimage1/ingohartimage3.png",
-                            "/Img/Ingohartimage1/ingohartimage4.png",
-                            "/Img/Ingohartimage1/ingohartimage5.png",
-                            "/Img/Ingohartimage1/ingohartimage6.png",
-                            "/Img/Ingohartimage1/ingohartimage7.png",
-                            "/Img/Ingohartimage1/ingohartimage8.png",
-                            "/Img/Ingohartimage1/ingohartimage9.png",
-                            "/Img/Ingohartimage1/ingohartimage10.png",
-                            "/Img/Ingohartimage1/ingohartimage11.png",
-                            "/Img/Ingohartimage1/ingohartimage12.png",
-                            "/Img/Ingohartimage1/ingohartimage13.png",
-                            "/Img/Ingohartimage2/ingohartimage1_2.png",
-                            "/Img/Ingohartimage2/ingohartimage2_2.png",
-                            "/Img/Ingohartimage2/ingohartimage3_2.png",
-                            "/Img/Ingohartimage2/ingohartimage5_2.png",
-                            "/Img/Ingohartimage2/ingohartimage6_2.png",
+                            '/Img/Ingohartimage1/ingohartimage1.png',
+                            '/Img/Ingohartimage1/ingohartimage2.png',
+                            '/Img/Ingohartimage1/ingohartimage3.png',
+                            '/Img/Ingohartimage1/ingohartimage4.png',
+                            '/Img/Ingohartimage1/ingohartimage5.png',
+                            '/Img/Ingohartimage1/ingohartimage6.png',
+                            '/Img/Ingohartimage1/ingohartimage7.png',
+                            '/Img/Ingohartimage1/ingohartimage8.png',
+                            '/Img/Ingohartimage1/ingohartimage9.png',
+                            '/Img/Ingohartimage1/ingohartimage10.png',
+                            '/Img/Ingohartimage1/ingohartimage11.png',
+                            '/Img/Ingohartimage1/ingohartimage12.png',
+                            '/Img/Ingohartimage1/ingohartimage13.png',
+                            '/Img/Ingohartimage2/ingohartimage1_2.png',
+                            '/Img/Ingohartimage2/ingohartimage2_2.png',
+                            '/Img/Ingohartimage2/ingohartimage3_2.png',
+                            '/Img/Ingohartimage2/ingohartimage5_2.png',
+                            '/Img/Ingohartimage2/ingohartimage6_2.png',
                         ]}
                         imageWidth={10}
                         imageHeight={10}
@@ -928,16 +1000,15 @@ const HomePage = () => {
                     className="mt-20 space-y-6"
                 >
                     <div>
-                        <p className="text-xs font-semibold tracking-[0.3em] text-amber-400 uppercase">Review</p>
-                        <h2 className="text-3xl font-bold text-white">Khách tham quan nói gì?</h2>
+                        <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Review</h2>
                     </div>
 
                     {/* Review Cards Slider */}
-                    <div className="group relative">
+                    <div className="relative group">
                         {/* Previous Button */}
                         <button
-                            onClick={() => scrollSlider(reviewSliderRef, "left")}
-                            className="absolute top-1/2 left-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
+                            onClick={() => scrollSlider(reviewSliderRef, 'left')}
+                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
                             aria-label="Previous"
                         >
                             <ChevronLeft size={24} />
@@ -945,7 +1016,7 @@ const HomePage = () => {
 
                         <div
                             ref={reviewSliderRef}
-                            className="scrollbar-none flex gap-6 overflow-x-auto scroll-smooth pb-4"
+                            className="flex gap-6 overflow-x-auto pb-4 scrollbar-none scroll-smooth"
                         >
                             {[
                                 {
@@ -981,7 +1052,7 @@ const HomePage = () => {
                             ].map((review, idx) => (
                                 <div
                                     key={idx}
-                                    className="w-[280px] flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 sm:w-[320px]"
+                                    className="flex-shrink-0 w-[280px] sm:w-[320px] rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden transition hover:-translate-y-1 hover:border-amber-400/60"
                                 >
                                     {/* Image */}
                                     <div className="aspect-video overflow-hidden">
@@ -993,7 +1064,7 @@ const HomePage = () => {
                                     </div>
                                     {/* Content */}
                                     <div className="p-5">
-                                        <h3 className="mb-3 text-lg font-bold text-white">{review.name}</h3>
+                                        <h3 className="text-lg font-bold text-white mb-3">{review.name}</h3>
                                         <p className="text-sm leading-relaxed text-white/75">{review.quote}</p>
                                     </div>
                                 </div>
@@ -1002,8 +1073,8 @@ const HomePage = () => {
 
                         {/* Next Button */}
                         <button
-                            onClick={() => scrollSlider(reviewSliderRef, "right")}
-                            className="absolute top-1/2 right-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
+                            onClick={() => scrollSlider(reviewSliderRef, 'right')}
+                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
                             aria-label="Next"
                         >
                             <ChevronRight size={24} />
@@ -1017,16 +1088,15 @@ const HomePage = () => {
                     className="mt-20 space-y-6"
                 >
                     <div>
-                        <p className="text-xs font-semibold tracking-[0.3em] text-amber-400 uppercase">Tin tức</p>
-                        <h2 className="text-3xl font-bold text-white">Lịch sự kiện & cập nhật</h2>
+                        <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Lịch sự kiện & cập nhật</h2>
                     </div>
 
                     {/* News Cards Slider */}
-                    <div className="group relative">
+                    <div className="relative group">
                         {/* Previous Button */}
                         <button
-                            onClick={() => scrollSlider(newsSliderRef, "left")}
-                            className="absolute top-1/2 left-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
+                            onClick={() => scrollSlider(newsSliderRef, 'left')}
+                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
                             aria-label="Previous"
                         >
                             <ChevronLeft size={24} />
@@ -1034,43 +1104,38 @@ const HomePage = () => {
 
                         <div
                             ref={newsSliderRef}
-                            className="scrollbar-none flex gap-6 overflow-x-auto scroll-smooth pb-4"
+                            className="flex gap-6 overflow-x-auto pb-4 scrollbar-none scroll-smooth"
                         >
                             {[
                                 {
                                     title: "Thông báo tạm ngưng hoạt động từ ngày 23/12/2025",
                                     image: "/Img/thongbao_d6e18eb079854aaa85c00e611a05e298_grande.png",
-                                    description:
-                                        "Cùng chờ đón triển lãm Vincent Van Gogh & Claude Monet Limited Version - Phần 2. Nâng cấp dịch vụ để mang đến trải nghiệm tốt nhất.",
+                                    description: "Cùng chờ đón triển lãm Vincent Van Gogh & Claude Monet Limited Version - Phần 2. Nâng cấp dịch vụ để mang đến trải nghiệm tốt nhất.",
                                 },
                                 {
                                     title: "Không gian triển lãm nghệ thuật hiện đại",
                                     image: "/Img/605641091_122237244032086141_1759456754890746787_n_7ea7d22535504d81998aaa475c5b93e5_grande.jpg",
-                                    description:
-                                        "Khám phá không gian triển lãm được thiết kế hiện đại với công nghệ ánh sáng và âm thanh chuyên nghiệp, tạo nên trải nghiệm nghệ thuật độc đáo.",
+                                    description: "Khám phá không gian triển lãm được thiết kế hiện đại với công nghệ ánh sáng và âm thanh chuyên nghiệp, tạo nên trải nghiệm nghệ thuật độc đáo.",
                                 },
                                 {
                                     title: "Khu vực tương tác đa phương tiện",
                                     image: "/Img/611356044_122238227168086141_1365806327491156651_n__1__cd956f7ec93e425b8fb4c1220d59d1e4_grande.jpg",
-                                    description:
-                                        "Trải nghiệm nghệ thuật tương tác với công nghệ đa phương tiện hiện đại. Không gian giáo dục và giải trí kết hợp hoàn hảo.",
+                                    description: "Trải nghiệm nghệ thuật tương tác với công nghệ đa phương tiện hiện đại. Không gian giáo dục và giải trí kết hợp hoàn hảo.",
                                 },
                                 {
                                     title: "Không gian thư giãn và chiêm ngưỡng nghệ thuật",
                                     image: "/Img/533019339_122220338894086141_6233740877803973104_n_3cc980f657b444368533fbf028b82b8f_grande.jpg",
-                                    description:
-                                        "Khu vực ngồi thư giãn với ghế lười êm ái, thưởng thức nghệ thuật ánh sáng và âm nhạc trong không gian yên tĩnh, lý tưởng.",
+                                    description: "Khu vực ngồi thư giãn với ghế lười êm ái, thưởng thức nghệ thuật ánh sáng và âm nhạc trong không gian yên tĩnh, lý tưởng.",
                                 },
                                 {
                                     title: "Trải nghiệm nghệ thuật ấn tượng Monet",
                                     image: "/Img/2000x2000_64ede7db8a2f48efa8b356f786a90c68_grande.png",
-                                    description:
-                                        "Đắm chìm trong thế giới nghệ thuật ấn tượng của Claude Monet với công nghệ 3D mapping và chiếu sáng độc đáo.",
+                                    description: "Đắm chìm trong thế giới nghệ thuật ấn tượng của Claude Monet với công nghệ 3D mapping và chiếu sáng độc đáo.",
                                 },
                             ].map((news, idx) => (
                                 <div
                                     key={idx}
-                                    className="w-[280px] flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 sm:w-[320px]"
+                                    className="flex-shrink-0 w-[280px] sm:w-[320px] rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden transition hover:-translate-y-1 hover:border-amber-400/60"
                                 >
                                     {/* Image */}
                                     <div className="aspect-video overflow-hidden">
@@ -1082,7 +1147,7 @@ const HomePage = () => {
                                     </div>
                                     {/* Content */}
                                     <div className="p-5">
-                                        <h3 className="mb-3 text-lg font-bold text-white">{news.title}</h3>
+                                        <h3 className="text-lg font-bold text-white mb-3">{news.title}</h3>
                                         <p className="text-sm leading-relaxed text-white/75">{news.description}</p>
                                     </div>
                                 </div>
@@ -1091,8 +1156,8 @@ const HomePage = () => {
 
                         {/* Next Button */}
                         <button
-                            onClick={() => scrollSlider(newsSliderRef, "right")}
-                            className="absolute top-1/2 right-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
+                            onClick={() => scrollSlider(newsSliderRef, 'right')}
+                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
                             aria-label="Next"
                         >
                             <ChevronRight size={24} />
@@ -1106,16 +1171,15 @@ const HomePage = () => {
                     className="mt-20 space-y-6"
                 >
                     <div>
-                        <p className="text-xs font-semibold tracking-[0.3em] text-amber-400 uppercase">Ưu đãi</p>
-                        <h2 className="text-3xl font-bold text-white">Thông tin khuyến mãi</h2>
+                        <h2 className="text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Ưu Đãi</h2>
                     </div>
 
                     {/* Promotion Cards Slider */}
-                    <div className="group relative">
+                    <div className="relative group">
                         {/* Previous Button */}
                         <button
-                            onClick={() => scrollSlider(promoSliderRef, "left")}
-                            className="absolute top-1/2 left-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
+                            onClick={() => scrollSlider(promoSliderRef, 'left')}
+                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
                             aria-label="Previous"
                         >
                             <ChevronLeft size={24} />
@@ -1123,20 +1187,18 @@ const HomePage = () => {
 
                         <div
                             ref={promoSliderRef}
-                            className="scrollbar-none flex gap-6 overflow-x-auto scroll-smooth pb-4"
+                            className="flex gap-6 overflow-x-auto pb-4 scrollbar-none scroll-smooth"
                         >
                             {[
                                 {
                                     title: "Mùa 1 Tặng 1 - Vé Đồng Hành",
                                     image: "/Img/thumb1_3561ba2f78c247f9a0a16dcdb7a0f427_grande.jpg",
-                                    description:
-                                        "Xuân về thêm sắc, trải nghiệm thêm trạnh. Mua 1 tặng 1 vé đồng hành từ 23.12 - 20.02. Khám phá nghệ thuật cùng người thân yêu.",
+                                    description: "Xuân về thêm sắc, trải nghiệm thêm trạnh. Mua 1 tặng 1 vé đồng hành từ 23.12 - 20.02. Khám phá nghệ thuật cùng người thân yêu.",
                                 },
                                 {
                                     title: "Mùng Tháng 3 - Mua 1 Tặng 1",
                                     image: "/Img/thumb2_7158a4c6cbde4ef2bc84c38824f0ea7c_grande.jpg",
-                                    description:
-                                        "Tặng quà nghệ thuật Mua 1 Tặng 1. Tặng 1 vé Standard khi mua 1 vé bất kỳ. Áp dụng từ 01-31/03/2025.",
+                                    description: "Tặng quà nghệ thuật Mua 1 Tặng 1. Tặng 1 vé Standard khi mua 1 vé bất kỳ. Áp dụng từ 01-31/03/2025.",
                                 },
                                 {
                                     title: "45 Lý Do Giữ Van Gogh Mãi Trong Tim",
@@ -1146,19 +1208,17 @@ const HomePage = () => {
                                 {
                                     title: "Grand Opening - Mua 3 Vé Triển Lãm",
                                     image: "/Img/thumb_3_3b7991ff2e9047139ddc5a61ee30b72b_grande.jpg",
-                                    description:
-                                        "Mừng khai trương tại Gigamall. Mua 3 vé triển lãm tặng thêm 2 vé Standard hoặc 2 Combo Game Fly Over The World & Infinity World.",
+                                    description: "Mừng khai trương tại Gigamall. Mua 3 vé triển lãm tặng thêm 2 vé Standard hoặc 2 Combo Game Fly Over The World & Infinity World.",
                                 },
                                 {
                                     title: "Check-in Google Map Tặng Vé Miễn Phí",
                                     image: "/Img/1200x1200_a4cb51208fdd4ed798ab47827bdbed3c_grande.png",
-                                    description:
-                                        "Check-in trên Google Map khi mua vé trên lâm bất kỳ nhận ngay 1 vé miễn phí. Áp dụng từ ngày 07.01.2026.",
+                                    description: "Check-in trên Google Map khi mua vé trên lâm bất kỳ nhận ngay 1 vé miễn phí. Áp dụng từ ngày 07.01.2026.",
                                 },
                             ].map((promo, idx) => (
                                 <div
                                     key={idx}
-                                    className="w-[280px] flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 sm:w-[320px]"
+                                    className="flex-shrink-0 w-[280px] sm:w-[320px] rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden transition hover:-translate-y-1 hover:border-amber-400/60"
                                 >
                                     {/* Image */}
                                     <div className="aspect-video overflow-hidden">
@@ -1170,7 +1230,7 @@ const HomePage = () => {
                                     </div>
                                     {/* Content */}
                                     <div className="p-5">
-                                        <h3 className="mb-3 text-lg font-bold text-white">{promo.title}</h3>
+                                        <h3 className="text-lg font-bold text-white mb-3">{promo.title}</h3>
                                         <p className="text-sm leading-relaxed text-white/75">{promo.description}</p>
                                     </div>
                                 </div>
@@ -1179,8 +1239,8 @@ const HomePage = () => {
 
                         {/* Next Button */}
                         <button
-                            onClick={() => scrollSlider(promoSliderRef, "right")}
-                            className="absolute top-1/2 right-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
+                            onClick={() => scrollSlider(promoSliderRef, 'right')}
+                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
                             aria-label="Next"
                         >
                             <ChevronRight size={24} />
@@ -1192,7 +1252,7 @@ const HomePage = () => {
             {/* Image Popup/Lightbox */}
             {selectedImage && (
                 <div
-                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
                     onClick={() => setSelectedImage(null)}
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
@@ -1209,7 +1269,7 @@ const HomePage = () => {
 
                     {/* Previous Button */}
                     <button
-                        className="absolute top-1/2 left-4 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:scale-110 hover:bg-white/20"
+                        className="absolute left-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 hover:scale-110"
                         onClick={(e) => {
                             e.stopPropagation();
                             if (currentGallery.length > 0) {
@@ -1233,7 +1293,7 @@ const HomePage = () => {
 
                     {/* Next Button */}
                     <button
-                        className="absolute top-1/2 right-4 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:scale-110 hover:bg-white/20"
+                        className="absolute right-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 hover:scale-110"
                         onClick={(e) => {
                             e.stopPropagation();
                             if (currentGallery.length > 0) {
@@ -1250,39 +1310,6 @@ const HomePage = () => {
                     {/* Image Counter */}
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/50 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm">
                         {selectedImageIndex + 1} / {currentGallery.length}
-                    </div>
-                </div>
-            )}
-
-            {/* Video Popup */}
-            {videoPopup.isOpen && (
-                <div
-                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
-                    onClick={() => setVideoPopup({ isOpen: false, videoId: "", title: "" })}
-                >
-                    <div className="relative w-full max-w-5xl">
-                        {/* Close Button */}
-                        <button
-                            className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:scale-110 hover:bg-white/20"
-                            onClick={() => setVideoPopup({ isOpen: false, videoId: "", title: "" })}
-                            aria-label="Đóng"
-                        >
-                            <X size={24} />
-                        </button>
-
-                        {/* Video Container */}
-                        <div
-                            className="relative aspect-video w-full overflow-hidden rounded-xl bg-black shadow-2xl"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <iframe
-                                className="h-full w-full"
-                                src={`https://www.youtube.com/embed/${videoPopup.videoId}?autoplay=1&rel=0`}
-                                title={videoPopup.title}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            />
-                        </div>
                     </div>
                 </div>
             )}
