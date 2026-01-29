@@ -1,23 +1,12 @@
 import { cn } from "@/utils/cn";
-import {
-    ChevronDown,
-    ChevronLeft,
-    ChevronRight,
-    Globe2,
-    Mail,
-    Menu,
-    MessageCircle,
-    Phone,
-    ShoppingCart,
-    UserRound,
-    X,
-} from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Globe2, Mail, Menu, MessageCircle, Phone, ShoppingCart, UserRound, X } from "lucide-react";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { InfiniteGallery } from "@/components/InfiniteGallery";
 import { Footer } from "@/layouts/footer";
-import ArtSlider from "@/components/ArtSlider";
+
 import GlobeGallery from "@/components/GlobeGallery";
 import CurvedSlider3D from "@/components/CurvedSlider3D";
+import HeroSection from "@/components/HeroSection";
 
 type NavItem = {
     label: string;
@@ -64,10 +53,10 @@ const HomePage = () => {
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState<boolean>(false);
     const [isLightCityExpanded, setIsLightCityExpanded] = useState<boolean>(false);
     const [isFlyOverExpanded, setIsFlyOverExpanded] = useState<boolean>(false);
-    const [videoPopup, setVideoPopup] = useState<{ isOpen: boolean; videoId: string; title: string }>({ 
-        isOpen: false, 
-        videoId: '', 
-        title: '' 
+    const [videoPopup, setVideoPopup] = useState<{ isOpen: boolean; videoId: string; title: string }>({
+        isOpen: false,
+        videoId: "",
+        title: "",
     });
 
     // Refs for sliders
@@ -76,39 +65,36 @@ const HomePage = () => {
     const promoSliderRef = useRef<HTMLDivElement>(null);
 
     const galleryImages = [
-        '/Img/Ingohartimage1/ingohartimage1.png',
-        '/Img/Ingohartimage1/ingohartimage2.png',
-        '/Img/Ingohartimage1/ingohartimage3.png',
-        '/Img/Ingohartimage1/ingohartimage4.png',
-        '/Img/Ingohartimage1/ingohartimage5.png',
-        '/Img/Ingohartimage1/ingohartimage6.png',
-        '/Img/Ingohartimage1/ingohartimage7.png',
-        '/Img/Ingohartimage1/ingohartimage8.png',
-        '/Img/Ingohartimage1/ingohartimage9.png',
-        '/Img/Ingohartimage1/ingohartimage10.png',
-        '/Img/Ingohartimage1/ingohartimage11.png',
-        '/Img/Ingohartimage1/ingohartimage12.png',
-        '/Img/Ingohartimage1/ingohartimage13.png',
+        "/Img/Ingohartimage1/ingohartimage1.png",
+        "/Img/Ingohartimage1/ingohartimage2.png",
+        "/Img/Ingohartimage1/ingohartimage3.png",
+        "/Img/Ingohartimage1/ingohartimage4.png",
+        "/Img/Ingohartimage1/ingohartimage5.png",
+        "/Img/Ingohartimage1/ingohartimage6.png",
+        "/Img/Ingohartimage1/ingohartimage7.png",
+        "/Img/Ingohartimage1/ingohartimage8.png",
+        "/Img/Ingohartimage1/ingohartimage9.png",
+        "/Img/Ingohartimage1/ingohartimage10.png",
+        "/Img/Ingohartimage1/ingohartimage11.png",
+        "/Img/Ingohartimage1/ingohartimage12.png",
+        "/Img/Ingohartimage1/ingohartimage13.png",
     ];
 
     const lightCityImages = [
-        '/Img/Ingohartimage2/ingohartimage1_2.png',
-        '/Img/Ingohartimage2/ingohartimage2_2.png',
-        '/Img/Ingohartimage2/ingohartimage3_2.png',
-        '/Img/Ingohartimage2/ingohartimage5_2.png',
-        '/Img/Ingohartimage2/ingohartimage6_2.png',
-        '/Img/Ingohartimage2/ingohartimage7_2.png',
-        '/Img/Ingohartimage2/ingohartimage8_2.png',
-        '/Img/Ingohartimage2/ingohartimage9_2.png',
-        '/Img/Ingohartimage2/ingohartimage10_2.png',
-        '/Img/Ingohartimage2/ingohartimage11_2.png',
-        '/Img/Ingohartimage2/ingohartimage12_2.png',
+        "/Img/Ingohartimage2/ingohartimage1_2.png",
+        "/Img/Ingohartimage2/ingohartimage2_2.png",
+        "/Img/Ingohartimage2/ingohartimage3_2.png",
+        "/Img/Ingohartimage2/ingohartimage5_2.png",
+        "/Img/Ingohartimage2/ingohartimage6_2.png",
+        "/Img/Ingohartimage2/ingohartimage7_2.png",
+        "/Img/Ingohartimage2/ingohartimage8_2.png",
+        "/Img/Ingohartimage2/ingohartimage9_2.png",
+        "/Img/Ingohartimage2/ingohartimage10_2.png",
+        "/Img/Ingohartimage2/ingohartimage11_2.png",
+        "/Img/Ingohartimage2/ingohartimage12_2.png",
     ];
 
-    const isNavActive = useMemo(
-        () => (item: NavItem) => item.href === activeNav || item.children?.some((c) => c.href === activeNav),
-        [activeNav]
-    );
+    const isNavActive = useMemo(() => (item: NavItem) => item.href === activeNav || item.children?.some((c) => c.href === activeNav), [activeNav]);
 
     const scrollTo = (href: string) => {
         const id = href.replace("#", "");
@@ -120,16 +106,14 @@ const HomePage = () => {
         setIsMobileMenuOpen(false);
     };
 
-    const scrollSlider = (ref: React.RefObject<HTMLDivElement | null>, direction: 'left' | 'right') => {
+    const scrollSlider = (ref: React.RefObject<HTMLDivElement | null>, direction: "left" | "right") => {
         if (ref.current) {
             const scrollAmount = 350; // width of card + gap
-            const newScrollLeft = direction === 'left' 
-                ? ref.current.scrollLeft - scrollAmount 
-                : ref.current.scrollLeft + scrollAmount;
-            
+            const newScrollLeft = direction === "left" ? ref.current.scrollLeft - scrollAmount : ref.current.scrollLeft + scrollAmount;
+
             ref.current.scrollTo({
                 left: newScrollLeft,
-                behavior: 'smooth'
+                behavior: "smooth",
             });
         }
     };
@@ -144,7 +128,7 @@ const HomePage = () => {
 
     const handleTouchEnd = () => {
         if (!touchStart || !touchEnd) return;
-        
+
         const distance = touchStart - touchEnd;
         const isLeftSwipe = distance > 50;
         const isRightSwipe = distance < -50;
@@ -182,14 +166,14 @@ const HomePage = () => {
     // Disable body scroll khi modal mở
     useEffect(() => {
         if (isCartOpen || isMobileMenuOpen) {
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = "hidden";
         } else {
-            document.body.style.overflow = '';
+            document.body.style.overflow = "";
         }
 
         // Cleanup khi component unmount
         return () => {
-            document.body.style.overflow = '';
+            document.body.style.overflow = "";
         };
     }, [isCartOpen, isMobileMenuOpen]);
 
@@ -212,19 +196,21 @@ const HomePage = () => {
             setLastScrollY(currentScrollY);
         };
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener("scroll", handleScroll, { passive: true });
 
         return () => {
-            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener("scroll", handleScroll);
         };
     }, [lastScrollY]);
 
     return (
         <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
-            <header className={cn(
-                "fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl transition-transform duration-300",
-                showHeader ? "translate-y-0" : "-translate-y-full"
-            )}>
+            <header
+                className={cn(
+                    "fixed top-0 right-0 left-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl transition-transform duration-300",
+                    showHeader ? "translate-y-0" : "-translate-y-full",
+                )}
+            >
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 lg:py-5">
                     <div className="flex items-center gap-3">
                         <img
@@ -255,10 +241,10 @@ const HomePage = () => {
                                             }
                                         }}
                                         className={cn(
-                                            "flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold uppercase tracking-wide transition",
+                                            "flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold tracking-wide uppercase transition",
                                             active
                                                 ? "bg-amber-400 text-slate-900 shadow-lg shadow-amber-500/40"
-                                                : "text-white/80 hover:bg-white/10 hover:text-white"
+                                                : "text-white/80 hover:bg-white/10 hover:text-white",
                                         )}
                                     >
                                         {item.label}
@@ -267,8 +253,8 @@ const HomePage = () => {
                                     {item.children && (
                                         <>
                                             {/* Invisible bridge to prevent dropdown from closing */}
-                                            <div className="invisible absolute left-0 top-full h-3 w-64 group-hover:visible" />
-                                            <div className="invisible absolute left-0 top-[calc(100%+0.75rem)] w-64 rounded-2xl border border-white/10 bg-slate-900/95 p-3 shadow-2xl opacity-0 transition duration-200 group-hover:visible group-hover:opacity-100">
+                                            <div className="invisible absolute top-full left-0 h-3 w-64 group-hover:visible" />
+                                            <div className="invisible absolute top-[calc(100%+0.75rem)] left-0 w-64 rounded-2xl border border-white/10 bg-slate-900/95 p-3 opacity-0 shadow-2xl transition duration-200 group-hover:visible group-hover:opacity-100">
                                                 <div className="flex flex-col gap-2">
                                                     {item.children.map((child) => (
                                                         <button
@@ -292,14 +278,14 @@ const HomePage = () => {
                     </nav>
 
                     <div className="flex items-center gap-2">
-                        <button className="hidden items-center gap-1 rounded-full border border-white/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-white/80 transition hover:border-amber-400 hover:text-amber-300 md:flex">
+                        <button className="hidden items-center gap-1 rounded-full border border-white/10 px-3 py-2 text-xs font-semibold tracking-wide text-white/80 uppercase transition hover:border-amber-400 hover:text-amber-300 md:flex">
                             <Globe2 size={16} />
                             VN / EN
                         </button>
                         <button className="hidden rounded-full bg-white/5 p-2 transition hover:bg-white/10 lg:inline-flex">
                             <UserRound size={18} />
                         </button>
-                        <button 
+                        <button
                             className="hidden rounded-full bg-white/5 p-2 transition hover:bg-white/10 lg:inline-flex"
                             onClick={() => setIsCartOpen(true)}
                             aria-label="Giỏ hàng"
@@ -307,7 +293,7 @@ const HomePage = () => {
                             <ShoppingCart size={18} />
                         </button>
                         {/* Mobile Shopping Cart */}
-                        <button 
+                        <button
                             className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/5 p-2 transition hover:bg-white/10 lg:hidden"
                             onClick={() => setIsCartOpen(true)}
                             aria-label="Giỏ hàng"
@@ -329,19 +315,19 @@ const HomePage = () => {
             <div
                 className={cn(
                     "fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm transition",
-                    isMobileMenuOpen ? "visible opacity-100" : "invisible opacity-0"
+                    isMobileMenuOpen ? "visible opacity-100" : "invisible opacity-0",
                 )}
                 onClick={() => setIsMobileMenuOpen(false)}
             />
             <aside
                 className={cn(
-                    "fixed left-0 top-0 z-50 flex h-full w-80 max-w-[80vw] flex-col bg-white text-slate-900 shadow-2xl transition-transform duration-200",
-                    isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+                    "fixed top-0 left-0 z-50 flex h-full w-80 max-w-[80vw] flex-col bg-white text-slate-900 shadow-2xl transition-transform duration-200",
+                    isMobileMenuOpen ? "translate-x-0" : "-translate-x-full",
                 )}
             >
                 <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
                     <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-500">Danh mục</p>
+                        <p className="text-xs font-semibold tracking-[0.25em] text-amber-500 uppercase">Danh mục</p>
                         <p className="text-xl font-extrabold text-slate-900">JP Art Expo</p>
                     </div>
                     <button
@@ -378,16 +364,13 @@ const HomePage = () => {
                                             >
                                                 <ChevronDown
                                                     size={18}
-                                                    className={cn(
-                                                        "text-slate-600 transition-transform duration-200",
-                                                        isExpanded && "rotate-180"
-                                                    )}
+                                                    className={cn("text-slate-600 transition-transform duration-200", isExpanded && "rotate-180")}
                                                 />
                                             </button>
                                         )}
                                     </div>
                                     {item.children && isExpanded && (
-                                        <ul className="mt-2 space-y-2 border-l border-slate-200 pl-3 text-sm font-medium text-slate-700 animate-in slide-in-from-top-2">
+                                        <ul className="animate-in slide-in-from-top-2 mt-2 space-y-2 border-l border-slate-200 pl-3 text-sm font-medium text-slate-700">
                                             {item.children.map((child) => (
                                                 <li key={child.label}>
                                                     <button
@@ -409,7 +392,7 @@ const HomePage = () => {
                     </ul>
                 </div>
                 <div className="space-y-3 border-t border-slate-200 px-5 py-4 text-sm font-medium text-slate-700">
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-500">Bạn cần hỗ trợ?</p>
+                    <p className="text-xs font-semibold tracking-[0.2em] text-amber-500 uppercase">Bạn cần hỗ trợ?</p>
                     <a
                         href="tel:0939733991"
                         className="flex items-center gap-3 rounded-lg border border-slate-200 px-3 py-2 transition hover:border-amber-400 hover:text-amber-600"
@@ -432,19 +415,19 @@ const HomePage = () => {
             <div
                 className={cn(
                     "fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm transition",
-                    isCartOpen ? "visible opacity-100" : "invisible opacity-0"
+                    isCartOpen ? "visible opacity-100" : "invisible opacity-0",
                 )}
                 onClick={() => setIsCartOpen(false)}
             />
             <aside
                 className={cn(
-                    "fixed right-0 top-0 z-50 flex h-full w-96 max-w-[90vw] flex-col bg-white text-slate-900 shadow-2xl transition-transform duration-300",
-                    isCartOpen ? "translate-x-0" : "translate-x-full"
+                    "fixed top-0 right-0 z-50 flex h-full w-96 max-w-[90vw] flex-col bg-white text-slate-900 shadow-2xl transition-transform duration-300",
+                    isCartOpen ? "translate-x-0" : "translate-x-full",
                 )}
             >
                 <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
                     <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-500">Giỏ hàng</p>
+                        <p className="text-xs font-semibold tracking-[0.25em] text-amber-500 uppercase">Giỏ hàng</p>
                         <p className="text-xl font-extrabold text-slate-900">0 sản phẩm</p>
                     </div>
                     <button
@@ -460,7 +443,10 @@ const HomePage = () => {
                 <div className="flex-1 overflow-y-auto px-5 py-6">
                     <div className="flex flex-col items-center justify-center py-12 text-center">
                         <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-slate-100">
-                            <ShoppingCart size={48} className="text-slate-400" />
+                            <ShoppingCart
+                                size={48}
+                                className="text-slate-400"
+                            />
                         </div>
                         <h3 className="mb-2 text-lg font-bold text-slate-900">Giỏ hàng trống</h3>
                         <p className="text-sm text-slate-600">Hãy thêm sản phẩm vào giỏ hàng của bạn</p>
@@ -485,10 +471,13 @@ const HomePage = () => {
                             </div>
                         </div>
                     </div>
-                    <button className="w-full rounded-full bg-amber-400 px-6 py-3 text-sm font-bold uppercase tracking-wide text-slate-900 shadow-lg transition hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-50" disabled>
+                    <button
+                        className="w-full rounded-full bg-amber-400 px-6 py-3 text-sm font-bold tracking-wide text-slate-900 uppercase shadow-lg transition hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-50"
+                        disabled
+                    >
                         Thanh toán
                     </button>
-                    <button 
+                    <button
                         className="mt-3 w-full rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-900 transition hover:border-amber-400 hover:text-amber-600"
                         onClick={() => setIsCartOpen(false)}
                     >
@@ -501,10 +490,13 @@ const HomePage = () => {
             {/* <section id="home" className="pt-20">
                 <HeroSwiper />
             </section> */}
+            <section className="mt-20">
+                <HeroSection />
+            </section>
 
-            <main className="relative mx-auto max-w-6xl overflow-hidden px-0 pb-24 pt-3 lg:pt-5">
-                <div className="absolute left-1/2 top-10 -z-10 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-amber-400/10 blur-[120px]" />
-                <div className="absolute right-10 top-40 -z-10 h-40 w-40 rounded-full bg-indigo-500/20 blur-3xl" />
+            <main className="relative mx-auto max-w-6xl overflow-hidden px-0 pt-3 pb-24 lg:pt-5">
+                <div className="absolute top-10 left-1/2 -z-10 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-amber-400/10 blur-[120px]" />
+                <div className="absolute top-40 right-10 -z-10 h-40 w-40 rounded-full bg-indigo-500/20 blur-3xl" />
 
                 {/* Giới thiệu */}
                 {/* <section
@@ -570,34 +562,29 @@ const HomePage = () => {
                     </div>
                 </section> */}
 
-                {/* Art Slider */}
-                <section className="mt-20">
-                    <ArtSlider />
-                </section>
-
                 {/* Sự kiện nổi bật */}
                 <section className="mt-12 space-y-6 md:mt-16">
-                    <div className="px-4 space-y-2">
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400 animate-fade-in-left">
-                            Sự kiện
-                        </p>
-                        <h2 className="text-2xl font-bold text-white sm:text-3xl animate-fade-in-up animation-delay-100">
+                    <div className="space-y-2 px-4">
+                        <p className="animate-fade-in-left text-xs font-semibold tracking-[0.3em] text-amber-400 uppercase">Sự kiện</p>
+                        <h2 className="animate-fade-in-up animation-delay-100 text-2xl font-bold text-white sm:text-3xl">
                             Trải nghiệm nghệ thuật đa chiều
                         </h2>
                     </div>
-                    
+
                     {/* Grid 2 cột */}
-                    <div className="grid gap-4 sm:gap-6 md:grid-cols-2 -mx-4 md:mx-0 px-4 md:px-0">
+                    <div className="-mx-4 grid gap-4 px-4 sm:gap-6 md:mx-0 md:grid-cols-2 md:px-0">
                         {/* Card 1: Van Gogh & Monet - Enhanced */}
                         <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 hover:bg-slate-900/80">
                             {/* Video Section */}
-                            <div 
-                                className="aspect-video overflow-hidden bg-black relative cursor-pointer group/video"
-                                onClick={() => setVideoPopup({ 
-                                    isOpen: true, 
-                                    videoId: 'wqzWu4UIVHg', 
-                                    title: 'Vincent Van Gogh & Claude Monet – Limited Version' 
-                                })}
+                            <div
+                                className="group/video relative aspect-video cursor-pointer overflow-hidden bg-black"
+                                onClick={() =>
+                                    setVideoPopup({
+                                        isOpen: true,
+                                        videoId: "wqzWu4UIVHg",
+                                        title: "Vincent Van Gogh & Claude Monet – Limited Version",
+                                    })
+                                }
                             >
                                 <img
                                     src="/Img/ingohartimg.png"
@@ -605,23 +592,30 @@ const HomePage = () => {
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover/video:scale-105"
                                 />
                                 {/* Play Button */}
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover/video:bg-black/20 transition-colors">
-                                    <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center transition-all group-hover/video:scale-110">
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/10 transition-colors group-hover/video:bg-black/20">
+                                    <div className="relative flex h-16 w-16 items-center justify-center transition-all group-hover/video:scale-110 sm:h-20 sm:w-20">
                                         {/* Circle Border */}
-                                        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100">
-                                            <circle 
-                                                cx="50" 
-                                                cy="50" 
-                                                r="48" 
-                                                fill="none" 
-                                                stroke="white" 
+                                        <svg
+                                            className="absolute inset-0 h-full w-full"
+                                            viewBox="0 0 100 100"
+                                        >
+                                            <circle
+                                                cx="50"
+                                                cy="50"
+                                                r="48"
+                                                fill="none"
+                                                stroke="white"
                                                 strokeWidth="4.5"
                                                 className="opacity-90"
                                             />
                                         </svg>
                                         {/* Play Icon - Transparent with white stroke */}
-                                        <svg className="h-14 w-14 sm:h-16 sm:w-16 translate-x-1 stroke-white fill-transparent drop-shadow-lg" viewBox="0 0 24 24" strokeWidth="1.5">
-                                            <path d="M8 5v14l11-7z"/>
+                                        <svg
+                                            className="h-14 w-14 translate-x-1 fill-transparent stroke-white drop-shadow-lg sm:h-16 sm:w-16"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                        >
+                                            <path d="M8 5v14l11-7z" />
                                         </svg>
                                     </div>
                                 </div>
@@ -630,13 +624,16 @@ const HomePage = () => {
                             <div className="p-2 sm:p-6">
                                 {/* Title */}
                                 <div className="mb-4">
-                                    <h3 className="text-xl font-bold leading-tight sm:text-2xl" style={{ color: '#4DEDFF' }}>
+                                    <h3
+                                        className="text-xl leading-tight font-bold sm:text-2xl"
+                                        style={{ color: "#4DEDFF" }}
+                                    >
                                         Vincent Van Gogh & Claude Monet – Limited Version
                                     </h3>
                                 </div>
 
                                 {/* 3D Curved Slider */}
-                                <div className="mb-4 -mx-2 sm:-mx-6">
+                                <div className="-mx-2 mb-4 sm:-mx-6">
                                     <CurvedSlider3D
                                         images={galleryImages}
                                         onImageClick={(img, idx) => {
@@ -653,15 +650,19 @@ const HomePage = () => {
 
                                 {/* Description with Expand */}
                                 <div className="mb-4">
-                                    <p className={`text-sm leading-relaxed text-white/75 sm:text-base ${!isDescriptionExpanded ? 'line-clamp-3' : ''}`}>
-                                        Bắt đầu một cuộc phiêu lưu đa giác quan độc đáo tại Van Gogh & Monet Art Lighting Experience, nơi nghệ thuật và công nghệ hoà quyện. Sự kết hợp hoàn hảo giữa các tác phẩm cổ điển và công nghệ hiện đại như màn chiếu kỹ thuật số, công nghệ thực tế ảo, 3D mapping…mang đến một trải nghiệm đầy thú vị và sáng tạo.
+                                    <p
+                                        className={`text-sm leading-relaxed text-white/75 sm:text-base ${!isDescriptionExpanded ? "line-clamp-3" : ""}`}
+                                    >
+                                        Bắt đầu một cuộc phiêu lưu đa giác quan độc đáo tại Van Gogh & Monet Art Lighting Experience, nơi nghệ thuật
+                                        và công nghệ hoà quyện. Sự kết hợp hoàn hảo giữa các tác phẩm cổ điển và công nghệ hiện đại như màn chiếu kỹ
+                                        thuật số, công nghệ thực tế ảo, 3D mapping…mang đến một trải nghiệm đầy thú vị và sáng tạo.
                                     </p>
                                     <button
                                         onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
                                         className="mt-2 text-sm font-semibold transition"
-                                        style={{ color: '#4DEDFF' }}
+                                        style={{ color: "#4DEDFF" }}
                                     >
-                                        {isDescriptionExpanded ? 'Thu gọn' : 'Xem thêm'}
+                                        {isDescriptionExpanded ? "Thu gọn" : "Xem thêm"}
                                     </button>
                                 </div>
 
@@ -669,8 +670,8 @@ const HomePage = () => {
                                 <div className="flex gap-3">
                                     <button
                                         onClick={() => scrollTo("#mua-ve")}
-                                        className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold uppercase tracking-wide text-slate-900 shadow-lg transition hover:opacity-90 sm:px-6 sm:text-base"
-                                        style={{ backgroundColor: '#4DEDFF' }}
+                                        className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold tracking-wide text-slate-900 uppercase shadow-lg transition hover:opacity-90 sm:px-6 sm:text-base"
+                                        style={{ backgroundColor: "#4DEDFF" }}
                                     >
                                         ĐẶT VÉ NGAY
                                     </button>
@@ -687,13 +688,15 @@ const HomePage = () => {
                         {/* Card 2: Light City */}
                         <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 hover:bg-slate-900/80">
                             {/* Video Section */}
-                            <div 
-                                className="aspect-video overflow-hidden bg-black relative cursor-pointer group/video"
-                                onClick={() => setVideoPopup({ 
-                                    isOpen: true, 
-                                    videoId: 'fCfoU2s5kjM', 
-                                    title: 'Light City Tầng 6' 
-                                })}
+                            <div
+                                className="group/video relative aspect-video cursor-pointer overflow-hidden bg-black"
+                                onClick={() =>
+                                    setVideoPopup({
+                                        isOpen: true,
+                                        videoId: "fCfoU2s5kjM",
+                                        title: "Light City Tầng 6",
+                                    })
+                                }
                             >
                                 <img
                                     src="/Img/ingohartimg2.png"
@@ -701,23 +704,30 @@ const HomePage = () => {
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover/video:scale-105"
                                 />
                                 {/* Play Button */}
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover/video:bg-black/20 transition-colors">
-                                    <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center transition-all group-hover/video:scale-110">
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/10 transition-colors group-hover/video:bg-black/20">
+                                    <div className="relative flex h-16 w-16 items-center justify-center transition-all group-hover/video:scale-110 sm:h-20 sm:w-20">
                                         {/* Circle Border */}
-                                        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100">
-                                            <circle 
-                                                cx="50" 
-                                                cy="50" 
-                                                r="48" 
-                                                fill="none" 
-                                                stroke="white" 
+                                        <svg
+                                            className="absolute inset-0 h-full w-full"
+                                            viewBox="0 0 100 100"
+                                        >
+                                            <circle
+                                                cx="50"
+                                                cy="50"
+                                                r="48"
+                                                fill="none"
+                                                stroke="white"
                                                 strokeWidth="4.5"
                                                 className="opacity-90"
                                             />
                                         </svg>
                                         {/* Play Icon - Transparent with white stroke */}
-                                        <svg className="h-14 w-14 sm:h-16 sm:w-16 translate-x-1 stroke-white fill-transparent drop-shadow-lg" viewBox="0 0 24 24" strokeWidth="1.5">
-                                            <path d="M8 5v14l11-7z"/>
+                                        <svg
+                                            className="h-14 w-14 translate-x-1 fill-transparent stroke-white drop-shadow-lg sm:h-16 sm:w-16"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth="1.5"
+                                        >
+                                            <path d="M8 5v14l11-7z" />
                                         </svg>
                                     </div>
                                 </div>
@@ -726,13 +736,16 @@ const HomePage = () => {
                             <div className="p-2 sm:p-6">
                                 {/* Title */}
                                 <div className="mb-4">
-                                    <h3 className="text-xl font-bold leading-tight sm:text-2xl" style={{ color: '#4DEDFF' }}>
+                                    <h3
+                                        className="text-xl leading-tight font-bold sm:text-2xl"
+                                        style={{ color: "#4DEDFF" }}
+                                    >
                                         LIGHT CITY - KHU GIÁO DỤC GIẢI TRÍ CÔNG NGHỆ CAO
                                     </h3>
                                 </div>
 
                                 {/* 3D Curved Slider */}
-                                <div className="mb-4 -mx-2 sm:-mx-6">
+                                <div className="-mx-2 mb-4 sm:-mx-6">
                                     <CurvedSlider3D
                                         images={lightCityImages}
                                         onImageClick={(img, idx) => {
@@ -749,15 +762,17 @@ const HomePage = () => {
 
                                 {/* Description with Expand */}
                                 <div className="mb-4">
-                                    <p className={`text-sm leading-relaxed text-white/75 sm:text-base ${!isLightCityExpanded ? 'line-clamp-3' : ''}`}>
-                                        Khu giáo dục giải trí công nghệ cao mang đến trải nghiệm tương tác đa giác quan, kết hợp STEM với các hoạt động giáo dục sáng tạo. Không cần đến Singapore & Thái Lan, lần đầu tiên có mặt tại Việt Nam, chính thức đón khách tháng 04/2025.
+                                    <p className={`text-sm leading-relaxed text-white/75 sm:text-base ${!isLightCityExpanded ? "line-clamp-3" : ""}`}>
+                                        Khu giáo dục giải trí công nghệ cao mang đến trải nghiệm tương tác đa giác quan, kết hợp STEM với các hoạt
+                                        động giáo dục sáng tạo. Không cần đến Singapore & Thái Lan, lần đầu tiên có mặt tại Việt Nam, chính thức đón
+                                        khách tháng 04/2025.
                                     </p>
                                     <button
                                         onClick={() => setIsLightCityExpanded(!isLightCityExpanded)}
                                         className="mt-2 text-sm font-semibold transition"
-                                        style={{ color: '#4DEDFF' }}
+                                        style={{ color: "#4DEDFF" }}
                                     >
-                                        {isLightCityExpanded ? 'Thu gọn' : 'Xem thêm'}
+                                        {isLightCityExpanded ? "Thu gọn" : "Xem thêm"}
                                     </button>
                                 </div>
 
@@ -765,8 +780,8 @@ const HomePage = () => {
                                 <div className="flex gap-3">
                                     <button
                                         onClick={() => scrollTo("#mua-ve")}
-                                        className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold uppercase tracking-wide text-slate-900 shadow-lg transition hover:opacity-90 sm:px-6 sm:text-base"
-                                        style={{ backgroundColor: '#4DEDFF' }}
+                                        className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold tracking-wide text-slate-900 uppercase shadow-lg transition hover:opacity-90 sm:px-6 sm:text-base"
+                                        style={{ backgroundColor: "#4DEDFF" }}
                                     >
                                         ĐẶT VÉ NGAY
                                     </button>
@@ -784,7 +799,7 @@ const HomePage = () => {
                         <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 hover:bg-slate-900/80">
                             {/* Main Image */}
                             <div className="aspect-video overflow-hidden bg-black">
-                                <img 
+                                <img
                                     src="/Img/ingohartimg3.png"
                                     alt="Fly Over The World & Infinity World 12D"
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -794,26 +809,29 @@ const HomePage = () => {
                             <div className="p-2 sm:p-6">
                                 {/* Title */}
                                 <div className="mb-4">
-                                    <h3 className="text-xl font-bold leading-tight sm:text-2xl" style={{ color: '#4DEDFF' }}>
+                                    <h3
+                                        className="text-xl leading-tight font-bold sm:text-2xl"
+                                        style={{ color: "#4DEDFF" }}
+                                    >
                                         Fly Over The World & Infinity World 12D
                                     </h3>
                                 </div>
 
                                 {/* 3D Curved Slider */}
-                                <div className="mb-4 -mx-2 sm:-mx-6">
+                                <div className="-mx-2 mb-4 sm:-mx-6">
                                     <CurvedSlider3D
                                         images={[
-                                            'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819',
-                                            'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819',
-                                            'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819',
+                                            "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819",
+                                            "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819",
+                                            "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819",
                                         ]}
                                         onImageClick={(img, idx) => {
                                             setSelectedImage(img);
                                             setSelectedImageIndex(idx);
                                             setCurrentGallery([
-                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819',
-                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819',
-                                                'https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819',
+                                                "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage1_3.png?v=2819",
+                                                "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage2_3.png?v=2819",
+                                                "https://theme.hstatic.net/200000815177/1001237592/14/ingohartimage3_3.png?v=2819",
                                             ]);
                                         }}
                                         speed={20}
@@ -826,15 +844,17 @@ const HomePage = () => {
 
                                 {/* Description with Expand */}
                                 <div className="mb-4">
-                                    <p className={`text-sm leading-relaxed text-white/75 sm:text-base ${!isFlyOverExpanded ? 'line-clamp-3' : ''}`}>
-                                        Hành trình 360 độ bay vòng quanh thế giới với công nghệ 12D và hiệu ứng chuyển động mượt mà. Kết hợp cùng không gian thị giác vô cực Infinity World với LED và gương phản chiếu vô tận, mang đến trải nghiệm đa chiều độc đáo.
+                                    <p className={`text-sm leading-relaxed text-white/75 sm:text-base ${!isFlyOverExpanded ? "line-clamp-3" : ""}`}>
+                                        Hành trình 360 độ bay vòng quanh thế giới với công nghệ 12D và hiệu ứng chuyển động mượt mà. Kết hợp cùng
+                                        không gian thị giác vô cực Infinity World với LED và gương phản chiếu vô tận, mang đến trải nghiệm đa chiều
+                                        độc đáo.
                                     </p>
                                     <button
                                         onClick={() => setIsFlyOverExpanded(!isFlyOverExpanded)}
                                         className="mt-2 text-sm font-semibold transition"
-                                        style={{ color: '#4DEDFF' }}
+                                        style={{ color: "#4DEDFF" }}
                                     >
-                                        {isFlyOverExpanded ? 'Thu gọn' : 'Xem thêm'}
+                                        {isFlyOverExpanded ? "Thu gọn" : "Xem thêm"}
                                     </button>
                                 </div>
 
@@ -842,8 +862,8 @@ const HomePage = () => {
                                 <div className="flex gap-3">
                                     <button
                                         onClick={() => scrollTo("#mua-ve")}
-                                        className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold uppercase tracking-wide text-slate-900 shadow-lg transition hover:opacity-90 sm:px-6 sm:text-base"
-                                        style={{ backgroundColor: '#4DEDFF' }}
+                                        className="flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-3 text-sm font-bold tracking-wide text-slate-900 uppercase shadow-lg transition hover:opacity-90 sm:px-6 sm:text-base"
+                                        style={{ backgroundColor: "#4DEDFF" }}
                                     >
                                         ĐẶT VÉ NGAY
                                     </button>
@@ -858,14 +878,13 @@ const HomePage = () => {
                         </div>
                     </div>
                 </section>
-                
             </main>
 
             {/* Infinite Gallery - Full Width */}
             <InfiniteGallery />
 
             {/* 3D Globe Gallery */}
-            <section className="mt-20 py-16 bg-gradient-to-b from-slate-950 to-slate-900">
+            <section className="mt-20 bg-gradient-to-b from-slate-950 to-slate-900 py-16">
                 <div className="mx-auto max-w-6xl px-4">
                     {/* <div className="mb-8">
                         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">Thư viện 3D</p>
@@ -873,24 +892,24 @@ const HomePage = () => {
                     </div> */}
                     <GlobeGallery
                         images={[
-                            '/Img/Ingohartimage1/ingohartimage1.png',
-                            '/Img/Ingohartimage1/ingohartimage2.png',
-                            '/Img/Ingohartimage1/ingohartimage3.png',
-                            '/Img/Ingohartimage1/ingohartimage4.png',
-                            '/Img/Ingohartimage1/ingohartimage5.png',
-                            '/Img/Ingohartimage1/ingohartimage6.png',
-                            '/Img/Ingohartimage1/ingohartimage7.png',
-                            '/Img/Ingohartimage1/ingohartimage8.png',
-                            '/Img/Ingohartimage1/ingohartimage9.png',
-                            '/Img/Ingohartimage1/ingohartimage10.png',
-                            '/Img/Ingohartimage1/ingohartimage11.png',
-                            '/Img/Ingohartimage1/ingohartimage12.png',
-                            '/Img/Ingohartimage1/ingohartimage13.png',
-                            '/Img/Ingohartimage2/ingohartimage1_2.png',
-                            '/Img/Ingohartimage2/ingohartimage2_2.png',
-                            '/Img/Ingohartimage2/ingohartimage3_2.png',
-                            '/Img/Ingohartimage2/ingohartimage5_2.png',
-                            '/Img/Ingohartimage2/ingohartimage6_2.png',
+                            "/Img/Ingohartimage1/ingohartimage1.png",
+                            "/Img/Ingohartimage1/ingohartimage2.png",
+                            "/Img/Ingohartimage1/ingohartimage3.png",
+                            "/Img/Ingohartimage1/ingohartimage4.png",
+                            "/Img/Ingohartimage1/ingohartimage5.png",
+                            "/Img/Ingohartimage1/ingohartimage6.png",
+                            "/Img/Ingohartimage1/ingohartimage7.png",
+                            "/Img/Ingohartimage1/ingohartimage8.png",
+                            "/Img/Ingohartimage1/ingohartimage9.png",
+                            "/Img/Ingohartimage1/ingohartimage10.png",
+                            "/Img/Ingohartimage1/ingohartimage11.png",
+                            "/Img/Ingohartimage1/ingohartimage12.png",
+                            "/Img/Ingohartimage1/ingohartimage13.png",
+                            "/Img/Ingohartimage2/ingohartimage1_2.png",
+                            "/Img/Ingohartimage2/ingohartimage2_2.png",
+                            "/Img/Ingohartimage2/ingohartimage3_2.png",
+                            "/Img/Ingohartimage2/ingohartimage5_2.png",
+                            "/Img/Ingohartimage2/ingohartimage6_2.png",
                         ]}
                         imageWidth={10}
                         imageHeight={10}
@@ -909,24 +928,24 @@ const HomePage = () => {
                     className="mt-20 space-y-6"
                 >
                     <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">Review</p>
+                        <p className="text-xs font-semibold tracking-[0.3em] text-amber-400 uppercase">Review</p>
                         <h2 className="text-3xl font-bold text-white">Khách tham quan nói gì?</h2>
                     </div>
-                    
+
                     {/* Review Cards Slider */}
-                    <div className="relative group">
+                    <div className="group relative">
                         {/* Previous Button */}
                         <button
-                            onClick={() => scrollSlider(reviewSliderRef, 'left')}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
+                            onClick={() => scrollSlider(reviewSliderRef, "left")}
+                            className="absolute top-1/2 left-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
                             aria-label="Previous"
                         >
                             <ChevronLeft size={24} />
                         </button>
 
-                        <div 
+                        <div
                             ref={reviewSliderRef}
-                            className="flex gap-6 overflow-x-auto pb-4 scrollbar-none scroll-smooth"
+                            className="scrollbar-none flex gap-6 overflow-x-auto scroll-smooth pb-4"
                         >
                             {[
                                 {
@@ -962,7 +981,7 @@ const HomePage = () => {
                             ].map((review, idx) => (
                                 <div
                                     key={idx}
-                                    className="flex-shrink-0 w-[280px] sm:w-[320px] rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden transition hover:-translate-y-1 hover:border-amber-400/60"
+                                    className="w-[280px] flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 sm:w-[320px]"
                                 >
                                     {/* Image */}
                                     <div className="aspect-video overflow-hidden">
@@ -974,7 +993,7 @@ const HomePage = () => {
                                     </div>
                                     {/* Content */}
                                     <div className="p-5">
-                                        <h3 className="text-lg font-bold text-white mb-3">{review.name}</h3>
+                                        <h3 className="mb-3 text-lg font-bold text-white">{review.name}</h3>
                                         <p className="text-sm leading-relaxed text-white/75">{review.quote}</p>
                                     </div>
                                 </div>
@@ -983,8 +1002,8 @@ const HomePage = () => {
 
                         {/* Next Button */}
                         <button
-                            onClick={() => scrollSlider(reviewSliderRef, 'right')}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
+                            onClick={() => scrollSlider(reviewSliderRef, "right")}
+                            className="absolute top-1/2 right-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
                             aria-label="Next"
                         >
                             <ChevronRight size={24} />
@@ -998,55 +1017,60 @@ const HomePage = () => {
                     className="mt-20 space-y-6"
                 >
                     <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">Tin tức</p>
+                        <p className="text-xs font-semibold tracking-[0.3em] text-amber-400 uppercase">Tin tức</p>
                         <h2 className="text-3xl font-bold text-white">Lịch sự kiện & cập nhật</h2>
                     </div>
-                    
+
                     {/* News Cards Slider */}
-                    <div className="relative group">
+                    <div className="group relative">
                         {/* Previous Button */}
                         <button
-                            onClick={() => scrollSlider(newsSliderRef, 'left')}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
+                            onClick={() => scrollSlider(newsSliderRef, "left")}
+                            className="absolute top-1/2 left-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
                             aria-label="Previous"
                         >
                             <ChevronLeft size={24} />
                         </button>
 
-                        <div 
+                        <div
                             ref={newsSliderRef}
-                            className="flex gap-6 overflow-x-auto pb-4 scrollbar-none scroll-smooth"
+                            className="scrollbar-none flex gap-6 overflow-x-auto scroll-smooth pb-4"
                         >
                             {[
                                 {
                                     title: "Thông báo tạm ngưng hoạt động từ ngày 23/12/2025",
                                     image: "/Img/thongbao_d6e18eb079854aaa85c00e611a05e298_grande.png",
-                                    description: "Cùng chờ đón triển lãm Vincent Van Gogh & Claude Monet Limited Version - Phần 2. Nâng cấp dịch vụ để mang đến trải nghiệm tốt nhất.",
+                                    description:
+                                        "Cùng chờ đón triển lãm Vincent Van Gogh & Claude Monet Limited Version - Phần 2. Nâng cấp dịch vụ để mang đến trải nghiệm tốt nhất.",
                                 },
                                 {
                                     title: "Không gian triển lãm nghệ thuật hiện đại",
                                     image: "/Img/605641091_122237244032086141_1759456754890746787_n_7ea7d22535504d81998aaa475c5b93e5_grande.jpg",
-                                    description: "Khám phá không gian triển lãm được thiết kế hiện đại với công nghệ ánh sáng và âm thanh chuyên nghiệp, tạo nên trải nghiệm nghệ thuật độc đáo.",
+                                    description:
+                                        "Khám phá không gian triển lãm được thiết kế hiện đại với công nghệ ánh sáng và âm thanh chuyên nghiệp, tạo nên trải nghiệm nghệ thuật độc đáo.",
                                 },
                                 {
                                     title: "Khu vực tương tác đa phương tiện",
                                     image: "/Img/611356044_122238227168086141_1365806327491156651_n__1__cd956f7ec93e425b8fb4c1220d59d1e4_grande.jpg",
-                                    description: "Trải nghiệm nghệ thuật tương tác với công nghệ đa phương tiện hiện đại. Không gian giáo dục và giải trí kết hợp hoàn hảo.",
+                                    description:
+                                        "Trải nghiệm nghệ thuật tương tác với công nghệ đa phương tiện hiện đại. Không gian giáo dục và giải trí kết hợp hoàn hảo.",
                                 },
                                 {
                                     title: "Không gian thư giãn và chiêm ngưỡng nghệ thuật",
                                     image: "/Img/533019339_122220338894086141_6233740877803973104_n_3cc980f657b444368533fbf028b82b8f_grande.jpg",
-                                    description: "Khu vực ngồi thư giãn với ghế lười êm ái, thưởng thức nghệ thuật ánh sáng và âm nhạc trong không gian yên tĩnh, lý tưởng.",
+                                    description:
+                                        "Khu vực ngồi thư giãn với ghế lười êm ái, thưởng thức nghệ thuật ánh sáng và âm nhạc trong không gian yên tĩnh, lý tưởng.",
                                 },
                                 {
                                     title: "Trải nghiệm nghệ thuật ấn tượng Monet",
                                     image: "/Img/2000x2000_64ede7db8a2f48efa8b356f786a90c68_grande.png",
-                                    description: "Đắm chìm trong thế giới nghệ thuật ấn tượng của Claude Monet với công nghệ 3D mapping và chiếu sáng độc đáo.",
+                                    description:
+                                        "Đắm chìm trong thế giới nghệ thuật ấn tượng của Claude Monet với công nghệ 3D mapping và chiếu sáng độc đáo.",
                                 },
                             ].map((news, idx) => (
                                 <div
                                     key={idx}
-                                    className="flex-shrink-0 w-[280px] sm:w-[320px] rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden transition hover:-translate-y-1 hover:border-amber-400/60"
+                                    className="w-[280px] flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 sm:w-[320px]"
                                 >
                                     {/* Image */}
                                     <div className="aspect-video overflow-hidden">
@@ -1058,7 +1082,7 @@ const HomePage = () => {
                                     </div>
                                     {/* Content */}
                                     <div className="p-5">
-                                        <h3 className="text-lg font-bold text-white mb-3">{news.title}</h3>
+                                        <h3 className="mb-3 text-lg font-bold text-white">{news.title}</h3>
                                         <p className="text-sm leading-relaxed text-white/75">{news.description}</p>
                                     </div>
                                 </div>
@@ -1067,8 +1091,8 @@ const HomePage = () => {
 
                         {/* Next Button */}
                         <button
-                            onClick={() => scrollSlider(newsSliderRef, 'right')}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
+                            onClick={() => scrollSlider(newsSliderRef, "right")}
+                            className="absolute top-1/2 right-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
                             aria-label="Next"
                         >
                             <ChevronRight size={24} />
@@ -1082,35 +1106,37 @@ const HomePage = () => {
                     className="mt-20 space-y-6"
                 >
                     <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">Ưu đãi</p>
+                        <p className="text-xs font-semibold tracking-[0.3em] text-amber-400 uppercase">Ưu đãi</p>
                         <h2 className="text-3xl font-bold text-white">Thông tin khuyến mãi</h2>
                     </div>
-                    
+
                     {/* Promotion Cards Slider */}
-                    <div className="relative group">
+                    <div className="group relative">
                         {/* Previous Button */}
                         <button
-                            onClick={() => scrollSlider(promoSliderRef, 'left')}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
+                            onClick={() => scrollSlider(promoSliderRef, "left")}
+                            className="absolute top-1/2 left-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
                             aria-label="Previous"
                         >
                             <ChevronLeft size={24} />
                         </button>
 
-                        <div 
+                        <div
                             ref={promoSliderRef}
-                            className="flex gap-6 overflow-x-auto pb-4 scrollbar-none scroll-smooth"
+                            className="scrollbar-none flex gap-6 overflow-x-auto scroll-smooth pb-4"
                         >
                             {[
                                 {
                                     title: "Mùa 1 Tặng 1 - Vé Đồng Hành",
                                     image: "/Img/thumb1_3561ba2f78c247f9a0a16dcdb7a0f427_grande.jpg",
-                                    description: "Xuân về thêm sắc, trải nghiệm thêm trạnh. Mua 1 tặng 1 vé đồng hành từ 23.12 - 20.02. Khám phá nghệ thuật cùng người thân yêu.",
+                                    description:
+                                        "Xuân về thêm sắc, trải nghiệm thêm trạnh. Mua 1 tặng 1 vé đồng hành từ 23.12 - 20.02. Khám phá nghệ thuật cùng người thân yêu.",
                                 },
                                 {
                                     title: "Mùng Tháng 3 - Mua 1 Tặng 1",
                                     image: "/Img/thumb2_7158a4c6cbde4ef2bc84c38824f0ea7c_grande.jpg",
-                                    description: "Tặng quà nghệ thuật Mua 1 Tặng 1. Tặng 1 vé Standard khi mua 1 vé bất kỳ. Áp dụng từ 01-31/03/2025.",
+                                    description:
+                                        "Tặng quà nghệ thuật Mua 1 Tặng 1. Tặng 1 vé Standard khi mua 1 vé bất kỳ. Áp dụng từ 01-31/03/2025.",
                                 },
                                 {
                                     title: "45 Lý Do Giữ Van Gogh Mãi Trong Tim",
@@ -1120,17 +1146,19 @@ const HomePage = () => {
                                 {
                                     title: "Grand Opening - Mua 3 Vé Triển Lãm",
                                     image: "/Img/thumb_3_3b7991ff2e9047139ddc5a61ee30b72b_grande.jpg",
-                                    description: "Mừng khai trương tại Gigamall. Mua 3 vé triển lãm tặng thêm 2 vé Standard hoặc 2 Combo Game Fly Over The World & Infinity World.",
+                                    description:
+                                        "Mừng khai trương tại Gigamall. Mua 3 vé triển lãm tặng thêm 2 vé Standard hoặc 2 Combo Game Fly Over The World & Infinity World.",
                                 },
                                 {
                                     title: "Check-in Google Map Tặng Vé Miễn Phí",
                                     image: "/Img/1200x1200_a4cb51208fdd4ed798ab47827bdbed3c_grande.png",
-                                    description: "Check-in trên Google Map khi mua vé trên lâm bất kỳ nhận ngay 1 vé miễn phí. Áp dụng từ ngày 07.01.2026.",
+                                    description:
+                                        "Check-in trên Google Map khi mua vé trên lâm bất kỳ nhận ngay 1 vé miễn phí. Áp dụng từ ngày 07.01.2026.",
                                 },
                             ].map((promo, idx) => (
                                 <div
                                     key={idx}
-                                    className="flex-shrink-0 w-[280px] sm:w-[320px] rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden transition hover:-translate-y-1 hover:border-amber-400/60"
+                                    className="w-[280px] flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/60 transition hover:-translate-y-1 hover:border-amber-400/60 sm:w-[320px]"
                                 >
                                     {/* Image */}
                                     <div className="aspect-video overflow-hidden">
@@ -1142,7 +1170,7 @@ const HomePage = () => {
                                     </div>
                                     {/* Content */}
                                     <div className="p-5">
-                                        <h3 className="text-lg font-bold text-white mb-3">{promo.title}</h3>
+                                        <h3 className="mb-3 text-lg font-bold text-white">{promo.title}</h3>
                                         <p className="text-sm leading-relaxed text-white/75">{promo.description}</p>
                                     </div>
                                 </div>
@@ -1151,8 +1179,8 @@ const HomePage = () => {
 
                         {/* Next Button */}
                         <button
-                            onClick={() => scrollSlider(promoSliderRef, 'right')}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
+                            onClick={() => scrollSlider(promoSliderRef, "right")}
+                            className="absolute top-1/2 right-0 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/70"
                             aria-label="Next"
                         >
                             <ChevronRight size={24} />
@@ -1164,7 +1192,7 @@ const HomePage = () => {
             {/* Image Popup/Lightbox */}
             {selectedImage && (
                 <div
-                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
                     onClick={() => setSelectedImage(null)}
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
@@ -1181,7 +1209,7 @@ const HomePage = () => {
 
                     {/* Previous Button */}
                     <button
-                        className="absolute left-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 hover:scale-110"
+                        className="absolute top-1/2 left-4 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:scale-110 hover:bg-white/20"
                         onClick={(e) => {
                             e.stopPropagation();
                             if (currentGallery.length > 0) {
@@ -1205,7 +1233,7 @@ const HomePage = () => {
 
                     {/* Next Button */}
                     <button
-                        className="absolute right-4 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 hover:scale-110"
+                        className="absolute top-1/2 right-4 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:scale-110 hover:bg-white/20"
                         onClick={(e) => {
                             e.stopPropagation();
                             if (currentGallery.length > 0) {
@@ -1228,22 +1256,22 @@ const HomePage = () => {
 
             {/* Video Popup */}
             {videoPopup.isOpen && (
-                <div 
+                <div
                     className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
-                    onClick={() => setVideoPopup({ isOpen: false, videoId: '', title: '' })}
+                    onClick={() => setVideoPopup({ isOpen: false, videoId: "", title: "" })}
                 >
                     <div className="relative w-full max-w-5xl">
                         {/* Close Button */}
                         <button
-                            className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 hover:scale-110"
-                            onClick={() => setVideoPopup({ isOpen: false, videoId: '', title: '' })}
+                            className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:scale-110 hover:bg-white/20"
+                            onClick={() => setVideoPopup({ isOpen: false, videoId: "", title: "" })}
                             aria-label="Đóng"
                         >
                             <X size={24} />
                         </button>
 
                         {/* Video Container */}
-                        <div 
+                        <div
                             className="relative aspect-video w-full overflow-hidden rounded-xl bg-black shadow-2xl"
                             onClick={(e) => e.stopPropagation()}
                         >
