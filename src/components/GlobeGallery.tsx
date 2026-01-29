@@ -28,7 +28,7 @@ const GlobeGallery = ({
     const containerRef = useRef<HTMLDivElement>(null);
     const rendererRef = useRef<any>(null);
     const sceneRef = useRef<any>(null);
-    const animationFrameRef = useRef<number>();
+    const animationFrameRef = useRef<number>(0);
 
     useEffect(() => {
         if (!containerRef.current || typeof window === 'undefined' || !window.THREE) {
