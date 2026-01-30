@@ -62,9 +62,9 @@ const HomePage = () => {
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState<boolean>(true); // Start expanded
     const [isLightCityExpanded, setIsLightCityExpanded] = useState<boolean>(false);
     const [isFlyOverExpanded, setIsFlyOverExpanded] = useState<boolean>(false);
+    const [activeReviewIndex, setActiveReviewIndex] = useState<number>(0);
 
     // Refs for sliders
-    const reviewSliderRef = useRef<HTMLDivElement>(null);
     const newsSliderRef = useRef<HTMLDivElement>(null);
     const promoSliderRef = useRef<HTMLDivElement>(null);
 
@@ -213,7 +213,41 @@ const HomePage = () => {
     }, [lastScrollY]);
 
     return (
-        <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+        <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white relative">
+            {/* Starry Background - Full Page */}
+            <div className="fixed inset-0 pointer-events-none z-0">
+                {/* Twinkling Stars */}
+                {[...Array(100)].map((_, i) => (
+                    <div
+                        key={`star-${i}`}
+                        className="star"
+                        style={{
+                            width: `${Math.random() * 3 + 1}px`,
+                            height: `${Math.random() * 3 + 1}px`,
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                            '--duration': `${Math.random() * 3 + 2}s`,
+                            '--delay': `${Math.random() * 3}s`,
+                        } as React.CSSProperties}
+                    />
+                ))}
+                
+                {/* Shooting Stars */}
+                {[...Array(5)].map((_, i) => (
+                    <div
+                        key={`shooting-${i}`}
+                        className="shooting-star"
+                        style={{
+                            width: `${Math.random() * 60 + 50}px`,
+                            top: `${Math.random() * 50}%`,
+                            right: `${Math.random() * 100}%`,
+                            '--duration': `${Math.random() * 2 + 3}s`,
+                            '--delay': `${Math.random() * 10 + 2}s`,
+                        } as React.CSSProperties}
+                    />
+                ))}
+            </div>
+
             <header className={cn(
                 "fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl transition-transform duration-300",
                 showHeader ? "translate-y-0" : "-translate-y-full"
@@ -623,8 +657,8 @@ const HomePage = () => {
                                         tag: 'Signature Ride',
                                         description: 'Hãy sẵn sàng cất cánh với chuyến bay 12D đầy kỳ thú, tham gia cùng các lễ hội văn hóa, chiêm ngưỡng thiên nhiên hùng vĩ.',
                                         video: '/Img/ingohartimg3.png',
-                                        color: 'from-orange-500/10 to-red-500/10',
-                                        borderColor: 'border-orange-500/30'
+                                        color: 'from-indigo-500/10 to-purple-500/10',
+                                        borderColor: 'border-indigo-500/30'
                                     }
                                 ].map((event) => (
                                     <div key={event.id} className="snap-center flex-shrink-0 w-full px-2">
@@ -721,7 +755,7 @@ const HomePage = () => {
                                                         "group relative flex-1 overflow-hidden rounded-full px-5 py-3 text-sm font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:scale-105",
                                                         event.id === 'vangogh' && "bg-gradient-to-r from-purple-500 to-pink-500 shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40",
                                                         event.id === 'lightcity' && "bg-gradient-to-r from-cyan-500 to-blue-500 shadow-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/40",
-                                                        event.id === 'flyover' && "bg-gradient-to-r from-orange-500 to-red-500 shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40"
+                                                        event.id === 'flyover' && "bg-gradient-to-r from-indigo-500 to-purple-500 shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40"
                                                     )}
                                                 >
                                                     <span className="relative whitespace-nowrap">Đặt vé ngay</span>
@@ -732,7 +766,7 @@ const HomePage = () => {
                                                         "flex-1 rounded-full border bg-white/5 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/10",
                                                         event.id === 'vangogh' && "border-purple-500/30 hover:border-purple-500/50",
                                                         event.id === 'lightcity' && "border-cyan-500/30 hover:border-cyan-500/50",
-                                                        event.id === 'flyover' && "border-orange-500/30 hover:border-orange-500/50"
+                                                        event.id === 'flyover' && "border-indigo-500/30 hover:border-indigo-500/50"
                                                     )}
                                                 >
                                                     Xem thêm
@@ -783,7 +817,7 @@ const HomePage = () => {
                                         "absolute w-1 rounded-full transition-all duration-500 ease-out",
                                         activeNav === 'vangogh' && "top-0 h-[33%] bg-gradient-to-b from-purple-500 to-pink-500 shadow-lg shadow-purple-500/50",
                                         activeNav === 'lightcity' && "top-[33%] h-[33%] bg-gradient-to-b from-cyan-500 to-blue-500 shadow-lg shadow-cyan-500/50",
-                                        activeNav === 'flyover' && "top-[66%] h-[34%] bg-gradient-to-b from-orange-500 to-red-500 shadow-lg shadow-orange-500/50"
+                                        activeNav === 'flyover' && "top-[66%] h-[34%] bg-gradient-to-b from-indigo-500 to-purple-500 shadow-lg shadow-indigo-500/50"
                                     )}
                                 />
                             </div>
@@ -814,8 +848,8 @@ const HomePage = () => {
                                         title: 'Fly Over The World & Infinity World',
                                         subtitle: '12D Experience',
                                         tag: 'Signature Ride',
-                                        color: 'from-orange-500/20 to-red-500/20',
-                                        borderColor: 'border-orange-500/30'
+                                        color: 'from-indigo-500/20 to-purple-500/20',
+                                        borderColor: 'border-indigo-500/30'
                                     }
                                 ].map((event) => {
                                     const isActive = activeNav === event.id;
@@ -1064,7 +1098,7 @@ const HomePage = () => {
                             {/* Fly Over */}
                             {activeNav === 'flyover' && (
                                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                    <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-500/20 via-transparent to-red-500/20 p-[2px]">
+                                    <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500/20 via-transparent to-purple-500/20 p-[2px]">
                                         <div className="overflow-hidden rounded-3xl bg-black">
                                             <div className="aspect-video">
                                                 <img
@@ -1107,7 +1141,7 @@ const HomePage = () => {
                                                             setSelectedImageIndex(realIdx);
                                                             setCurrentGallery(flyOverImages);
                                                         }}
-                                                        className="group relative h-24 w-36 flex-shrink-0 cursor-pointer overflow-hidden rounded-xl border border-white/10 transition-all hover:border-orange-500/50 hover:scale-105"
+                                                        className="group relative h-24 w-36 flex-shrink-0 cursor-pointer overflow-hidden rounded-xl border border-white/10 transition-all hover:border-indigo-500/50 hover:scale-105"
                                                     >
                                                         <img
                                                             src={img}
@@ -1124,7 +1158,7 @@ const HomePage = () => {
                                     <div className="flex gap-3">
                                         <button
                                             onClick={() => scrollTo("#mua-ve")}
-                                            className="group relative flex-1 overflow-hidden rounded-full bg-gradient-to-r from-orange-500 to-red-500 px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-orange-500/30 transition-all hover:shadow-xl hover:shadow-orange-500/40 hover:scale-105"
+                                            className="group relative flex-1 overflow-hidden rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-indigo-500/30 transition-all hover:shadow-xl hover:shadow-indigo-500/40 hover:scale-105"
                                         >
                                             <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 opacity-0 transition-opacity group-hover:opacity-100" />
                                             <span className="relative">Đặt vé ngay</span>
@@ -1148,25 +1182,7 @@ const HomePage = () => {
             {/* <InfiniteGallery /> */}
 
             {/* 3D Globe Gallery */}
-            <section className="mt-20 py-16 bg-gradient-to-b from-slate-950 to-slate-900 relative overflow-hidden">
-                {/* Starry Background */}
-                <div className="absolute inset-0 pointer-events-none">
-                    {[...Array(50)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="star"
-                            style={{
-                                width: `${Math.random() * 3 + 1}px`,
-                                height: `${Math.random() * 3 + 1}px`,
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                '--duration': `${Math.random() * 3 + 2}s`,
-                                '--delay': `${Math.random() * 3}s`,
-                            } as React.CSSProperties}
-                        />
-                    ))}
-                </div>
-
+            <section className="mt-20 py-16 relative overflow-hidden">
                 <div className="mx-auto max-w-6xl px-4 relative z-10">
                     <div className="mb-8">
                         <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Thư viện 3D</h2>
@@ -1207,27 +1223,15 @@ const HomePage = () => {
                 {/* Review */}
                 <section
                     id="review"
-                    className="mt-20 space-y-6"
+                    className="mt-20 space-y-8"
                 >
-                    <div>
+                    <div className="">
                         <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Review</h2>
                     </div>
 
-                    {/* Review Cards Slider */}
-                    <div className="relative group">
-                        {/* Previous Button */}
-                        <button
-                            onClick={() => scrollSlider(reviewSliderRef, 'left')}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
-                            aria-label="Previous"
-                        >
-                            <ChevronLeft size={24} />
-                        </button>
-
-                        <div
-                            ref={reviewSliderRef}
-                            className="flex gap-6 overflow-x-auto pb-4 scrollbar-none scroll-smooth"
-                        >
+                    {/* Review Items Navigation */}
+                    <div className="relative">
+                        <div className="flex items-center justify-center gap-4 overflow-x-auto pb-8 scrollbar-none">
                             {[
                                 {
                                     name: "Trải nghiệm đáng nhớ",
@@ -1260,35 +1264,84 @@ const HomePage = () => {
                                     quote: "Một địa điểm văn hóa nghệ thuật đáng để ghé thăm tại TP.HCM. Phù hợp cho cả gia đình và nhóm bạn.",
                                 },
                             ].map((review, idx) => (
-                                <div
+                                <button
                                     key={idx}
-                                    className="flex-shrink-0 w-[280px] sm:w-[320px] rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden transition hover:-translate-y-1 hover:border-amber-400/60"
+                                    onClick={() => setActiveReviewIndex(idx)}
+                                    className={cn(
+                                        "flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all duration-500",
+                                        activeReviewIndex === idx
+                                            ? "w-24 h-24 border-amber-400 shadow-lg shadow-amber-400/50 scale-110"
+                                            : "w-16 h-16 border-white/20 hover:border-white/40 scale-100"
+                                    )}
                                 >
-                                    {/* Image */}
-                                    <div className="aspect-video overflow-hidden">
-                                        <img
-                                            src={review.image}
-                                            alt={review.name}
-                                            className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
-                                        />
-                                    </div>
-                                    {/* Content */}
-                                    <div className="p-5">
-                                        <h3 className="text-lg font-bold text-white mb-3">{review.name}</h3>
-                                        <p className="text-sm leading-relaxed text-white/75">{review.quote}</p>
-                                    </div>
-                                </div>
+                                    <img
+                                        src={review.image}
+                                        alt={review.name}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </button>
                             ))}
                         </div>
+                    </div>
 
-                        {/* Next Button */}
-                        <button
-                            onClick={() => scrollSlider(reviewSliderRef, 'right')}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
-                            aria-label="Next"
-                        >
-                            <ChevronRight size={24} />
-                        </button>
+                    {/* Active Review Card - 2 Columns */}
+                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        {(() => {
+                            const reviews = [
+                                {
+                                    name: "Trải nghiệm đáng nhớ",
+                                    image: "/Img/galinvidimage1.png",
+                                    quote: "Không gian triển lãm được thiết kế rất ấn tượng với công nghệ ánh sáng hiện đại. Mình và gia đình đã có những khoảnh khắc tuyệt vời.",
+                                },
+                                {
+                                    name: "Nghệ thuật sống động",
+                                    image: "/Img/galinvidimage2.png",
+                                    quote: "Các tác phẩm nghệ thuật được tái hiện một cách sống động qua công nghệ 3D mapping. Thực sự như lạc vào thế giới tranh vẽ.",
+                                },
+                                {
+                                    name: "Giáo dục và giải trí",
+                                    image: "/Img/galinvidimage3.png",
+                                    quote: "Light City là nơi tuyệt vời cho trẻ em vừa học vừa chơi. Con mình rất thích các hoạt động khoa học tương tác.",
+                                },
+                                {
+                                    name: "Công nghệ ấn tượng",
+                                    image: "/Img/galinvidimage4.png",
+                                    quote: "Chuyến bay 12D mang đến cảm giác thực tế tuyệt vời. Âm thanh và hình ảnh được đồng bộ hoàn hảo.",
+                                },
+                                {
+                                    name: "Không gian độc đáo",
+                                    image: "/Img/galinvidimage5.png",
+                                    quote: "Infinity World với gương phản chiếu vô tận tạo nên không gian nghệ thuật độc đáo. Chụp ảnh ở đây rất đẹp!",
+                                },
+                                {
+                                    name: "Đáng để ghé thăm",
+                                    image: "/Img/galinvidimage6.png",
+                                    quote: "Một địa điểm văn hóa nghệ thuật đáng để ghé thăm tại TP.HCM. Phù hợp cho cả gia đình và nhóm bạn.",
+                                },
+                            ];
+                            const activeReview = reviews[activeReviewIndex];
+                            
+                            return (
+                                <div className="rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden backdrop-blur-sm">
+                                    <div className="grid grid-cols-1 md:grid-cols-2">
+                                        {/* Left Column - Image */}
+                                        <div className="aspect-video md:aspect-auto md:h-[300px] overflow-hidden">
+                                            <img
+                                                src={activeReview.image}
+                                                alt={activeReview.name}
+                                                className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                                            />
+                                        </div>
+                                        
+                                        {/* Right Column - Content */}
+                                        <div className="p-5 md:p-6 flex flex-col justify-center">
+                                            <h3 className="text-lg md:text-xl font-bold text-white mb-3">{activeReview.name}</h3>
+                                            <p className="text-sm leading-relaxed text-white/80">{activeReview.quote}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })()}
                     </div>
                 </section>
 

@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 interface GlobeGalleryProps {
     images: string[];
@@ -8,12 +10,6 @@ interface GlobeGalleryProps {
     autoRotate?: boolean;
     autoRotateSpeed?: number;
     minHeight?: number;
-}
-
-declare global {
-    interface Window {
-        THREE: any;
-    }
 }
 
 const GlobeGallery = ({
@@ -31,12 +27,11 @@ const GlobeGallery = ({
     const animationFrameRef = useRef<number>(0);
 
     useEffect(() => {
-        if (!containerRef.current || typeof window === 'undefined' || !window.THREE) {
+        if (!containerRef.current) {
             return;
         }
 
         const container = containerRef.current;
-        const THREE = window.THREE;
 
         // Check if mobile
         const isMobile = window.innerWidth < 768;
@@ -67,7 +62,6 @@ const GlobeGallery = ({
         container.appendChild(renderer.domElement);
 
         // Controls
-        const OrbitControls = (THREE as any).OrbitControls;
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
@@ -120,7 +114,7 @@ const GlobeGallery = ({
                             texture.repeat.set(1, scale);
                             texture.offset.set(0, (1 - scale) / 2);
                         }
-                        texture.encoding = THREE.sRGBEncoding;
+                        texture.colorSpace = THREE.SRGBColorSpace;
 
                         const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
                         const material = new THREE.MeshBasicMaterial({

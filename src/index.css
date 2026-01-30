@@ -138,6 +138,41 @@
     animation-delay: var(--delay);
 }
 
+/* Shooting Star Animation */
+@keyframes shooting {
+    0% {
+        transform: translate(0, 0) rotate(-45deg);
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-500px, 500px) rotate(-45deg);
+        opacity: 0;
+    }
+}
+
+.shooting-star {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, #fff, transparent);
+    animation: shooting var(--duration) var(--delay) infinite;
+    filter: drop-shadow(0 0 6px #fff);
+}
+
+.shooting-star::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+}
+
 /* ---- Infinite Gallery Animations ---- */
 @keyframes scroll-left {
     0% {

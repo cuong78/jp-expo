@@ -3,7 +3,7 @@ import { Facebook, Youtube } from "lucide-react";
 
 export const Footer = () => {
     return (
-        <footer className="w-full bg-black text-white">
+        <footer className="w-full relative z-10 bg-black text-white">
             <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
                 {/* Top row: 4 columns */}
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
