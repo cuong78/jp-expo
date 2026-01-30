@@ -215,7 +215,7 @@ const HomePage = () => {
                         } as React.CSSProperties}
                     />
                 ))}
-                
+
                 {/* Shooting Stars */}
                 {[...Array(5)].map((_, i) => (
                     <div
@@ -514,72 +514,7 @@ const HomePage = () => {
             </section> */}
 
             <main className="relative mx-auto max-w-6xl overflow-hidden px-4 pb-24 pt-3 lg:pt-5">
-                <div className="absolute left-1/2 top-10 -z-10 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-amber-400/10 blur-[120px]" />
                 <div className="absolute right-10 top-40 -z-10 h-40 w-40 rounded-full bg-indigo-500/20 blur-3xl" />
-
-                {/* Giới thiệu */}
-                {/* <section
-                    id="gioi-thieu"
-                    className="mt-20 space-y-8"
-                >
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">Giới thiệu</p>
-                            <h2 className="text-3xl font-bold text-white">Ba không gian nghệ thuật chủ đạo</h2>
-                        </div>
-                        <button
-                            onClick={() => scrollTo("#mua-ve")}
-                            className="hidden rounded-full border border-white/15 px-4 py-2 text-sm font-semibold uppercase tracking-wide text-white transition hover:border-amber-400 hover:text-amber-300 md:inline-flex"
-                        >
-                            Đặt vé ngay
-                        </button>
-                    </div>
-                    <div className="grid gap-6 md:grid-cols-3">
-                        {[
-                            {
-                                id: "van-gogh",
-                                title: "Van Gogh & Monet Expo",
-                                desc: "Triển lãm đa giác quan, tái hiện bức tranh kinh điển với mapping 360°.",
-                                tag: "Immersive Art",
-                            },
-                            {
-                                id: "light-city",
-                                title: "Light City",
-                                desc: "Thành phố ánh sáng kết hợp giáo dục STEM, tương tác cảm biến và trải nghiệm AR.",
-                                tag: "New update",
-                            },
-                            {
-                                id: "infinity",
-                                title: "Infinity World & Fly Over The World 12D",
-                                desc: "Hành trình bay vòng quanh thế giới 12D và không gian thị giác vô cực.",
-                                tag: "Signature ride",
-                            },
-                        ].map((item) => (
-                            <div
-                                key={item.id}
-                                id={item.id}
-                                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 transition hover:-translate-y-1 hover:border-amber-400/60 hover:bg-white/10"
-                            >
-                                <div className="absolute inset-0 bg-gradient-to-br from-amber-400/10 via-transparent to-indigo-500/10 opacity-0 transition group-hover:opacity-100" />
-                                <div className="relative flex items-center justify-between">
-                                    <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-200">
-                                        {item.tag}
-                                    </span>
-                                    <Sparkles className="text-amber-200" size={18} />
-                                </div>
-                                <h3 className="relative mt-4 text-xl font-bold text-white">{item.title}</h3>
-                                <p className="relative mt-3 text-sm text-white/75">{item.desc}</p>
-                                <button
-                                    onClick={() => scrollTo("#mua-ve")}
-                                    className="relative mt-6 inline-flex items-center gap-2 rounded-full bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:bg-amber-300"
-                                >
-                                    <Ticket size={16} />
-                                    Xem vé
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                </section> */}
 
                 {/* Art Slider */}
                 <section className="mt-20">
@@ -600,7 +535,7 @@ const HomePage = () => {
                     <div className="lg:hidden">
                         <div className="relative">
                             {/* Swipeable Container */}
-                            <div 
+                            <div
                                 ref={(el) => {
                                     if (el) {
                                         const handleScroll = () => {
@@ -651,7 +586,7 @@ const HomePage = () => {
                                 ].map((event) => (
                                     <div key={event.id} className="snap-center flex-shrink-0 w-full px-2">
                                         <div className={cn(
-                                            "relative overflow-hidden rounded-2xl border p-6 backdrop-blur-sm h-[600px] flex flex-col",
+                                            "relative overflow-hidden rounded-2xl border p-6 backdrop-blur-sm h-[500px] flex flex-col",
                                             event.borderColor,
                                             "bg-gradient-to-br",
                                             event.color
@@ -675,7 +610,7 @@ const HomePage = () => {
                                             </div>
 
                                             {/* Video */}
-                                            <div className="relative aspect-video overflow-hidden rounded-xl border border-white/10 bg-black/20 mb-4 flex-shrink-0">
+                                            <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-black/20 mb-4 flex-shrink-0">
                                                 {event.video.includes('youtube.com') ? (
                                                     <iframe
                                                         src={event.video}
@@ -697,7 +632,7 @@ const HomePage = () => {
                                             <div className="relative overflow-hidden mb-4 flex-shrink-0">
                                                 <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-12 bg-gradient-to-r from-slate-950 to-transparent" />
                                                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-12 bg-gradient-to-l from-slate-950 to-transparent" />
-                                                
+
                                                 <div className="flex gap-2 animate-scroll-infinite">
                                                     {(() => {
                                                         let images: string[] = [];
@@ -798,9 +733,9 @@ const HomePage = () => {
                             <div className="sticky top-24 h-[400px]">
                                 {/* Background track */}
                                 <div className="absolute inset-0 w-1 bg-white/10 rounded-full" />
-                                
+
                                 {/* Active indicator */}
-                                <div 
+                                <div
                                     className={cn(
                                         "absolute w-1 rounded-full transition-all duration-500 ease-out",
                                         activeNav === 'vangogh' && "top-0 h-[33%] bg-gradient-to-b from-purple-500 to-pink-500 shadow-lg shadow-purple-500/50",
@@ -841,12 +776,12 @@ const HomePage = () => {
                                     }
                                 ].map((event) => {
                                     const isActive = activeNav === event.id;
-                                    
+
                                     // Get description text based on event
                                     let descriptionText = '';
                                     let isExpanded = false;
-                                    let setExpanded = (_value: boolean) => {};
-                                    
+                                    let setExpanded = (_value: boolean) => { };
+
                                     if (event.id === 'vangogh') {
                                         descriptionText = 'Bắt đầu một cuộc phiêu lưu đa giác quan độc đáo tại Van Gogh & Monet Art Lighting Experience, nơi nghệ thuật và công nghệ hoà quyện. Sự kết hợp hoàn hảo giữa các tác phẩm cổ điển và công nghệ hiện đại như màn chiếu kỹ thuật số, công nghệ thực tế ảo, 3D mapping…mang đến một trải nghiệm đầy thú vị và sáng tạo.';
                                         isExpanded = isDescriptionExpanded;
@@ -860,91 +795,92 @@ const HomePage = () => {
                                         isExpanded = isFlyOverExpanded;
                                         setExpanded = setIsFlyOverExpanded;
                                     }
-                                    
+
                                     return (
-                                    <div key={event.id}>
-                                        {/* Combined Card: Title + Description */}
-                                        {isActive && (
-                                            <div 
-                                                className={cn(
-                                                    "group relative w-full overflow-hidden rounded-2xl border p-5 text-left transition-all duration-300 animate-in fade-in slide-in-from-top-2",
-                                                    event.borderColor,
-                                                    "bg-gradient-to-br from-slate-900/30 to-slate-900/10 backdrop-blur-sm"
-                                                )}
-                                            >
-                                                {/* Background gradient effect - lighter */}
-                                                <div className={cn(
-                                                    "absolute inset-0 bg-gradient-to-br opacity-30",
-                                                    event.color
-                                                )} />
+                                        <div key={event.id}>
+                                            {/* Combined Card: Title + Description */}
+                                            {isActive && (
+                                                <div
+                                                    className={cn(
+                                                        "group relative w-full overflow-hidden rounded-2xl border p-5 text-left transition-all duration-300 animate-in fade-in slide-in-from-top-2",
+                                                        event.borderColor,
+                                                        "bg-gradient-to-br from-slate-900/30 to-slate-900/10 backdrop-blur-sm"
+                                                    )}
+                                                >
+                                                    {/* Background gradient effect - lighter */}
+                                                    <div className={cn(
+                                                        "absolute inset-0 bg-gradient-to-br opacity-30",
+                                                        event.color
+                                                    )} />
 
-                                                <div className="relative z-10 space-y-4">
-                                                    {/* Header */}
+                                                    <div className="relative z-10 space-y-4">
+                                                        {/* Header */}
+                                                        <div className="flex items-center justify-between">
+                                                            <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
+                                                                {event.tag}
+                                                            </span>
+                                                            <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-lg shadow-cyan-400/50" />
+                                                        </div>
+
+                                                        {/* Title */}
+                                                        <div>
+                                                            <h3 className="text-lg font-bold leading-tight text-white">
+                                                                {event.title}
+                                                            </h3>
+                                                            <p className="mt-1 text-sm text-white/70">
+                                                                {event.subtitle}
+                                                            </p>
+                                                        </div>
+
+                                                        {/* Description */}
+                                                        <div className="border-t border-white/10 pt-4">
+                                                            <p className={cn(
+                                                                "text-sm leading-relaxed text-white/80 transition-all duration-300",
+                                                                !isExpanded && "line-clamp-3"
+                                                            )}>
+                                                                {descriptionText}
+                                                            </p>
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    setExpanded(!isExpanded);
+                                                                }}
+                                                                className="mt-2 text-xs font-semibold text-white/70 transition-colors hover:text-white"
+                                                            >
+                                                                {isExpanded ? '← Thu gọn' : 'Xem thêm →'}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Collapsed Button - Show when not active */}
+                                            {!isActive && (
+                                                <button
+                                                    onClick={() => {
+                                                        setActiveNav(event.id);
+                                                        if (event.id === 'vangogh') setIsDescriptionExpanded(true);
+                                                        if (event.id === 'lightcity') setIsLightCityExpanded(true);
+                                                        if (event.id === 'flyover') setIsFlyOverExpanded(true);
+                                                    }}
+                                                    className="group relative w-full overflow-hidden rounded-2xl border border-white/10 bg-slate-900/30 p-5 text-left transition-all duration-300 hover:border-white/20 hover:bg-slate-900/50"
+                                                >
                                                     <div className="flex items-center justify-between">
-                                                        <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
-                                                            {event.tag}
-                                                        </span>
-                                                        <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-lg shadow-cyan-400/50" />
+                                                        <div>
+                                                            <h3 className="text-lg font-bold leading-tight text-white/70 transition-colors group-hover:text-white/90">
+                                                                {event.title}
+                                                            </h3>
+                                                            <p className="mt-1 text-sm text-white/40 transition-colors group-hover:text-white/60">
+                                                                {event.subtitle}
+                                                            </p>
+                                                        </div>
+                                                        <div className="h-2 w-2 rounded-full bg-white/20" />
                                                     </div>
-
-                                                    {/* Title */}
-                                                    <div>
-                                                        <h3 className="text-lg font-bold leading-tight text-white">
-                                                            {event.title}
-                                                        </h3>
-                                                        <p className="mt-1 text-sm text-white/70">
-                                                            {event.subtitle}
-                                                        </p>
-                                                    </div>
-
-                                                    {/* Description */}
-                                                    <div className="border-t border-white/10 pt-4">
-                                                        <p className={cn(
-                                                            "text-sm leading-relaxed text-white/80 transition-all duration-300",
-                                                            !isExpanded && "line-clamp-3"
-                                                        )}>
-                                                            {descriptionText}
-                                                        </p>
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                setExpanded(!isExpanded);
-                                                            }}
-                                                            className="mt-2 text-xs font-semibold text-white/70 transition-colors hover:text-white"
-                                                        >
-                                                            {isExpanded ? '← Thu gọn' : 'Xem thêm →'}
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                        
-                                        {/* Collapsed Button - Show when not active */}
-                                        {!isActive && (
-                                            <button
-                                                onClick={() => {
-                                                    setActiveNav(event.id);
-                                                    if (event.id === 'vangogh') setIsDescriptionExpanded(true);
-                                                    if (event.id === 'lightcity') setIsLightCityExpanded(true);
-                                                    if (event.id === 'flyover') setIsFlyOverExpanded(true);
-                                                }}
-                                                className="group relative w-full overflow-hidden rounded-2xl border border-white/10 bg-slate-900/30 p-5 text-left transition-all duration-300 hover:border-white/20 hover:bg-slate-900/50"
-                                            >
-                                                <div className="flex items-center justify-between">
-                                                    <div>
-                                                        <h3 className="text-lg font-bold leading-tight text-white/70 transition-colors group-hover:text-white/90">
-                                                            {event.title}
-                                                        </h3>
-                                                        <p className="mt-1 text-sm text-white/40 transition-colors group-hover:text-white/60">
-                                                            {event.subtitle}
-                                                        </p>
-                                                    </div>
-                                                    <div className="h-2 w-2 rounded-full bg-white/20" />
-                                                </div>
-                                            </button>
-                                        )}
-                                    </div>
-                                )})}
+                                                </button>
+                                            )}
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </div>
 
@@ -956,7 +892,7 @@ const HomePage = () => {
                                     {/* Video with gradient border */}
                                     <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-500/20 via-transparent to-pink-500/20 p-[2px]">
                                         <div className="overflow-hidden rounded-3xl bg-black">
-                                            <div className="aspect-video">
+                                            <div className="aspect-[16/10]">
                                                 <iframe
                                                     className="h-full w-full"
                                                     src="https://www.youtube.com/embed/wqzWu4UIVHg?autoplay=0&mute=1&controls=1&rel=0"
@@ -973,9 +909,9 @@ const HomePage = () => {
                                     <div className="relative overflow-hidden">
                                         <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-slate-950 to-transparent" />
                                         <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-slate-950 to-transparent" />
-                                        
+
                                         <div className="flex gap-3 pb-2 animate-scroll-infinite">
-                                            
+
                                             {[...galleryImages, ...galleryImages].map((img, idx) => (
                                                 <div
                                                     key={idx}
@@ -1022,7 +958,7 @@ const HomePage = () => {
                                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                     <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-500/20 via-transparent to-blue-500/20 p-[2px]">
                                         <div className="overflow-hidden rounded-3xl bg-black">
-                                            <div className="aspect-video">
+                                            <div className="aspect-[16/10]">
                                                 <iframe
                                                     className="h-full w-full"
                                                     src="https://www.youtube.com/embed/fCfoU2s5kjM?autoplay=0&mute=1&controls=1&rel=0"
@@ -1040,7 +976,7 @@ const HomePage = () => {
                                         <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-slate-950 to-transparent" />
                                         {/* Fade Effect - Right */}
                                         <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-slate-950 to-transparent" />
-                                        
+
                                         <div className="flex gap-3 pb-2 animate-scroll-infinite">
                                             {/* Triple images for seamless infinite effect */}
                                             {[...lightCityImages, ...lightCityImages].map((img, idx) => (
@@ -1088,7 +1024,7 @@ const HomePage = () => {
                                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                     <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500/20 via-transparent to-purple-500/20 p-[2px]">
                                         <div className="overflow-hidden rounded-3xl bg-black">
-                                            <div className="aspect-video">
+                                            <div className="aspect-[16/10]">
                                                 <img
                                                     src="/Img/ingohartimg3.png"
                                                     alt="Fly Over The World & Infinity World 12D"
@@ -1104,7 +1040,7 @@ const HomePage = () => {
                                         <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-slate-950 to-transparent" />
                                         {/* Fade Effect - Right */}
                                         <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-slate-950 to-transparent" />
-                                        
+
                                         <div className="flex gap-3 pb-2 animate-scroll-infinite">
                                             {/* Triple images for seamless infinite effect */}
                                             {[
@@ -1169,41 +1105,7 @@ const HomePage = () => {
             {/* Infinite Gallery - Full Width */}
             {/* <InfiniteGallery /> */}
 
-            {/* 3D Globe Gallery */}
-            <section className="mt-20 py-16 relative overflow-hidden">
-                <div className="mx-auto max-w-6xl px-4 relative z-10">
-                    
 
-                    <GlobeGallery
-                        images={[
-                            '/Img/Ingohartimage1/ingohartimage1.png',
-                            '/Img/Ingohartimage1/ingohartimage2.png',
-                            '/Img/Ingohartimage1/ingohartimage3.png',
-                            '/Img/Ingohartimage1/ingohartimage4.png',
-                            '/Img/Ingohartimage1/ingohartimage5.png',
-                            '/Img/Ingohartimage1/ingohartimage6.png',
-                            '/Img/Ingohartimage1/ingohartimage7.png',
-                            '/Img/Ingohartimage1/ingohartimage8.png',
-                            '/Img/Ingohartimage1/ingohartimage9.png',
-                            '/Img/Ingohartimage1/ingohartimage10.png',
-                            '/Img/Ingohartimage1/ingohartimage11.png',
-                            '/Img/Ingohartimage1/ingohartimage12.png',
-                            '/Img/Ingohartimage1/ingohartimage13.png',
-                            '/Img/Ingohartimage2/ingohartimage1_2.png',
-                            '/Img/Ingohartimage2/ingohartimage2_2.png',
-                            '/Img/Ingohartimage2/ingohartimage3_2.png',
-                            '/Img/Ingohartimage2/ingohartimage5_2.png',
-                            '/Img/Ingohartimage2/ingohartimage6_2.png',
-                        ]}
-                        imageWidth={10}
-                        imageHeight={10}
-                        imageRepeat={2}
-                        autoRotate={true}
-                        autoRotateSpeed={10}
-                        minHeight={550}
-                    />
-                </div>
-            </section>
 
             <main className="relative mx-auto max-w-6xl overflow-hidden px-4 pb-24">
                 {/* Review */}
@@ -1211,7 +1113,7 @@ const HomePage = () => {
                     id="review"
                     className="mt-20 space-y-12"
                 >
-                    <div className="section-title-wrapper">
+                    <div className="section-title-wrapper mb-3">
                         <p className="eyebrow-label">REVIEW</p>
                         <h2 className="section-title">
                             Review
@@ -1263,52 +1165,54 @@ const HomePage = () => {
                         return (
                             <>
                                 {/* Coverflow Carousel */}
-                                <div className="relative py-16">
+                                <div className="relative my-0!">
                                     <Swiper
                                         effect="coverflow"
                                         grabCursor={true}
                                         centeredSlides={true}
+                                        loop={true}
                                         slidesPerView="auto"
-                                        spaceBetween={30}
+                                        spaceBetween={50}
                                         coverflowEffect={{
-                                            rotate: 20,
+                                            rotate: 0,
                                             stretch: 0,
-                                            depth: 200,
-                                            modifier: 1.5,
-                                            slideShadows: true,
+                                            depth: 0,
+                                            modifier: 1,
+                                            slideShadows: false,
                                         }}
                                         onSlideChange={(swiper) => {
-                                            setActiveReviewIndex(swiper.activeIndex);
+                                            setActiveReviewIndex(swiper.realIndex);
                                         }}
                                         modules={[EffectCoverflow]}
-                                        className="review-coverflow !pb-8"
+                                        className="review-coverflow"
                                         breakpoints={{
                                             320: {
                                                 slidesPerView: 1.2,
-                                                spaceBetween: 20,
+                                                spaceBetween: 30,
                                             },
                                             640: {
                                                 slidesPerView: 1.5,
-                                                spaceBetween: 24,
+                                                spaceBetween: 40,
                                             },
                                             768: {
                                                 slidesPerView: 2,
-                                                spaceBetween: 30,
+                                                spaceBetween: 50,
                                             },
                                             1024: {
                                                 slidesPerView: 2.5,
-                                                spaceBetween: 40,
+                                                spaceBetween: 60,
                                             },
                                         }}
                                     >
                                         {reviews.map((review, idx) => (
                                             <SwiperSlide key={idx} className="!w-[280px] sm:!w-[320px] md:!w-[360px] lg:!w-[400px]">
                                                 <div className="review-card relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500">
-                                                    <div className="aspect-[4/5] relative">
+                                                    <div className="aspect-[2/2.43] relative">
                                                         <img
                                                             src={review.image}
                                                             alt={review.name}
-                                                            className="w-full h-full object-cover"
+                                                            className="w-full h-full object-cover select-none"
+                                                            draggable="false"
                                                         />
                                                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                                                     </div>
@@ -1319,7 +1223,7 @@ const HomePage = () => {
                                 </div>
 
                                 {/* Text Content Area with Animation */}
-                                <div className="relative min-h-[200px] md:min-h-[240px]">
+                                <div className="relative min-h-[200px] md:min-h-[240px] mt-0 md:mt-8">
                                     <div className="max-w-3xl mx-auto px-4">
                                         {reviews.map((review, idx) => (
                                             <div
@@ -1336,12 +1240,12 @@ const HomePage = () => {
                                                     <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
                                                         {review.name}
                                                     </h3>
-                                                    
+
                                                     {/* Description */}
                                                     <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto px-4">
                                                         {review.quote}
                                                     </p>
-                                                    
+
                                                     {/* Showcase Badge */}
                                                     <div className="pt-2">
                                                         <span className="inline-flex items-center px-4 py-2 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 text-sm md:text-base font-medium backdrop-blur-sm">
@@ -1358,12 +1262,46 @@ const HomePage = () => {
                     })()}
                 </section>
 
+                {/* 3D Globe Gallery */}
+                <section className="mt-3 relative overflow-hidden">
+                    <div className="mx-auto max-w-6xl px-4 relative z-10">
+                        <GlobeGallery
+                            images={[
+                                '/Img/Ingohartimage1/ingohartimage1.png',
+                                '/Img/Ingohartimage1/ingohartimage2.png',
+                                '/Img/Ingohartimage1/ingohartimage3.png',
+                                '/Img/Ingohartimage1/ingohartimage4.png',
+                                '/Img/Ingohartimage1/ingohartimage5.png',
+                                '/Img/Ingohartimage1/ingohartimage6.png',
+                                '/Img/Ingohartimage1/ingohartimage7.png',
+                                '/Img/Ingohartimage1/ingohartimage8.png',
+                                '/Img/Ingohartimage1/ingohartimage9.png',
+                                '/Img/Ingohartimage1/ingohartimage10.png',
+                                '/Img/Ingohartimage1/ingohartimage11.png',
+                                '/Img/Ingohartimage1/ingohartimage12.png',
+                                '/Img/Ingohartimage1/ingohartimage13.png',
+                                '/Img/Ingohartimage2/ingohartimage1_2.png',
+                                '/Img/Ingohartimage2/ingohartimage2_2.png',
+                                '/Img/Ingohartimage2/ingohartimage3_2.png',
+                                '/Img/Ingohartimage2/ingohartimage5_2.png',
+                                '/Img/Ingohartimage2/ingohartimage6_2.png',
+                            ]}
+                            imageWidth={10}
+                            imageHeight={10}
+                            imageRepeat={2}
+                            autoRotate={true}
+                            autoRotateSpeed={10}
+                            minHeight={550}
+                        />
+                    </div>
+                </section>
+
                 {/* Lịch sự kiện & Ưu Đãi */}
                 <section
                     id="lich-su-kien-uu-dai"
                     className="mt-20 space-y-8"
                 >
-                    <div className="section-title-wrapper">
+                    <div className="section-title-wrapper mb-5">
                         <p className="eyebrow-label">EVENTS</p>
                         <h2 className="section-title">
                             Lịch sự kiện & Ưu Đãi
@@ -1372,7 +1310,7 @@ const HomePage = () => {
                     </div>
 
                     {/* Swiper Coverflow Carousel */}
-                    <div className="relative py-12">
+                    <div className="relative">
                         <Swiper
                             effect="coverflow"
                             grabCursor={true}
@@ -1452,14 +1390,14 @@ const HomePage = () => {
                                     <div className="rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden backdrop-blur-sm shadow-xl transition-all duration-300 hover:border-amber-400/50 hover:shadow-amber-400/20">
                                         <div className="grid grid-cols-1">
                                             {/* Image */}
-                                            <div className="aspect-video overflow-hidden">
+                                            <div className="aspect-[21/9] overflow-hidden">
                                                 <img
                                                     src={item.image}
                                                     alt={item.title}
                                                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                                                 />
                                             </div>
-                                            
+
                                             {/* Content */}
                                             <div className="p-5 md:p-6">
                                                 <h3 className="text-lg md:text-xl font-bold text-white mb-3">{item.title}</h3>
