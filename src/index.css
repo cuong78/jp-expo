@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "swiper/css";
+@import "swiper/css/effect-coverflow";
 @import "swiper/css/navigation";
 @import "swiper/css/pagination";
 
@@ -355,4 +356,197 @@
 .animation-delay-100 {
     animation-delay: 0.15s;
     opacity: 0;
+}
+
+/* ---- Swiper Coverflow Custom Styles ---- */
+.swiper-pagination-bullet {
+    background: rgba(251, 191, 36, 0.5) !important;
+    opacity: 1 !important;
+    width: 12px !important;
+    height: 12px !important;
+    transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+    background: #fbbf24 !important;
+    width: 24px !important;
+    border-radius: 6px !important;
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.6) !important;
+}
+
+.swiper-pagination {
+    bottom: 0 !important;
+}
+
+/* Custom navigation buttons for event carousel */
+.swiper-button-prev-event,
+.swiper-button-next-event {
+    color: #fbbf24 !important;
+}
+
+.swiper-button-prev-event:hover,
+.swiper-button-next-event:hover {
+    color: #fcd34d !important;
+}
+
+/* Coverflow effect styling */
+.swiper-slide {
+    transition: all 0.3s ease !important;
+}
+
+.swiper-slide-shadow-left,
+.swiper-slide-shadow-right {
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.3),
+        transparent
+    ) !important;
+}
+
+/* ---- Review Coverflow Carousel Styles ---- */
+.review-coverflow {
+    padding: 60px 0 !important;
+}
+
+.review-coverflow .swiper-slide {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    filter: brightness(0.5) saturate(0.8);
+    transform: scale(0.85);
+}
+
+.review-coverflow .swiper-slide-active {
+    filter: brightness(1) saturate(1);
+    transform: scale(1.25) !important;
+    z-index: 10;
+}
+
+.review-coverflow .swiper-slide-prev,
+.review-coverflow .swiper-slide-next {
+    filter: brightness(0.6) saturate(0.85);
+    transform: scale(0.9);
+}
+
+.review-card {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.review-coverflow .swiper-slide-active .review-card {
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 0 2px rgba(251, 191, 36, 0.3),
+        0 0 40px rgba(251, 191, 36, 0.2),
+        0 0 80px rgba(251, 191, 36, 0.1);
+    border: 2px solid rgba(251, 191, 36, 0.4);
+}
+
+.review-coverflow .swiper-slide:not(.swiper-slide-active) .review-card {
+    opacity: 0.7;
+}
+
+.review-coverflow .swiper-slide-active .review-card {
+    opacity: 1;
+}
+
+/* Hover effect for non-active slides */
+.review-coverflow .swiper-slide:not(.swiper-slide-active):hover {
+    filter: brightness(0.7) saturate(0.9);
+    transform: scale(0.95);
+    cursor: pointer;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+    .review-coverflow {
+        padding: 40px 0 !important;
+    }
+    
+    .review-coverflow .swiper-slide-active {
+        transform: scale(1.1) !important;
+    }
+    
+    .review-coverflow .swiper-slide {
+        transform: scale(0.8);
+    }
+    
+    .review-coverflow .swiper-slide-prev,
+    .review-coverflow .swiper-slide-next {
+        transform: scale(0.85);
+    }
+}
+
+/* ---- Section Title Styles (Tech Premium) ---- */
+:root {
+    --heading-color: rgba(255, 255, 255, 0.92);
+    --subheading-color: rgba(255, 255, 255, 0.70);
+    --text-muted-color: rgba(255, 255, 255, 0.55);
+    --accent-gold: #FFD36A;
+}
+
+.section-title-wrapper {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.eyebrow-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--text-muted-color);
+    margin-bottom: 8px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.section-title {
+    font-family: 'Space Grotesk', 'Be Vietnam Pro', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--heading-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.section-title .accent-line {
+    display: inline-block;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-gold), transparent);
+    flex-shrink: 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .eyebrow-label {
+        font-size: 11px;
+        margin-bottom: 6px;
+    }
+    
+    .section-title {
+        font-size: 24px;
+        line-height: 1.2;
+        gap: 8px;
+    }
+    
+    .section-title .accent-line {
+        width: 40px;
+        height: 1.5px;
+    }
+}
+
+@media (max-width: 640px) {
+    .section-title {
+        font-size: 24px;
+    }
+    
+    .eyebrow-label {
+        font-size: 11px;
+    }
 }

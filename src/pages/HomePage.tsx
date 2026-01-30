@@ -12,10 +12,12 @@ import {
     UserRound,
     X,
 } from "lucide-react";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Footer } from "@/layouts/footer";
 import ArtSlider from "@/components/ArtSlider";
 import GlobeGallery from "@/components/GlobeGallery";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Navigation, Pagination } from "swiper/modules";
 
 type NavItem = {
     label: string;
@@ -44,7 +46,7 @@ const navItems: NavItem[] = [
         ],
     },
     { label: "Review", href: "#review" },
-    { label: "Tin tức", href: "#tin-tuc" },
+    { label: "Lịch sự kiện & Ưu Đãi", href: "#lich-su-kien-uu-dai" },
 ];
 
 const HomePage = () => {
@@ -63,10 +65,6 @@ const HomePage = () => {
     const [isLightCityExpanded, setIsLightCityExpanded] = useState<boolean>(false);
     const [isFlyOverExpanded, setIsFlyOverExpanded] = useState<boolean>(false);
     const [activeReviewIndex, setActiveReviewIndex] = useState<number>(0);
-
-    // Refs for sliders
-    const newsSliderRef = useRef<HTMLDivElement>(null);
-    const promoSliderRef = useRef<HTMLDivElement>(null);
 
     const galleryImages = [
         '/Img/Ingohartimage1/ingohartimage1.png',
@@ -111,20 +109,6 @@ const HomePage = () => {
         }
         setActiveNav(href);
         setIsMobileMenuOpen(false);
-    };
-
-    const scrollSlider = (ref: React.RefObject<HTMLDivElement | null>, direction: 'left' | 'right') => {
-        if (ref.current) {
-            const scrollAmount = 350; // width of card + gap
-            const newScrollLeft = direction === 'left'
-                ? ref.current.scrollLeft - scrollAmount
-                : ref.current.scrollLeft + scrollAmount;
-
-            ref.current.scrollTo({
-                left: newScrollLeft,
-                behavior: 'smooth'
-            });
-        }
     };
 
     const handleTouchStart = (e: React.TouchEvent) => {
@@ -604,8 +588,12 @@ const HomePage = () => {
 
                 {/* Sự kiện nổi bật - KlingAI Style */}
                 <section id="gioi-thieu" className="mt-12 space-y-6 md:mt-16">
-                    <div className="mb-3.5">
-                        <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Sự kiện</h2>
+                    <div className="section-title-wrapper mb-5">
+                        <p className="eyebrow-label">DISCOVER</p>
+                        <h2 className="section-title">
+                            Sự kiện
+                            <span className="accent-line"></span>
+                        </h2>
                     </div>
 
                     {/* Mobile Swiper Layout - Only on Mobile */}
@@ -1184,9 +1172,7 @@ const HomePage = () => {
             {/* 3D Globe Gallery */}
             <section className="mt-20 py-16 relative overflow-hidden">
                 <div className="mx-auto max-w-6xl px-4 relative z-10">
-                    <div className="mb-8">
-                        <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Thư viện 3D</h2>
-                    </div>
+                    
 
                     <GlobeGallery
                         images={[
@@ -1223,151 +1209,192 @@ const HomePage = () => {
                 {/* Review */}
                 <section
                     id="review"
-                    className="mt-20 space-y-8"
+                    className="mt-20 space-y-12"
                 >
-                    <div className="">
-                        <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Review</h2>
+                    <div className="section-title-wrapper">
+                        <p className="eyebrow-label">REVIEW</p>
+                        <h2 className="section-title">
+                            Review
+                            <span className="accent-line"></span>
+                        </h2>
                     </div>
 
-                    {/* Review Items Navigation */}
-                    <div className="relative">
-                        <div className="flex items-center justify-center gap-4 overflow-x-auto pb-8 scrollbar-none">
-                            {[
-                                {
-                                    name: "Trải nghiệm đáng nhớ",
-                                    image: "/Img/galinvidimage1.png",
-                                    quote: "Không gian triển lãm được thiết kế rất ấn tượng với công nghệ ánh sáng hiện đại. Mình và gia đình đã có những khoảnh khắc tuyệt vời.",
-                                },
-                                {
-                                    name: "Nghệ thuật sống động",
-                                    image: "/Img/galinvidimage2.png",
-                                    quote: "Các tác phẩm nghệ thuật được tái hiện một cách sống động qua công nghệ 3D mapping. Thực sự như lạc vào thế giới tranh vẽ.",
-                                },
-                                {
-                                    name: "Giáo dục và giải trí",
-                                    image: "/Img/galinvidimage3.png",
-                                    quote: "Light City là nơi tuyệt vời cho trẻ em vừa học vừa chơi. Con mình rất thích các hoạt động khoa học tương tác.",
-                                },
-                                {
-                                    name: "Công nghệ ấn tượng",
-                                    image: "/Img/galinvidimage4.png",
-                                    quote: "Chuyến bay 12D mang đến cảm giác thực tế tuyệt vời. Âm thanh và hình ảnh được đồng bộ hoàn hảo.",
-                                },
-                                {
-                                    name: "Không gian độc đáo",
-                                    image: "/Img/galinvidimage5.png",
-                                    quote: "Infinity World với gương phản chiếu vô tận tạo nên không gian nghệ thuật độc đáo. Chụp ảnh ở đây rất đẹp!",
-                                },
-                                {
-                                    name: "Đáng để ghé thăm",
-                                    image: "/Img/galinvidimage6.png",
-                                    quote: "Một địa điểm văn hóa nghệ thuật đáng để ghé thăm tại TP.HCM. Phù hợp cho cả gia đình và nhóm bạn.",
-                                },
-                            ].map((review, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => setActiveReviewIndex(idx)}
-                                    className={cn(
-                                        "flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all duration-500",
-                                        activeReviewIndex === idx
-                                            ? "w-24 h-24 border-amber-400 shadow-lg shadow-amber-400/50 scale-110"
-                                            : "w-16 h-16 border-white/20 hover:border-white/40 scale-100"
-                                    )}
-                                >
-                                    <img
-                                        src={review.image}
-                                        alt={review.name}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                    {/* Review Data */}
+                    {(() => {
+                        const reviews = [
+                            {
+                                name: "Trải nghiệm đáng nhớ",
+                                image: "/Img/galinvidimage1.png",
+                                quote: "Không gian triển lãm được thiết kế rất ấn tượng với công nghệ ánh sáng hiện đại. Mình và gia đình đã có những khoảnh khắc tuyệt vời.",
+                                showcase: "Light City Experience",
+                            },
+                            {
+                                name: "Nghệ thuật sống động",
+                                image: "/Img/galinvidimage2.png",
+                                quote: "Các tác phẩm nghệ thuật được tái hiện một cách sống động qua công nghệ 3D mapping. Thực sự như lạc vào thế giới tranh vẽ.",
+                                showcase: "Van Gogh & Monet Expo",
+                            },
+                            {
+                                name: "Giáo dục và giải trí",
+                                image: "/Img/galinvidimage3.png",
+                                quote: "Light City là nơi tuyệt vời cho trẻ em vừa học vừa chơi. Con mình rất thích các hoạt động khoa học tương tác.",
+                                showcase: "Interactive Learning Zone",
+                            },
+                            {
+                                name: "Công nghệ ấn tượng",
+                                image: "/Img/galinvidimage4.png",
+                                quote: "Chuyến bay 12D mang đến cảm giác thực tế tuyệt vời. Âm thanh và hình ảnh được đồng bộ hoàn hảo.",
+                                showcase: "Fly Over The World 12D",
+                            },
+                            {
+                                name: "Không gian độc đáo",
+                                image: "/Img/galinvidimage5.png",
+                                quote: "Infinity World với gương phản chiếu vô tận tạo nên không gian nghệ thuật độc đáo. Chụp ảnh ở đây rất đẹp!",
+                                showcase: "Infinity World",
+                            },
+                            {
+                                name: "Đáng để ghé thăm",
+                                image: "/Img/galinvidimage6.png",
+                                quote: "Một địa điểm văn hóa nghệ thuật đáng để ghé thăm tại TP.HCM. Phù hợp cho cả gia đình và nhóm bạn.",
+                                showcase: "Cultural Hub",
+                            },
+                        ];
 
-                    {/* Active Review Card - 2 Columns */}
-                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        {(() => {
-                            const reviews = [
-                                {
-                                    name: "Trải nghiệm đáng nhớ",
-                                    image: "/Img/galinvidimage1.png",
-                                    quote: "Không gian triển lãm được thiết kế rất ấn tượng với công nghệ ánh sáng hiện đại. Mình và gia đình đã có những khoảnh khắc tuyệt vời.",
-                                },
-                                {
-                                    name: "Nghệ thuật sống động",
-                                    image: "/Img/galinvidimage2.png",
-                                    quote: "Các tác phẩm nghệ thuật được tái hiện một cách sống động qua công nghệ 3D mapping. Thực sự như lạc vào thế giới tranh vẽ.",
-                                },
-                                {
-                                    name: "Giáo dục và giải trí",
-                                    image: "/Img/galinvidimage3.png",
-                                    quote: "Light City là nơi tuyệt vời cho trẻ em vừa học vừa chơi. Con mình rất thích các hoạt động khoa học tương tác.",
-                                },
-                                {
-                                    name: "Công nghệ ấn tượng",
-                                    image: "/Img/galinvidimage4.png",
-                                    quote: "Chuyến bay 12D mang đến cảm giác thực tế tuyệt vời. Âm thanh và hình ảnh được đồng bộ hoàn hảo.",
-                                },
-                                {
-                                    name: "Không gian độc đáo",
-                                    image: "/Img/galinvidimage5.png",
-                                    quote: "Infinity World với gương phản chiếu vô tận tạo nên không gian nghệ thuật độc đáo. Chụp ảnh ở đây rất đẹp!",
-                                },
-                                {
-                                    name: "Đáng để ghé thăm",
-                                    image: "/Img/galinvidimage6.png",
-                                    quote: "Một địa điểm văn hóa nghệ thuật đáng để ghé thăm tại TP.HCM. Phù hợp cho cả gia đình và nhóm bạn.",
-                                },
-                            ];
-                            const activeReview = reviews[activeReviewIndex];
-                            
-                            return (
-                                <div className="rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden backdrop-blur-sm">
-                                    <div className="grid grid-cols-1 md:grid-cols-2">
-                                        {/* Left Column - Image */}
-                                        <div className="aspect-video md:aspect-auto md:h-[300px] overflow-hidden">
-                                            <img
-                                                src={activeReview.image}
-                                                alt={activeReview.name}
-                                                className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
-                                            />
-                                        </div>
-                                        
-                                        {/* Right Column - Content */}
-                                        <div className="p-5 md:p-6 flex flex-col justify-center">
-                                            <h3 className="text-lg md:text-xl font-bold text-white mb-3">{activeReview.name}</h3>
-                                            <p className="text-sm leading-relaxed text-white/80">{activeReview.quote}</p>
-                                        </div>
+                        return (
+                            <>
+                                {/* Coverflow Carousel */}
+                                <div className="relative py-16">
+                                    <Swiper
+                                        effect="coverflow"
+                                        grabCursor={true}
+                                        centeredSlides={true}
+                                        slidesPerView="auto"
+                                        spaceBetween={30}
+                                        coverflowEffect={{
+                                            rotate: 20,
+                                            stretch: 0,
+                                            depth: 200,
+                                            modifier: 1.5,
+                                            slideShadows: true,
+                                        }}
+                                        onSlideChange={(swiper) => {
+                                            setActiveReviewIndex(swiper.activeIndex);
+                                        }}
+                                        modules={[EffectCoverflow]}
+                                        className="review-coverflow !pb-8"
+                                        breakpoints={{
+                                            320: {
+                                                slidesPerView: 1.2,
+                                                spaceBetween: 20,
+                                            },
+                                            640: {
+                                                slidesPerView: 1.5,
+                                                spaceBetween: 24,
+                                            },
+                                            768: {
+                                                slidesPerView: 2,
+                                                spaceBetween: 30,
+                                            },
+                                            1024: {
+                                                slidesPerView: 2.5,
+                                                spaceBetween: 40,
+                                            },
+                                        }}
+                                    >
+                                        {reviews.map((review, idx) => (
+                                            <SwiperSlide key={idx} className="!w-[280px] sm:!w-[320px] md:!w-[360px] lg:!w-[400px]">
+                                                <div className="review-card relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500">
+                                                    <div className="aspect-[4/5] relative">
+                                                        <img
+                                                            src={review.image}
+                                                            alt={review.name}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                                    </div>
+                                                </div>
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </div>
+
+                                {/* Text Content Area with Animation */}
+                                <div className="relative min-h-[200px] md:min-h-[240px]">
+                                    <div className="max-w-3xl mx-auto px-4">
+                                        {reviews.map((review, idx) => (
+                                            <div
+                                                key={idx}
+                                                className={cn(
+                                                    "absolute inset-0 transition-all duration-700 ease-in-out",
+                                                    activeReviewIndex === idx
+                                                        ? "opacity-100 translate-y-0"
+                                                        : "opacity-0 translate-y-4 pointer-events-none"
+                                                )}
+                                            >
+                                                <div className="text-center space-y-4">
+                                                    {/* Creator Name */}
+                                                    <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                                                        {review.name}
+                                                    </h3>
+                                                    
+                                                    {/* Description */}
+                                                    <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto px-4">
+                                                        {review.quote}
+                                                    </p>
+                                                    
+                                                    {/* Showcase Badge */}
+                                                    <div className="pt-2">
+                                                        <span className="inline-flex items-center px-4 py-2 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 text-sm md:text-base font-medium backdrop-blur-sm">
+                                                            {review.showcase}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                            );
-                        })()}
-                    </div>
+                            </>
+                        );
+                    })()}
                 </section>
 
-                {/* Tin tức */}
+                {/* Lịch sự kiện & Ưu Đãi */}
                 <section
-                    id="tin-tuc"
-                    className="mt-20 space-y-6"
+                    id="lich-su-kien-uu-dai"
+                    className="mt-20 space-y-8"
                 >
-                    <div>
-                        <h2 className="shadow-2xl text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Lịch sự kiện & cập nhật</h2>
+                    <div className="section-title-wrapper">
+                        <p className="eyebrow-label">EVENTS</p>
+                        <h2 className="section-title">
+                            Lịch sự kiện & Ưu Đãi
+                            <span className="accent-line"></span>
+                        </h2>
                     </div>
 
-                    {/* News Cards Slider */}
-                    <div className="relative group">
-                        {/* Previous Button */}
-                        <button
-                            onClick={() => scrollSlider(newsSliderRef, 'left')}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
-                            aria-label="Previous"
-                        >
-                            <ChevronLeft size={24} />
-                        </button>
-
-                        <div
-                            ref={newsSliderRef}
-                            className="flex gap-6 overflow-x-auto pb-4 scrollbar-none scroll-smooth"
+                    {/* Swiper Coverflow Carousel */}
+                    <div className="relative py-12">
+                        <Swiper
+                            effect="coverflow"
+                            grabCursor={true}
+                            centeredSlides={true}
+                            slidesPerView="auto"
+                            coverflowEffect={{
+                                rotate: 50,
+                                stretch: 0,
+                                depth: 100,
+                                modifier: 1,
+                                slideShadows: true,
+                            }}
+                            navigation={{
+                                nextEl: ".swiper-button-next-event",
+                                prevEl: ".swiper-button-prev-event",
+                            }}
+                            pagination={{
+                                clickable: true,
+                                dynamicBullets: true,
+                            }}
+                            modules={[EffectCoverflow, Navigation, Pagination]}
+                            className="!pb-16"
                         >
                             {[
                                 {
@@ -1395,64 +1422,6 @@ const HomePage = () => {
                                     image: "/Img/2000x2000_64ede7db8a2f48efa8b356f786a90c68_grande.png",
                                     description: "Đắm chìm trong thế giới nghệ thuật ấn tượng của Claude Monet với công nghệ 3D mapping và chiếu sáng độc đáo.",
                                 },
-                            ].map((news, idx) => (
-                                <div
-                                    key={idx}
-                                    className="flex-shrink-0 w-[280px] sm:w-[320px] rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden transition hover:-translate-y-1 hover:border-amber-400/60"
-                                >
-                                    {/* Image */}
-                                    <div className="aspect-video overflow-hidden">
-                                        <img
-                                            src={news.image}
-                                            alt={news.title}
-                                            className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
-                                        />
-                                    </div>
-                                    {/* Content */}
-                                    <div className="p-5">
-                                        <h3 className="text-lg font-bold text-white mb-3">{news.title}</h3>
-                                        <p className="text-sm leading-relaxed text-white/75">{news.description}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Next Button */}
-                        <button
-                            onClick={() => scrollSlider(newsSliderRef, 'right')}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
-                            aria-label="Next"
-                        >
-                            <ChevronRight size={24} />
-                        </button>
-                    </div>
-                </section>
-
-                {/* Thông tin ưu đãi */}
-                <section
-                    id="uu-dai"
-                    className="mt-20 space-y-6"
-                >
-                    <div>
-                        <h2 className="text-3xl text-center font-bold tracking-[0.3em] text-amber-400">Ưu Đãi</h2>
-                    </div>
-
-                    {/* Promotion Cards Slider */}
-                    <div className="relative group">
-                        {/* Previous Button */}
-                        <button
-                            onClick={() => scrollSlider(promoSliderRef, 'left')}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
-                            aria-label="Previous"
-                        >
-                            <ChevronLeft size={24} />
-                        </button>
-
-                        <div
-                            ref={promoSliderRef}
-                            className="flex gap-6 overflow-x-auto pb-4 scrollbar-none scroll-smooth"
-                        >
-                            {[
                                 {
                                     title: "Mùa 1 Tặng 1 - Vé Đồng Hành",
                                     image: "/Img/thumb1_3561ba2f78c247f9a0a16dcdb7a0f427_grande.jpg",
@@ -1478,35 +1447,36 @@ const HomePage = () => {
                                     image: "/Img/1200x1200_a4cb51208fdd4ed798ab47827bdbed3c_grande.png",
                                     description: "Check-in trên Google Map khi mua vé trên lâm bất kỳ nhận ngay 1 vé miễn phí. Áp dụng từ ngày 07.01.2026.",
                                 },
-                            ].map((promo, idx) => (
-                                <div
-                                    key={idx}
-                                    className="flex-shrink-0 w-[280px] sm:w-[320px] rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden transition hover:-translate-y-1 hover:border-amber-400/60"
-                                >
-                                    {/* Image */}
-                                    <div className="aspect-video overflow-hidden">
-                                        <img
-                                            src={promo.image}
-                                            alt={promo.title}
-                                            className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
-                                        />
+                            ].map((item, idx) => (
+                                <SwiperSlide key={idx} className="!w-[320px] sm:!w-[380px] md:!w-[420px]">
+                                    <div className="rounded-2xl border border-white/10 bg-slate-900/60 overflow-hidden backdrop-blur-sm shadow-xl transition-all duration-300 hover:border-amber-400/50 hover:shadow-amber-400/20">
+                                        <div className="grid grid-cols-1">
+                                            {/* Image */}
+                                            <div className="aspect-video overflow-hidden">
+                                                <img
+                                                    src={item.image}
+                                                    alt={item.title}
+                                                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                                                />
+                                            </div>
+                                            
+                                            {/* Content */}
+                                            <div className="p-5 md:p-6">
+                                                <h3 className="text-lg md:text-xl font-bold text-white mb-3">{item.title}</h3>
+                                                <p className="text-sm leading-relaxed text-white/80">{item.description}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    {/* Content */}
-                                    <div className="p-5">
-                                        <h3 className="text-lg font-bold text-white mb-3">{promo.title}</h3>
-                                        <p className="text-sm leading-relaxed text-white/75">{promo.description}</p>
-                                    </div>
-                                </div>
+                                </SwiperSlide>
                             ))}
-                        </div>
+                        </Swiper>
 
-                        {/* Next Button */}
-                        <button
-                            onClick={() => scrollSlider(promoSliderRef, 'right')}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white transition hover:bg-black/70 opacity-0 group-hover:opacity-100"
-                            aria-label="Next"
-                        >
-                            <ChevronRight size={24} />
+                        {/* Custom Navigation Buttons */}
+                        <button className="swiper-button-prev-event absolute left-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white transition hover:bg-black/80 hover:scale-110 shadow-lg">
+                            <ChevronLeft size={28} />
+                        </button>
+                        <button className="swiper-button-next-event absolute right-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white transition hover:bg-black/80 hover:scale-110 shadow-lg">
+                            <ChevronRight size={28} />
                         </button>
                     </div>
                 </section>
