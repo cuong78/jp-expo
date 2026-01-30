@@ -513,7 +513,7 @@ const HomePage = () => {
                 <HeroSwiper />
             </section> */}
 
-            <main className="relative mx-auto max-w-6xl overflow-hidden px-4 pb-24 pt-3 lg:pt-5">
+            <main className="relative mx-auto max-w-6xl overflow-hidden px-4 pt-3">
                 <div className="absolute right-10 top-40 -z-10 h-40 w-40 rounded-full bg-indigo-500/20 blur-3xl" />
 
                 {/* Art Slider */}
@@ -1187,38 +1187,59 @@ const HomePage = () => {
                                         className="review-coverflow"
                                         breakpoints={{
                                             320: {
-                                                slidesPerView: 1.2,
-                                                spaceBetween: 30,
+                                                slidesPerView: 3,
+                                                spaceBetween: 10,
                                             },
                                             640: {
-                                                slidesPerView: 1.5,
-                                                spaceBetween: 40,
+                                                slidesPerView: 3,
+                                                spaceBetween: 15,
                                             },
                                             768: {
-                                                slidesPerView: 2,
-                                                spaceBetween: 50,
+                                                slidesPerView: 3,
+                                                spaceBetween: 20,
                                             },
                                             1024: {
-                                                slidesPerView: 2.5,
-                                                spaceBetween: 60,
+                                                slidesPerView: 3,
+                                                spaceBetween: 30,
                                             },
                                         }}
                                     >
-                                        {reviews.map((review, idx) => (
-                                            <SwiperSlide key={idx} className="!w-[280px] sm:!w-[320px] md:!w-[360px] lg:!w-[400px]">
-                                                <div className="review-card relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500">
-                                                    <div className="aspect-[2/2.43] relative">
-                                                        <img
-                                                            src={review.image}
-                                                            alt={review.name}
-                                                            className="w-full h-full object-cover select-none"
-                                                            draggable="false"
-                                                        />
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                        {reviews.map((review, idx) => {
+                                            const isActive = activeReviewIndex === idx;
+                                            return (
+                                                <SwiperSlide
+                                                    key={idx}
+                                                    className="transition-all duration-500"
+                                                >
+                                                    <div className={cn(
+                                                        "review-card relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 w-full",
+                                                        isActive
+                                                            ? "ring-2 ring-white/90 shadow-[0_0_40px_rgba(255,255,255,0.4)] scale-100 z-10"
+                                                            : "scale-[0.75] sm:scale-[0.8] opacity-60"
+                                                    )}>
+                                                        <div className="aspect-[2/3.2] relative w-full">
+                                                            <img
+                                                                src={review.image}
+                                                                alt={review.name}
+                                                                className={cn(
+                                                                    "w-full h-full object-cover select-none transition-all duration-500",
+                                                                    isActive
+                                                                        ? "brightness-100 grayscale-0 saturate-100"
+                                                                        : "brightness-[0.2] grayscale sm:brightness-[0.3] sm:grayscale saturate-0"
+                                                                )}
+                                                                draggable="false"
+                                                            />
+                                                            <div className={cn(
+                                                                "absolute inset-0 bg-gradient-to-t transition-all duration-500",
+                                                                isActive
+                                                                    ? "from-black/60 via-transparent to-transparent"
+                                                                    : "from-black/95 via-black/80 to-black/60"
+                                                            )} />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </SwiperSlide>
-                                        ))}
+                                                </SwiperSlide>
+                                            );
+                                        })}
                                     </Swiper>
                                 </div>
 
@@ -1263,7 +1284,7 @@ const HomePage = () => {
                 </section>
 
                 {/* 3D Globe Gallery */}
-                <section className="mt-3 relative overflow-hidden">
+                <section className="mt-20 md:mt-3 relative overflow-hidden">
                     <div className="mx-auto max-w-6xl px-4 relative z-10">
                         <GlobeGallery
                             images={[
@@ -1410,10 +1431,10 @@ const HomePage = () => {
                         </Swiper>
 
                         {/* Custom Navigation Buttons */}
-                        <button className="swiper-button-prev-event absolute left-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white transition hover:bg-black/80 hover:scale-110 shadow-lg">
+                        <button className="swiper-button-prev-event absolute left-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex h-12 w-12 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white transition hover:bg-black/80 hover:scale-110 shadow-lg">
                             <ChevronLeft size={28} />
                         </button>
-                        <button className="swiper-button-next-event absolute right-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white transition hover:bg-black/80 hover:scale-110 shadow-lg">
+                        <button className="swiper-button-next-event absolute right-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex h-12 w-12 items-center justify-center rounded-full bg-black/60 backdrop-blur-sm text-white transition hover:bg-black/80 hover:scale-110 shadow-lg">
                             <ChevronRight size={28} />
                         </button>
                     </div>
