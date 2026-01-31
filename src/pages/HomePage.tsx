@@ -534,23 +534,33 @@ const HomePage = () => {
                     {/* Mobile Swiper Layout - Only on Mobile */}
                     <div className="lg:hidden">
                         <div className="relative">
+                            {/* Hint Text - Show total events */}
+                            <div className="flex items-center justify-center gap-2 mb-4">
+                    
+                                <span className="text-xs text-white/50 italic">Vuốt để xem thêm</span>
+                            </div>
+
+                            {/* Gradient Fade Indicators */}
+                            <div className="pointer-events-none absolute left-0 top-0 z-20 h-full w-16 bg-gradient-to-r from-slate-950 via-slate-950/50 to-transparent" />
+                            <div className="pointer-events-none absolute right-0 top-0 z-20 h-full w-16 bg-gradient-to-l from-slate-950 via-slate-950/50 to-transparent" />
+
                             {/* Swipeable Container */}
                             <div
                                 ref={(el) => {
                                     if (el) {
                                         const handleScroll = () => {
                                             const scrollLeft = el.scrollLeft;
-                                            const cardWidth = el.offsetWidth;
+                                            const cardWidth = el.offsetWidth * 0.9 + 16; // 90% width + gap
                                             const newIndex = Math.round(scrollLeft / cardWidth);
                                             const events = ['vangogh', 'lightcity', 'flyover'];
-                                            if (events[newIndex]) {
+                                            if (events[newIndex] !== undefined) {
                                                 setActiveNav(events[newIndex]);
                                             }
                                         };
                                         el.addEventListener('scroll', handleScroll);
                                     }
                                 }}
-                                className="flex snap-x snap-mandatory overflow-x-auto scrollbar-none scroll-smooth gap-4 pb-2"
+                                className="events-mobile-container flex snap-x snap-mandatory overflow-x-auto scrollbar-none scroll-smooth gap-4 pb-2 px-4"
                             >
                                 {[
                                     {
@@ -584,7 +594,7 @@ const HomePage = () => {
                                         borderColor: 'border-indigo-500/30'
                                     }
                                 ].map((event) => (
-                                    <div key={event.id} className="snap-center flex-shrink-0 w-full px-2">
+                                    <div key={event.id} className="snap-center flex-shrink-0 w-[90%] sm:w-[85%]">
                                         <div className={cn(
                                             "relative overflow-hidden rounded-2xl border p-6 backdrop-blur-sm h-[500px] flex flex-col",
                                             event.borderColor,
@@ -700,28 +710,43 @@ const HomePage = () => {
                                 ))}
                             </div>
 
-                            {/* Scroll Indicator Dots */}
-                            <div className="flex justify-center gap-2 mt-4">
-                                {['vangogh', 'lightcity', 'flyover'].map((id, idx) => (
-                                    <button
-                                        key={id}
-                                        onClick={() => {
-                                            const container = document.querySelector('.snap-x') as HTMLElement;
-                                            if (container) {
-                                                container.scrollTo({
-                                                    left: idx * container.offsetWidth,
-                                                    behavior: 'smooth'
-                                                });
-                                            }
-                                        }}
-                                        className={cn(
-                                            "h-2 rounded-full transition-all duration-300",
-                                            activeNav === id
-                                                ? "w-8 bg-white"
-                                                : "w-2 bg-white/30"
-                                        )}
-                                    />
-                                ))}
+                            {/* Enhanced Scroll Indicator with Counter */}
+                            <div className="flex flex-col items-center gap-3 mt-6">
+                                {/* Dots */}
+                                <div className="flex justify-center gap-2">
+                                    {['vangogh', 'lightcity', 'flyover'].map((id, idx) => (
+                                        <button
+                                            key={id}
+                                            onClick={() => {
+                                                const container = document.querySelector('.events-mobile-container') as HTMLElement;
+                                                if (container) {
+                                                    const containerWidth = container.offsetWidth;
+                                                    const cardWidth = containerWidth * 0.9 + 16; // 90% width + gap
+                                                    container.scrollTo({
+                                                        left: idx * cardWidth,
+                                                        behavior: 'smooth'
+                                                    });
+                                                }
+                                            }}
+                                            className={cn(
+                                                "h-2.5 rounded-full transition-all duration-300",
+                                                activeNav === id
+                                                    ? "w-10 bg-white shadow-lg shadow-white/50"
+                                                    : "w-2.5 bg-white/40 hover:bg-white/60"
+                                            )}
+                                            aria-label={`Sự kiện ${idx + 1}`}
+                                        />
+                                    ))}
+                                </div>
+                                
+                                {/* Counter Text */}
+                                <div className="flex items-center gap-2">
+                                    <span className="text-sm font-semibold text-white">
+                                        {activeNav === 'vangogh' ? '1' : activeNav === 'lightcity' ? '2' : '3'}
+                                    </span>
+                                    <span className="text-xs text-white/50">/</span>
+                                    <span className="text-xs text-white/60">3</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1215,7 +1240,7 @@ const HomePage = () => {
                                                         "review-card relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 w-full",
                                                         isActive
                                                             ? "ring-2 ring-white/90 shadow-[0_0_40px_rgba(255,255,255,0.4)] scale-100 z-10"
-                                                            : "scale-[0.75] sm:scale-[0.8] opacity-60"
+                                                            : "scale-[0.75] sm:scale-[0.8] opacity-75"
                                                     )}>
                                                         <div className="aspect-[2/3.2] relative w-full">
                                                             <img
@@ -1225,7 +1250,7 @@ const HomePage = () => {
                                                                     "w-full h-full object-cover select-none transition-all duration-500",
                                                                     isActive
                                                                         ? "brightness-100 grayscale-0 saturate-100"
-                                                                        : "brightness-[0.2] grayscale sm:brightness-[0.3] sm:grayscale saturate-0"
+                                                                        : "brightness-[0.85] grayscale-[0.3] sm:brightness-[0.9] sm:grayscale-[0.2] saturate-[0.6]"
                                                                 )}
                                                                 draggable="false"
                                                             />
@@ -1233,7 +1258,7 @@ const HomePage = () => {
                                                                 "absolute inset-0 bg-gradient-to-t transition-all duration-500",
                                                                 isActive
                                                                     ? "from-black/60 via-transparent to-transparent"
-                                                                    : "from-black/95 via-black/80 to-black/60"
+                                                                    : "from-black/20 via-black/10 to-transparent"
                                                             )} />
                                                         </div>
                                                     </div>
