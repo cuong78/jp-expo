@@ -196,6 +196,53 @@ const HomePage = () => {
         };
     }, [lastScrollY]);
 
+    // Smooth Fade In Animation for Mobile Event Cards
+    useEffect(() => {
+        if (window.innerWidth >= 1024) return; // Only on mobile
+
+        const eventCards = document.querySelectorAll('.event-card-3d');
+        
+        // Intersection Observer for smooth fade in effect
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                const card = entry.target as HTMLElement;
+                
+                if (entry.isIntersecting) {
+                    // Stagger delay for each card
+                    const delay = index * 150; // 150ms delay between cards
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0) scale(1)';
+                        card.classList.add('card-visible');
+                    }, delay);
+                }
+            });
+        }, observerOptions);
+
+        // Initialize all cards
+        eventCards.forEach((card) => {
+            const cardElement = card as HTMLElement;
+            // Initial hidden state
+            cardElement.style.opacity = '0';
+            cardElement.style.transform = 'translateY(40px) scale(0.96)';
+            cardElement.style.transition = 'opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
+            cardElement.style.willChange = 'opacity, transform';
+            
+            // Observe card
+            observer.observe(card);
+        });
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
+
     return (
         <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white relative">
             {/* Starry Background - Full Page */}
@@ -531,82 +578,67 @@ const HomePage = () => {
                         </h2>
                     </div>
 
-                    {/* Mobile Swiper Layout - Only on Mobile */}
+                    {/* Mobile Vertical Stack Layout with 3D Effect - Only on Mobile */}
                     <div className="lg:hidden">
-                        <div className="relative">
-                            {/* Hint Text - Show total events */}
-                            <div className="flex items-center justify-center gap-2 mb-4">
-                    
-                                <span className="text-xs text-white/50 italic">Vuốt để xem thêm</span>
-                            </div>
-
-                            {/* Gradient Fade Indicators */}
-                            <div className="pointer-events-none absolute left-0 top-0 z-20 h-full w-16 bg-gradient-to-r from-slate-950 via-slate-950/50 to-transparent" />
-                            <div className="pointer-events-none absolute right-0 top-0 z-20 h-full w-16 bg-gradient-to-l from-slate-950 via-slate-950/50 to-transparent" />
-
-                            {/* Swipeable Container */}
-                            <div
-                                ref={(el) => {
-                                    if (el) {
-                                        const handleScroll = () => {
-                                            const scrollLeft = el.scrollLeft;
-                                            const cardWidth = el.offsetWidth * 0.9 + 16; // 90% width + gap
-                                            const newIndex = Math.round(scrollLeft / cardWidth);
-                                            const events = ['vangogh', 'lightcity', 'flyover'];
-                                            if (events[newIndex] !== undefined) {
-                                                setActiveNav(events[newIndex]);
-                                            }
-                                        };
-                                        el.addEventListener('scroll', handleScroll);
-                                    }
-                                }}
-                                className="events-mobile-container flex snap-x snap-mandatory overflow-x-auto scrollbar-none scroll-smooth gap-4 pb-2 px-4"
-                            >
-                                {[
-                                    {
-                                        id: 'vangogh',
-                                        title: 'Vincent Van Gogh & Claude Monet',
-                                        subtitle: 'Limited Version',
-                                        tag: 'Immersive Art',
-                                        description: 'Bắt đầu một cuộc phiêu lưu đa giác quan độc đáo tại Van Gogh & Monet Art Lighting Experience, nơi nghệ thuật và công nghệ hoà quyện.',
-                                        video: 'https://www.youtube.com/embed/wqzWu4UIVHg?autoplay=0&mute=1&controls=1&rel=0',
-                                        color: 'from-purple-500/10 to-pink-500/10',
-                                        borderColor: 'border-purple-500/30'
-                                    },
-                                    {
-                                        id: 'lightcity',
-                                        title: 'LIGHT CITY',
-                                        subtitle: 'Khu giáo dục giải trí công nghệ cao',
-                                        tag: 'New Update',
-                                        description: 'Khu giáo dục giải trí công nghệ cao mang đến trải nghiệm tương tác đa giác quan, kết hợp STEM với các hoạt động giáo dục sáng tạo.',
-                                        video: 'https://www.youtube.com/embed/fCfoU2s5kjM?autoplay=0&mute=1&controls=1&rel=0',
-                                        color: 'from-cyan-500/10 to-blue-500/10',
-                                        borderColor: 'border-cyan-500/30'
-                                    },
-                                    {
-                                        id: 'flyover',
-                                        title: 'Fly Over The World & Infinity World',
-                                        subtitle: '12D Experience',
-                                        tag: 'Signature Ride',
-                                        description: 'Hãy sẵn sàng cất cánh với chuyến bay 12D đầy kỳ thú, tham gia cùng các lễ hội văn hóa, chiêm ngưỡng thiên nhiên hùng vĩ.',
-                                        video: '/Img/ingohartimg3.png',
-                                        color: 'from-indigo-500/10 to-purple-500/10',
-                                        borderColor: 'border-indigo-500/30'
-                                    }
-                                ].map((event) => (
-                                    <div key={event.id} className="snap-center flex-shrink-0 w-[90%] sm:w-[85%]">
+                        <div className="space-y-8" style={{ perspective: '1000px' }}>
+                            {[
+                                {
+                                    id: 'vangogh',
+                                    title: 'Vincent Van Gogh & Claude Monet',
+                                    subtitle: 'Limited Version',
+                                    tag: 'Immersive Art',
+                                    description: 'Bắt đầu một cuộc phiêu lưu đa giác quan độc đáo tại Van Gogh & Monet Art Lighting Experience, nơi nghệ thuật và công nghệ hoà quyện.',
+                                    video: 'https://www.youtube.com/embed/wqzWu4UIVHg?autoplay=0&mute=1&controls=1&rel=0',
+                                    color: 'from-purple-500/10 to-pink-500/10',
+                                    borderColor: 'border-purple-500/30'
+                                },
+                                {
+                                    id: 'lightcity',
+                                    title: 'LIGHT CITY',
+                                    subtitle: 'Khu giáo dục giải trí công nghệ cao',
+                                    tag: 'New Update',
+                                    description: 'Khu giáo dục giải trí công nghệ cao mang đến trải nghiệm tương tác đa giác quan, kết hợp STEM với các hoạt động giáo dục sáng tạo.',
+                                    video: 'https://www.youtube.com/embed/fCfoU2s5kjM?autoplay=0&mute=1&controls=1&rel=0',
+                                    color: 'from-cyan-500/10 to-blue-500/10',
+                                    borderColor: 'border-cyan-500/30'
+                                },
+                                {
+                                    id: 'flyover',
+                                    title: 'Fly Over The World & Infinity World',
+                                    subtitle: '12D Experience',
+                                    tag: 'Signature Ride',
+                                    description: 'Hãy sẵn sàng cất cánh với chuyến bay 12D đầy kỳ thú, tham gia cùng các lễ hội văn hóa, chiêm ngưỡng thiên nhiên hùng vĩ.',
+                                    video: '/Img/ingohartimg3.png',
+                                    color: 'from-indigo-500/10 to-purple-500/10',
+                                    borderColor: 'border-indigo-500/30'
+                                }
+                            ].map((event) => (
+                                <div
+                                    key={event.id}
+                                    className="event-card-3d"
+                                >
+                                    <div className={cn(
+                                        "relative overflow-hidden rounded-2xl border p-6 backdrop-blur-sm min-h-[500px] flex flex-col",
+                                        event.borderColor,
+                                        "bg-gradient-to-br",
+                                        event.color,
+                                        "shadow-2xl"
+                                    )}>
+                                        {/* 3D Glow Effect */}
                                         <div className={cn(
-                                            "relative overflow-hidden rounded-2xl border p-6 backdrop-blur-sm h-[500px] flex flex-col",
-                                            event.borderColor,
-                                            "bg-gradient-to-br",
-                                            event.color
-                                        )}>
+                                            "absolute inset-0 opacity-0 transition-opacity duration-500",
+                                            event.id === 'vangogh' && "bg-gradient-to-br from-purple-500/20 to-pink-500/20",
+                                            event.id === 'lightcity' && "bg-gradient-to-br from-cyan-500/20 to-blue-500/20",
+                                            event.id === 'flyover' && "bg-gradient-to-br from-indigo-500/20 to-purple-500/20"
+                                        )} />
+
+                                        <div className="relative z-10 flex flex-col h-full">
                                             {/* Header */}
                                             <div className="mb-4 flex items-center justify-between flex-shrink-0">
                                                 <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
                                                     {event.tag}
                                                 </span>
-                                                <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-lg shadow-cyan-400/50" />
+                                                <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-lg shadow-cyan-400/50 animate-pulse" />
                                             </div>
 
                                             {/* Title */}
@@ -639,7 +671,7 @@ const HomePage = () => {
                                             </div>
 
                                             {/* Image Gallery with Infinite Scroll */}
-                                            <div className="relative overflow-hidden mb-4 flex-shrink-0">
+                                            <div className="relative overflow-hidden mb-4 flex-shrink-0 rounded-xl">
                                                 <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-12 bg-gradient-to-r from-slate-950 to-transparent" />
                                                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-12 bg-gradient-to-l from-slate-950 to-transparent" />
 
@@ -674,7 +706,7 @@ const HomePage = () => {
                                             </div>
 
                                             {/* Description */}
-                                            <div className="flex-shrink-0 mb-4 max-h-24 overflow-y-auto">
+                                            <div className="flex-shrink-0 mb-4">
                                                 <p className="text-sm leading-relaxed text-white/80">
                                                     {event.description}
                                                 </p>
@@ -707,47 +739,8 @@ const HomePage = () => {
                                             </div>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-
-                            {/* Enhanced Scroll Indicator with Counter */}
-                            <div className="flex flex-col items-center gap-3 mt-6">
-                                {/* Dots */}
-                                <div className="flex justify-center gap-2">
-                                    {['vangogh', 'lightcity', 'flyover'].map((id, idx) => (
-                                        <button
-                                            key={id}
-                                            onClick={() => {
-                                                const container = document.querySelector('.events-mobile-container') as HTMLElement;
-                                                if (container) {
-                                                    const containerWidth = container.offsetWidth;
-                                                    const cardWidth = containerWidth * 0.9 + 16; // 90% width + gap
-                                                    container.scrollTo({
-                                                        left: idx * cardWidth,
-                                                        behavior: 'smooth'
-                                                    });
-                                                }
-                                            }}
-                                            className={cn(
-                                                "h-2.5 rounded-full transition-all duration-300",
-                                                activeNav === id
-                                                    ? "w-10 bg-white shadow-lg shadow-white/50"
-                                                    : "w-2.5 bg-white/40 hover:bg-white/60"
-                                            )}
-                                            aria-label={`Sự kiện ${idx + 1}`}
-                                        />
-                                    ))}
                                 </div>
-                                
-                                {/* Counter Text */}
-                                <div className="flex items-center gap-2">
-                                    <span className="text-sm font-semibold text-white">
-                                        {activeNav === 'vangogh' ? '1' : activeNav === 'lightcity' ? '2' : '3'}
-                                    </span>
-                                    <span className="text-xs text-white/50">/</span>
-                                    <span className="text-xs text-white/60">3</span>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
 
@@ -1136,9 +1129,9 @@ const HomePage = () => {
                 {/* Review */}
                 <section
                     id="review"
-                    className="mt-20 space-y-12"
+                    className="mt-20 space-y-6"
                 >
-                    <div className="section-title-wrapper mb-3">
+                    <div className="section-title-wrapper mb-2">
                         <p className="eyebrow-label">REVIEW</p>
                         <h2 className="section-title">
                             Review
@@ -1190,7 +1183,7 @@ const HomePage = () => {
                         return (
                             <>
                                 {/* Coverflow Carousel */}
-                                <div className="relative my-0!">
+                                <div className="relative">
                                     <Swiper
                                         effect="coverflow"
                                         grabCursor={true}
@@ -1269,7 +1262,7 @@ const HomePage = () => {
                                 </div>
 
                                 {/* Text Content Area with Animation */}
-                                <div className="relative min-h-[200px] md:min-h-[240px] mt-0 md:mt-8">
+                                <div className="relative min-h-[160px] md:min-h-[180px] mt-2 md:mt-3">
                                     <div className="max-w-3xl mx-auto px-4">
                                         {reviews.map((review, idx) => (
                                             <div
@@ -1281,20 +1274,20 @@ const HomePage = () => {
                                                         : "opacity-0 translate-y-4 pointer-events-none"
                                                 )}
                                             >
-                                                <div className="text-center space-y-4">
+                                                <div className="text-center space-y-3">
                                                     {/* Creator Name */}
-                                                    <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                                                    <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight">
                                                         {review.name}
                                                     </h3>
 
                                                     {/* Description */}
-                                                    <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto px-4">
+                                                    <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl mx-auto px-4">
                                                         {review.quote}
                                                     </p>
 
                                                     {/* Showcase Badge */}
-                                                    <div className="pt-2">
-                                                        <span className="inline-flex items-center px-4 py-2 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 text-sm md:text-base font-medium backdrop-blur-sm">
+                                                    <div className="pt-1">
+                                                        <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 text-xs md:text-sm font-medium backdrop-blur-sm">
                                                             {review.showcase}
                                                         </span>
                                                     </div>
