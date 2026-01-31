@@ -546,3 +546,22 @@
         font-size: 11px;
     }
 }
+
+/* ---- Event Card 3D Effects ---- */
+@media (min-width: 1024px) {
+    .event-card-3d > div {
+        transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                    box-shadow 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .event-card-3d:hover > div {
+        transform: translateY(-6px) scale(1.01);
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6),
+                    0 0 0 1px rgba(255, 255, 255, 0.15);
+    }
+
+    /* Enhanced glow on hover */
+    .event-card-3d:hover .absolute.inset-0 {
+        opacity: 0.35 !important;
+    }
+}
